@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Algorithmic Crypto Trading, Verified by Data. Evidence over hype." } = Astro.props;
+const { title, description = "Don't trust. Prove it. Algorithmic crypto trading with every trade published and every loss shown." } = Astro.props;
 ---
 
 <!doctype html>
@@ -28,11 +28,12 @@ const { title, description = "Algorithmic Crypto Trading, Verified by Data. Evid
           <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
         </a>
         <div class="hidden md:flex items-center gap-8 text-sm">
-          <a href="/#strategy" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Strategy</a>
-          <a href="/#performance" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Performance</a>
-          <a href="/blog" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Insights</a>
-          <a href="/#about" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">About</a>
-          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium hover:bg-[--color-accent-dim] transition-colors">Join Community</a>
+          <a href="/#approach" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Approach</a>
+          <a href="/#evidence" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Evidence</a>
+          <a href="/#system" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">System</a>
+          <a href="/blog" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Learn</a>
+          <a href="/fees" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Fees</a>
+          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium hover:bg-[--color-accent-dim] transition-colors">Audit Trades</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -40,11 +41,12 @@ const { title, description = "Algorithmic Crypto Trading, Verified by Data. Evid
       </div>
       <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
         <div class="flex flex-col px-4 py-4 gap-4 text-sm">
-          <a href="/#strategy" class="text-[--color-text-muted]">Strategy</a>
-          <a href="/#performance" class="text-[--color-text-muted]">Performance</a>
-          <a href="/blog" class="text-[--color-text-muted]">Insights</a>
-          <a href="/#about" class="text-[--color-text-muted]">About</a>
-          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium text-center">Join Community</a>
+          <a href="/#approach" class="text-[--color-text-muted]">Approach</a>
+          <a href="/#evidence" class="text-[--color-text-muted]">Evidence</a>
+          <a href="/#system" class="text-[--color-text-muted]">System</a>
+          <a href="/blog" class="text-[--color-text-muted]">Learn</a>
+          <a href="/fees" class="text-[--color-text-muted]">Fees</a>
+          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium text-center">Audit Trades</a>
         </div>
       </div>
     </nav>
@@ -55,12 +57,20 @@ const { title, description = "Algorithmic Crypto Trading, Verified by Data. Evid
 
     <footer class="border-t border-[--color-border] mt-20">
       <div class="max-w-6xl mx-auto px-4 py-12">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div class="text-[--color-text-muted] text-sm">
-            <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; Evidence over hype.
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-[--color-text-muted] text-sm">
+              <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; Don't trust. Pruv it.
+            </div>
+            <div class="flex items-center gap-6 text-xs text-[--color-text-muted]">
+              <a href="/blog" class="hover:text-[--color-text] transition-colors">Learn</a>
+              <a href="/fees" class="hover:text-[--color-text] transition-colors">Save on Fees</a>
+              <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="hover:text-[--color-text] transition-colors">Telegram</a>
+            </div>
           </div>
-          <div class="text-[--color-text-muted] text-xs">
-            Not financial advice. Past performance does not guarantee future results.
+          <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-[--color-text-muted]">
+            <p>Not financial advice. Past performance does not guarantee future results.</p>
+            <p>This site contains affiliate links. <a href="/fees" class="text-[--color-accent] hover:underline">Details</a></p>
           </div>
         </div>
       </div>

@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const categoryLabels: Record<string, string> = {
+  market: 'MARKET',
+  quant: 'QUANT',
+  strategy: 'STRATEGY',
+  weekly: 'WEEKLY',
+  education: 'EDU',
+};
+
+const categoryColors: Record<string, string> = {
+  market: '--color-yellow',
+  quant: '--color-accent',
+  strategy: '--color-text',
+  weekly: '--color-accent',
+  education: '--color-text-muted',
+};
+---
+
+<Layout title="Insights - PRUVIQ" description="Quant trading insights, market analysis, and strategy updates. Evidence-based content for algorithmic crypto traders.">
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">INSIGHTS</p>
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">Trading Lab Notes</h1>
+      <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
+        Market analysis, quant concepts, strategy updates, and lessons learned.
+        Everything we publish is backed by data.
+      </p>
+
+      {posts.length === 0 ? (
+        <div class="border border-[--color-border] rounded-lg p-12 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-accent] text-sm mb-4">COMING SOON</p>
+          <p class="text-[--color-text-muted] mb-6">
+            Daily insights are being prepared. Market analysis, quant education,
+            and live strategy updates will appear here.
+          </p>
+          <p class="text-[--color-text-muted] text-sm">
+            In the meantime, join
+            <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="text-[--color-accent] hover:underline">Telegram</a>
+            for real-time trade alerts.
+          </p>
+        </div>
+      ) : (
+        <div class="space-y-6">
+          {posts.map((post) => (
+            <a href={`/blog/${post.id}`}
+               class="block border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] hover:border-[--color-accent] transition-colors group">
+              <div class="flex items-center gap-3 mb-3">
+                <span class={`font-mono text-xs tracking-wider`}
+                      style={`color: var(${categoryColors[post.data.category] || '--color-text-muted'})`}>
+                  {categoryLabels[post.data.category] || post.data.category.toUpperCase()}
+                </span>
+                <span class="text-[--color-text-muted] text-xs font-mono">{post.data.date}</span>
+              </div>
+              <h2 class="text-xl font-bold mb-2 group-hover:text-[--color-accent] transition-colors">
+                {post.data.title}
+              </h2>
+              <p class="text-[--color-text-muted] text-sm">{post.data.description}</p>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

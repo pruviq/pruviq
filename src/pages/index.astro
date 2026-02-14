@@ -2,171 +2,248 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="PRUVIQ - Algorithmic Crypto Trading, Verified by Data">
+<Layout title="PRUVIQ - Don't Trust. Pruv It.">
 
   <!-- HERO -->
   <section class="min-h-[90vh] flex items-center">
     <div class="max-w-6xl mx-auto px-4 py-20">
       <div class="max-w-3xl">
-        <p class="font-mono text-[--color-accent] text-sm mb-4 tracking-wider">ALGORITHMIC TRADING</p>
+        <p class="font-mono text-[--color-accent] text-sm mb-4 tracking-wider">ALGORITHMIC CRYPTO TRADING</p>
         <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
-          Crypto Trading,<br/>
-          <span class="text-[--color-accent]">Verified by Data.</span>
+          Don't Trust.<br/>
+          <span class="text-[--color-accent]">Pruv It.</span>
         </h1>
         <p class="text-lg md:text-xl text-[--color-text-muted] mb-8 max-w-2xl">
-          We don't predict. We execute. BB Squeeze SHORT strategy running 24/7 on 536 coins
-          with transparent, verifiable performance data.
+          Every trade logged. Every loss published. Every strategy backtested
+          on 500+ coins before a single dollar is risked.
+          This is algorithmic trading with nothing to hide.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 mb-12">
           <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener"
              class="bg-[--color-accent] text-[--color-bg] px-8 py-3 rounded font-semibold text-center hover:bg-[--color-accent-dim] transition-colors">
-            Join Community
+            Audit Our Trades
           </a>
-          <a href="#strategy"
+          <a href="#the-problem"
              class="border border-[--color-border] text-[--color-text] px-8 py-3 rounded font-semibold text-center hover:border-[--color-accent] hover:text-[--color-accent] transition-colors">
-            Learn Strategy
+            Why This Exists
           </a>
         </div>
 
-        <!-- Stats bar -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Live pulse -->
+        <div class="grid grid-cols-3 gap-4">
           <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card]">
-            <p class="font-mono text-[--color-accent] text-2xl font-bold">32+</p>
-            <p class="text-[--color-text-muted] text-sm">Days Live</p>
+            <p class="font-mono text-[--color-accent] text-2xl font-bold">1,200+</p>
+            <p class="text-[--color-text-muted] text-sm">Trades Published</p>
           </div>
           <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card]">
-            <p class="font-mono text-[--color-accent] text-2xl font-bold">1,199</p>
-            <p class="text-[--color-text-muted] text-sm">Trades Executed</p>
+            <p class="font-mono text-[--color-accent] text-2xl font-bold">500+</p>
+            <p class="text-[--color-text-muted] text-sm">Coins Tested</p>
           </div>
           <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card]">
-            <p class="font-mono text-[--color-accent] text-2xl font-bold">536</p>
-            <p class="text-[--color-text-muted] text-sm">Coins Monitored</p>
-          </div>
-          <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card]">
-            <p class="font-mono text-[--color-accent] text-2xl font-bold">24/7</p>
-            <p class="text-[--color-text-muted] text-sm">Uptime</p>
+            <p class="font-mono text-2xl font-bold">24/7</p>
+            <p class="text-[--color-text-muted] text-sm">Live on Binance</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- STRATEGY -->
-  <section id="strategy" class="py-20 border-t border-[--color-border]">
+  <!-- THE PROBLEM -->
+  <section id="the-problem" class="py-20 border-t border-[--color-border]">
     <div class="max-w-6xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">STRATEGY</p>
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">BB Squeeze SHORT</h2>
-      <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
-        Bollinger Band Squeeze detects volatility compression. When bands tighten and then expand
-        with bearish signals, we enter short positions with strict risk management.
-      </p>
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">THE PROBLEM</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-12">Crypto Trading is Broken.</h2>
 
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- How it works -->
+      <div class="grid md:grid-cols-3 gap-8">
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-          <h3 class="font-mono text-[--color-accent] text-sm mb-4">HOW IT WORKS</h3>
-          <div class="space-y-4 text-sm">
-            <div class="flex gap-3">
-              <span class="font-mono text-[--color-accent] shrink-0">01</span>
-              <p><strong>Squeeze Detection</strong> &mdash; Bollinger Bands contract inside Keltner Channel, signaling low volatility</p>
-            </div>
-            <div class="flex gap-3">
-              <span class="font-mono text-[--color-accent] shrink-0">02</span>
-              <p><strong>Expansion Signal</strong> &mdash; Bands expand 10%+ with bearish candle pattern</p>
-            </div>
-            <div class="flex gap-3">
-              <span class="font-mono text-[--color-accent] shrink-0">03</span>
-              <p><strong>Volume Confirmation</strong> &mdash; Volume must exceed 2x average for entry</p>
-            </div>
-            <div class="flex gap-3">
-              <span class="font-mono text-[--color-accent] shrink-0">04</span>
-              <p><strong>Strict Risk Control</strong> &mdash; Every trade has predefined SL and TP</p>
-            </div>
-          </div>
+          <p class="font-mono text-[--color-red] text-3xl font-bold mb-3">$154B+</p>
+          <h3 class="font-bold mb-2">Liquidated in 2025</h3>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">
+            Flash crashes wiped out retail leverage traders.
+            Most bots were optimized for bull runs that ended years ago.
+          </p>
         </div>
-
-        <!-- Parameters -->
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-          <h3 class="font-mono text-[--color-accent] text-sm mb-4">PARAMETERS</h3>
-          <div class="space-y-3 font-mono text-sm">
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Direction</span>
-              <span>SHORT ONLY</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Stop Loss</span>
-              <span class="text-[--color-red]">10%</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Take Profit</span>
-              <span class="text-[--color-accent]">6%</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Volume Filter</span>
-              <span>2.0x avg</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">BB Expansion</span>
-              <span>&ge; 10%</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Leverage</span>
-              <span>5x</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Max Hold Time</span>
-              <span>48h</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Time Filter</span>
-              <span>7 hours blocked</span>
-            </div>
-          </div>
+          <p class="font-mono text-[--color-red] text-3xl font-bold mb-3">2,000%</p>
+          <h3 class="font-bold mb-2">Backtest Fantasies</h3>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">
+            That "guaranteed return"? Probably overfitted on 6 months of cherry-picked data.
+            Live results? Nowhere to be found.
+          </p>
+        </div>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <p class="font-mono text-[--color-red] text-3xl font-bold mb-3">47/day</p>
+          <h3 class="font-bold mb-2">Signal Spam</h3>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">
+            Telegram groups spam "URGENT BUY" alerts all day.
+            No accountability. No track record. No proof.
+          </p>
         </div>
       </div>
 
-      <div class="mt-8 border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-        <h3 class="font-mono text-[--color-accent] text-sm mb-4">WHY SHORT ONLY?</h3>
-        <p class="text-[--color-text-muted] text-sm leading-relaxed">
-          After extensive backtesting across 536 coins over 2+ years of data, BB Squeeze SHORT was the
-          <strong class="text-[--color-text]">only consistently profitable direction</strong>.
-          LONG strategies showed negative expected value due to structural market dynamics.
-          We follow the data, not opinions. 6 independent expert analyses confirmed this conclusion.
+      <div class="mt-8 text-center">
+        <p class="text-[--color-text-muted] text-lg">
+          You don't need more signals. You need
+          <strong class="text-[--color-accent]">one system that proves itself.</strong>
         </p>
       </div>
     </div>
   </section>
 
-  <!-- PERFORMANCE -->
-  <section id="performance" class="py-20 border-t border-[--color-border]">
+  <!-- THE ANSWER -->
+  <section id="approach" class="py-20 border-t border-[--color-border]">
     <div class="max-w-6xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">PERFORMANCE</p>
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Transparent Results</h2>
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">THE ANSWER</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Prove Everything. Hide Nothing.</h2>
       <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
-        Every trade is tracked. Every loss is shown. We believe transparency builds trust.
+        PRUVIQ is an algorithmic trading system that evolves through data,
+        not opinions. Every decision is backtested, every result is published,
+        and the strategy adapts when the evidence says it should.
       </p>
 
-      <div class="grid md:grid-cols-3 gap-6 mb-8">
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
-          <p class="text-[--color-text-muted] text-sm mb-2">Win Rate</p>
-          <p class="font-mono text-4xl font-bold text-[--color-accent]">~55%</p>
-          <p class="text-[--color-text-muted] text-xs mt-1">Live trading</p>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">01</div>
+            <div>
+              <h3 class="font-bold mb-1">Backtest Before You Trade</h3>
+              <p class="text-[--color-text-muted] text-sm">
+                Every strategy is tested on 500+ coins across 2+ years of data
+                before risking real capital. No exceptions.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">02</div>
+            <div>
+              <h3 class="font-bold mb-1">Publish Every Trade</h3>
+              <p class="text-[--color-text-muted] text-sm">
+                Wins and losses, in real-time, on Telegram.
+                Every entry, every exit, every P&L. You can audit it yourself.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">03</div>
+            <div>
+              <h3 class="font-bold mb-1">Kill What Doesn't Work</h3>
+              <p class="text-[--color-text-muted] text-sm">
+                We've already killed 3 strategies that lost money in live trading.
+                No ego. If the data says stop, we stop.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">04</div>
+            <div>
+              <h3 class="font-bold mb-1">Evolve With the Market</h3>
+              <p class="text-[--color-text-muted] text-sm">
+                Markets change. Strategies must change too.
+                PRUVIQ continuously tests, validates, and adapts.
+                What runs today may be different tomorrow &mdash; and that's the point.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
-          <p class="text-[--color-text-muted] text-sm mb-2">Backtest Win Rate</p>
-          <p class="font-mono text-4xl font-bold text-[--color-accent]">59.3%</p>
-          <p class="text-[--color-text-muted] text-xs mt-1">536 coins, 2+ years</p>
+
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-mono text-[--color-accent] text-sm mb-4">THE $14,000 LESSON</h3>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed mb-4">
+            In early 2026, we built a "momentum breakout" strategy that backtested at +400%.
+            It lost <strong class="text-[--color-red]">$14,115</strong> in live trading.
+          </p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed mb-4">
+            Why? Look-ahead bias. Overfitting. Ignoring market regime.
+            Every classic mistake in the book.
+          </p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed mb-4">
+            That failure taught us more than any winning streak.
+            We rebuilt from scratch with one rule:
+          </p>
+          <p class="text-[--color-accent] font-mono font-bold">
+            "If you can't prove it survives, don't trade it."
+          </p>
         </div>
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
-          <p class="text-[--color-text-muted] text-sm mb-2">Max Positions</p>
-          <p class="font-mono text-4xl font-bold">100</p>
-          <p class="text-[--color-text-muted] text-xs mt-1">$60 per position</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVIDENCE -->
+  <section id="evidence" class="py-20 border-t border-[--color-border]">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">EVIDENCE</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Verified, Not Promised.</h2>
+      <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
+        We don't show you best-case scenarios. We show you everything.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-8 mb-8">
+        <!-- What we show -->
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-mono text-[--color-accent] text-sm mb-4">WHAT WE PUBLISH</h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex gap-3">
+              <span class="text-[--color-accent] shrink-0">+</span>
+              <p>Every trade entry & exit with timestamps</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-accent] shrink-0">+</span>
+              <p>Win rate, loss rate, and net P&L</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-accent] shrink-0">+</span>
+              <p>Strategy changes and the data behind each decision</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-accent] shrink-0">+</span>
+              <p>Failed experiments and why they were killed</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-accent] shrink-0">+</span>
+              <p>Risk parameters and position sizing</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- What we don't promise -->
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-mono text-[--color-red] text-sm mb-4">WHAT WE DON'T PROMISE</h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex gap-3">
+              <span class="text-[--color-red] shrink-0">&times;</span>
+              <p>Guaranteed returns (no one can)</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-red] shrink-0">&times;</span>
+              <p>"Get rich quick" with leverage</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-red] shrink-0">&times;</span>
+              <p>Secret proprietary "AI" magic</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-red] shrink-0">&times;</span>
+              <p>Cherry-picked backtest results</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-[--color-red] shrink-0">&times;</span>
+              <p>Permanent strategies that never change</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-        <h3 class="font-mono text-[--color-accent] text-sm mb-4">RISK MANAGEMENT</h3>
-        <div class="grid sm:grid-cols-3 gap-4 font-mono text-sm">
+        <h3 class="font-mono text-[--color-accent] text-sm mb-4">CURRENT LIVE SYSTEM</h3>
+        <div class="grid sm:grid-cols-4 gap-6 font-mono text-sm">
+          <div>
+            <span class="text-[--color-text-muted]">Strategy</span>
+            <p class="text-xl font-bold">BB Squeeze</p>
+          </div>
+          <div>
+            <span class="text-[--color-text-muted]">Risk Per Trade</span>
+            <p class="text-xl font-bold">$60 &times; 5x</p>
+          </div>
           <div>
             <span class="text-[--color-text-muted]">Daily Loss Limit</span>
             <p class="text-xl font-bold text-[--color-red]">7%</p>
@@ -175,87 +252,242 @@ import Layout from '../layouts/Layout.astro';
             <span class="text-[--color-text-muted]">Max Drawdown</span>
             <p class="text-xl font-bold text-[--color-red]">20%</p>
           </div>
-          <div>
-            <span class="text-[--color-text-muted]">Position Size</span>
-            <p class="text-xl font-bold">$60 x 5x</p>
-          </div>
         </div>
+        <p class="text-[--color-text-muted] text-xs mt-4">
+          Strategy details and parameters evolve based on live performance data.
+          Current configuration may differ from what's shown above.
+        </p>
       </div>
-
-      <p class="text-[--color-text-muted] text-xs mt-4 italic">
-        * Performance data is updated regularly by our AI system. Live results may differ from backtests.
-      </p>
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- HOW IT WORKS -->
+  <section id="system" class="py-20 border-t border-[--color-border]">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">THE SYSTEM</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Code, Not Gut Feeling.</h2>
+      <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
+        No manual trading. No emotional decisions.
+        A Python bot executing predefined rules 24/7 on a cloud server.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6 mb-8">
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-accent] text-4xl font-bold mb-2">SCAN</p>
+          <p class="text-[--color-text-muted] text-sm">
+            Every hour, analyze 500+ coins for statistical setups.
+            Filter noise. Wait for the edge.
+          </p>
+        </div>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-accent] text-4xl font-bold mb-2">EXECUTE</p>
+          <p class="text-[--color-text-muted] text-sm">
+            Enter positions with predefined risk.
+            Stop-loss and take-profit set before entry. No exceptions.
+          </p>
+        </div>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-accent] text-4xl font-bold mb-2">PROVE</p>
+          <p class="text-[--color-text-muted] text-sm">
+            Every result published to Telegram in real-time.
+            You see what the bot does, as it does it.
+          </p>
+        </div>
+      </div>
+
+      <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+        <h3 class="font-mono text-[--color-accent] text-sm mb-4">TECH STACK</h3>
+        <div class="grid sm:grid-cols-3 gap-4 font-mono text-sm">
+          <div class="flex justify-between border-b border-[--color-border] pb-2 sm:border-0">
+            <span class="text-[--color-text-muted]">Engine</span>
+            <span>Python</span>
+          </div>
+          <div class="flex justify-between border-b border-[--color-border] pb-2 sm:border-0">
+            <span class="text-[--color-text-muted]">Exchange</span>
+            <span>Binance Futures</span>
+          </div>
+          <div class="flex justify-between border-b border-[--color-border] pb-2 sm:border-0">
+            <span class="text-[--color-text-muted]">Infra</span>
+            <span>Cloud VPS 24/7</span>
+          </div>
+          <div class="flex justify-between border-b border-[--color-border] pb-2 sm:border-0">
+            <span class="text-[--color-text-muted]">AI Analysis</span>
+            <span>Local LLM (M4)</span>
+          </div>
+          <div class="flex justify-between border-b border-[--color-border] pb-2 sm:border-0">
+            <span class="text-[--color-text-muted]">Backtesting</span>
+            <span>Custom Engine</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-[--color-text-muted]">Alerts</span>
+            <span>Telegram Bot</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE BUILDER -->
   <section id="about" class="py-20 border-t border-[--color-border]">
     <div class="max-w-6xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">ABOUT</p>
-      <h2 class="text-3xl md:text-4xl font-bold mb-8">Built by a Developer, for Traders</h2>
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">THE BUILDER</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-8">One Developer. Zero Excuses.</h2>
 
       <div class="grid md:grid-cols-2 gap-8">
         <div>
           <p class="text-[--color-text-muted] leading-relaxed mb-6">
-            PRUVIQ is built and operated by <strong class="text-[--color-text]">JPLee</strong>,
-            a developer and algorithmic trader. Every line of code, every backtest, every deployment
-            is done by one person with AI-powered tools.
+            PRUVIQ is built and operated by <strong class="text-[--color-text]">JPLee</strong> &mdash;
+            a developer who got tired of crypto projects that promise everything and prove nothing.
           </p>
           <p class="text-[--color-text-muted] leading-relaxed mb-6">
-            The philosophy is simple: <strong class="text-[--color-accent]">Evidence over hype.
-            Risk before profit.</strong> In a market full of noise, we let data speak.
+            No team. No investors. No exit strategy. Just one person building trading systems
+            with AI-powered tools, testing them with real money, and publishing every result.
+          </p>
+          <p class="text-[--color-text-muted] leading-relaxed mb-6">
+            If the bot fails, you'll see it fail. If it works, you watched it work from trade #1.
+            <strong class="text-[--color-accent]">That's the deal.</strong>
           </p>
 
           <div class="space-y-3">
             <h3 class="font-mono text-[--color-accent] text-sm">PRINCIPLES</h3>
             <div class="flex gap-3 text-sm">
               <span class="text-[--color-accent] font-mono shrink-0">&gt;</span>
-              <p>Backtest first, trade second. Always.</p>
+              <p>Evidence over hype. Always.</p>
             </div>
             <div class="flex gap-3 text-sm">
               <span class="text-[--color-accent] font-mono shrink-0">&gt;</span>
-              <p>Show losses too. Transparency builds trust.</p>
+              <p>Show losses. Transparency builds trust.</p>
+            </div>
+            <div class="flex gap-3 text-sm">
+              <span class="text-[--color-accent] font-mono shrink-0">&gt;</span>
+              <p>Kill strategies that don't perform. No ego.</p>
             </div>
             <div class="flex gap-3 text-sm">
               <span class="text-[--color-accent] font-mono shrink-0">&gt;</span>
               <p>Risk management is not optional.</p>
             </div>
-            <div class="flex gap-3 text-sm">
-              <span class="text-[--color-accent] font-mono shrink-0">&gt;</span>
-              <p>Community learns together.</p>
-            </div>
           </div>
         </div>
 
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-          <h3 class="font-mono text-[--color-accent] text-sm mb-4">TECH STACK</h3>
-          <div class="space-y-3 text-sm font-mono">
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Language</span>
-              <span>Python</span>
+          <h3 class="font-mono text-[--color-accent] text-sm mb-4">STRATEGY GRAVEYARD</h3>
+          <p class="text-[--color-text-muted] text-xs mb-4">Strategies we tested and killed based on evidence.</p>
+          <div class="space-y-4 text-sm">
+            <div class="border-b border-[--color-border] pb-3">
+              <div class="flex justify-between mb-1">
+                <span class="font-mono">Momentum LONG</span>
+                <span class="text-[--color-red] font-mono">-$14,115</span>
+              </div>
+              <p class="text-[--color-text-muted] text-xs">37.5% win rate. Needed 71.4% to break even. Killed.</p>
             </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Exchange</span>
-              <span>Binance Futures</span>
+            <div class="border-b border-[--color-border] pb-3">
+              <div class="flex justify-between mb-1">
+                <span class="font-mono">BB Squeeze LONG</span>
+                <span class="text-[--color-red] font-mono">-$26</span>
+              </div>
+              <p class="text-[--color-text-muted] text-xs">51% win rate. Negative expected value. Killed.</p>
             </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Infrastructure</span>
-              <span>Cloud VPS (24/7)</span>
+            <div class="border-b border-[--color-border] pb-3">
+              <div class="flex justify-between mb-1">
+                <span class="font-mono">HV Squeeze</span>
+                <span class="text-[--color-text-muted] font-mono">Inconclusive</span>
+              </div>
+              <p class="text-[--color-text-muted] text-xs">Insufficient edge vs BB Squeeze. Abandoned.</p>
             </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">AI Analysis</span>
-              <span>Mac Mini M4</span>
-            </div>
-            <div class="flex justify-between border-b border-[--color-border] pb-2">
-              <span class="text-[--color-text-muted]">Backtesting</span>
-              <span>Custom Engine</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Alerts</span>
-              <span>Telegram Bot</span>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="font-mono">ATR Breakout</span>
+                <span class="text-[--color-text-muted] font-mono">Inconclusive</span>
+              </div>
+              <p class="text-[--color-text-muted] text-xs">Tested, didn't outperform. Shelved.</p>
             </div>
           </div>
+          <p class="text-[--color-accent] text-xs mt-4 font-mono">
+            Only strategies that survive testing trade live.
+          </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVE ON FEES -->
+  <section id="fees" class="py-20 border-t border-[--color-border]">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">SAVE ON FEES</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Stop Paying Full Price to Trade.</h2>
+      <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
+        Most traders don't realize they're overpaying on every trade.
+        Use PRUVIQ's referral link and keep more of your profits.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6 mb-8">
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-red] text-3xl font-bold mb-2 line-through">0.05%</p>
+          <p class="font-mono text-[--color-accent] text-3xl font-bold mb-2">0.04%</p>
+          <p class="text-[--color-text-muted] text-sm">Taker Fee (Futures)</p>
+          <p class="text-[--color-accent] text-xs mt-2 font-mono">SAVE 20%</p>
+        </div>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-red] text-3xl font-bold mb-2 line-through">0.02%</p>
+          <p class="font-mono text-[--color-accent] text-3xl font-bold mb-2">0.016%</p>
+          <p class="text-[--color-text-muted] text-sm">Maker Fee (Futures)</p>
+          <p class="text-[--color-accent] text-xs mt-2 font-mono">SAVE 20%</p>
+        </div>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+          <p class="font-mono text-[--color-accent] text-4xl font-bold mb-2">$$$</p>
+          <p class="text-[--color-text-muted] text-sm">Your Savings Per Year</p>
+          <p class="text-[--color-accent] text-xs mt-2 font-mono">ADDS UP FAST</p>
+        </div>
+      </div>
+
+      <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] mb-8">
+        <h3 class="font-mono text-[--color-accent] text-sm mb-4">HOW MUCH DO FEES ACTUALLY COST?</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm font-mono">
+            <thead>
+              <tr class="text-[--color-text-muted] text-left">
+                <th class="pb-3">Monthly Volume</th>
+                <th class="pb-3">Without Referral</th>
+                <th class="pb-3">With PRUVIQ</th>
+                <th class="pb-3 text-[--color-accent]">You Save</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="border-t border-[--color-border]">
+                <td class="py-3">$10,000</td>
+                <td class="py-3 text-[--color-red]">$10.00</td>
+                <td class="py-3">$8.00</td>
+                <td class="py-3 text-[--color-accent]">$2.00/mo</td>
+              </tr>
+              <tr class="border-t border-[--color-border]">
+                <td class="py-3">$100,000</td>
+                <td class="py-3 text-[--color-red]">$100.00</td>
+                <td class="py-3">$80.00</td>
+                <td class="py-3 text-[--color-accent]">$20.00/mo</td>
+              </tr>
+              <tr class="border-t border-[--color-border]">
+                <td class="py-3">$1,000,000</td>
+                <td class="py-3 text-[--color-red]">$1,000</td>
+                <td class="py-3">$800</td>
+                <td class="py-3 text-[--color-accent]">$200/mo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-[--color-text-muted] text-xs mt-4">
+          Based on Binance Futures taker fees. Actual savings depend on your fee tier and trading volume.
+        </p>
+      </div>
+
+      <div class="text-center">
+        <a href="/fees"
+           class="inline-block border border-[--color-accent] text-[--color-accent] px-8 py-3 rounded font-semibold hover:bg-[--color-accent] hover:text-[--color-bg] transition-colors">
+          See Full Fee Comparison &rarr;
+        </a>
+        <p class="text-[--color-text-muted] text-xs mt-4">
+          Affiliate disclosure: PRUVIQ earns a commission when you sign up through our referral link.
+          Your fee discount is not affected.
+        </p>
       </div>
     </div>
   </section>
@@ -263,16 +495,27 @@ import Layout from '../layouts/Layout.astro';
   <!-- CTA -->
   <section class="py-20 border-t border-[--color-border]">
     <div class="max-w-6xl mx-auto px-4 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Learn?</h2>
-      <p class="text-[--color-text-muted] text-lg mb-8 max-w-xl mx-auto">
-        Join our community to follow live performance, learn algorithmic trading,
-        and access daily AI-generated market insights.
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">
+        Don't Trust Us.<br/>
+        <span class="text-[--color-accent]">Pruv It.</span>
+      </h2>
+      <p class="text-[--color-text-muted] text-lg mb-4 max-w-xl mx-auto">
+        Every trade is on Telegram. Every result is public.
+        Scroll back to trade #1 and check for yourself.
+      </p>
+      <p class="text-[--color-text-muted] text-sm mb-8 max-w-md mx-auto">
+        Free to join. No email required. No sales pitch.
+        Just a live trading log you can audit.
       </p>
       <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener"
          class="inline-block bg-[--color-accent] text-[--color-bg] px-10 py-4 rounded font-semibold text-lg hover:bg-[--color-accent-dim] transition-colors">
-        Join PRUVIQ on Telegram
+        Audit Our Trades
       </a>
-      <p class="text-[--color-text-muted] text-xs mt-4">Free to join. No financial advice provided.</p>
+      <p class="text-[--color-text-muted] text-xs mt-6 max-w-lg mx-auto">
+        Not financial advice. Crypto trading involves substantial risk of loss.
+        Past performance does not guarantee future results.
+        PRUVIQ is an educational and research project.
+      </p>
     </div>
   </section>
 
