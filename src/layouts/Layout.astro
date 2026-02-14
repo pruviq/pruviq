@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Don't trust. Prove it. Algorithmic crypto trading with every trade published and every loss shown." } = Astro.props;
+const { title, description = "Don't believe. Verify. Algorithmic crypto trading with every trade published and every loss shown." } = Astro.props;
 ---
 
 <!doctype html>
@@ -31,9 +31,10 @@ const { title, description = "Don't trust. Prove it. Algorithmic crypto trading 
           <a href="/#approach" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Approach</a>
           <a href="/#evidence" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Evidence</a>
           <a href="/#system" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">System</a>
+          <a href="/graveyard" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Graveyard</a>
           <a href="/blog" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Learn</a>
           <a href="/fees" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Fees</a>
-          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium hover:bg-[--color-accent-dim] transition-colors">Audit Trades</a>
+          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium hover:bg-[--color-accent-dim] transition-colors">Pruv It</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -44,9 +45,10 @@ const { title, description = "Don't trust. Prove it. Algorithmic crypto trading 
           <a href="/#approach" class="text-[--color-text-muted]">Approach</a>
           <a href="/#evidence" class="text-[--color-text-muted]">Evidence</a>
           <a href="/#system" class="text-[--color-text-muted]">System</a>
+          <a href="/graveyard" class="text-[--color-text-muted]">Graveyard</a>
           <a href="/blog" class="text-[--color-text-muted]">Learn</a>
           <a href="/fees" class="text-[--color-text-muted]">Fees</a>
-          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium text-center">Audit Trades</a>
+          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium text-center">Pruv It</a>
         </div>
       </div>
     </nav>
@@ -60,9 +62,10 @@ const { title, description = "Don't trust. Prove it. Algorithmic crypto trading 
         <div class="flex flex-col gap-6">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-[--color-text-muted] text-sm">
-              <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; Don't trust. Pruv it.
+              <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; Don't believe. Verify.
             </div>
             <div class="flex items-center gap-6 text-xs text-[--color-text-muted]">
+              <a href="/graveyard" class="hover:text-[--color-text] transition-colors">Graveyard</a>
               <a href="/blog" class="hover:text-[--color-text] transition-colors">Learn</a>
               <a href="/fees" class="hover:text-[--color-text] transition-colors">Save on Fees</a>
               <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="hover:text-[--color-text] transition-colors">Telegram</a>
