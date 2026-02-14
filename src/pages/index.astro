@@ -416,77 +416,59 @@ import Layout from '../layouts/Layout.astro';
       <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">SAVE ON FEES</p>
       <h2 class="text-3xl md:text-4xl font-bold mb-4">Stop Paying Full Price to Trade.</h2>
       <p class="text-[--color-text-muted] text-lg mb-12 max-w-2xl">
-        Most traders don't realize they're overpaying on every trade.
-        Use PRUVIQ's referral link and keep more of your profits.
+        Fees hit every trade. We compared 9 exchanges so you don't have to.
+        Sign up through PRUVIQ and get discounted rates &mdash; on any exchange.
       </p>
 
-      <div class="grid md:grid-cols-3 gap-6 mb-8">
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
-          <p class="font-mono text-[--color-red] text-3xl font-bold mb-2 line-through">0.05%</p>
-          <p class="font-mono text-[--color-accent] text-3xl font-bold mb-2">0.04%</p>
-          <p class="text-[--color-text-muted] text-sm">Taker Fee (Futures)</p>
-          <p class="text-[--color-accent] text-xs mt-2 font-mono">SAVE 20%</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card]">
+          <p class="font-bold mb-1">Binance</p>
+          <p class="font-mono text-[--color-accent] text-xl font-bold">20% off</p>
+          <p class="text-[--color-text-muted] text-xs mt-1">Largest volume globally</p>
         </div>
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
-          <p class="font-mono text-[--color-red] text-3xl font-bold mb-2 line-through">0.02%</p>
-          <p class="font-mono text-[--color-accent] text-3xl font-bold mb-2">0.016%</p>
-          <p class="text-[--color-text-muted] text-sm">Maker Fee (Futures)</p>
-          <p class="text-[--color-accent] text-xs mt-2 font-mono">SAVE 20%</p>
+        <div class="border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card]">
+          <p class="font-bold mb-1">Bybit</p>
+          <p class="font-mono text-[--color-accent] text-xl font-bold">20% off</p>
+          <p class="text-[--color-text-muted] text-xs mt-1">Lifetime discount</p>
         </div>
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
-          <p class="font-mono text-[--color-accent] text-4xl font-bold mb-2">$$$</p>
-          <p class="text-[--color-text-muted] text-sm">Your Savings Per Year</p>
-          <p class="text-[--color-accent] text-xs mt-2 font-mono">ADDS UP FAST</p>
+        <div class="border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card]">
+          <p class="font-bold mb-1">OKX</p>
+          <p class="font-mono text-[--color-accent] text-xl font-bold">20% off</p>
+          <p class="text-[--color-text-muted] text-xs mt-1">Lifetime discount</p>
+        </div>
+        <div class="border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card]">
+          <p class="font-bold mb-1">MEXC</p>
+          <p class="font-mono text-[--color-accent] text-xl font-bold">0% maker</p>
+          <p class="text-[--color-text-muted] text-xs mt-1">Zero maker fees</p>
         </div>
       </div>
 
       <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] mb-8">
         <h3 class="font-mono text-[--color-accent] text-sm mb-4">HOW MUCH DO FEES ACTUALLY COST?</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm font-mono">
-            <thead>
-              <tr class="text-[--color-text-muted] text-left">
-                <th class="pb-3">Monthly Volume</th>
-                <th class="pb-3">Without Referral</th>
-                <th class="pb-3">With PRUVIQ</th>
-                <th class="pb-3 text-[--color-accent]">You Save</th>
-              </tr>
-            </thead>
-            <tbody class="text-sm">
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$10,000</td>
-                <td class="py-3 text-[--color-red]">$10.00</td>
-                <td class="py-3">$8.00</td>
-                <td class="py-3 text-[--color-accent]">$2.00/mo</td>
-              </tr>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$100,000</td>
-                <td class="py-3 text-[--color-red]">$100.00</td>
-                <td class="py-3">$80.00</td>
-                <td class="py-3 text-[--color-accent]">$20.00/mo</td>
-              </tr>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$1,000,000</td>
-                <td class="py-3 text-[--color-red]">$1,000</td>
-                <td class="py-3">$800</td>
-                <td class="py-3 text-[--color-accent]">$200/mo</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div>
+            <p class="font-mono text-[--color-red] text-2xl font-bold">$1,200</p>
+            <p class="text-[--color-text-muted] text-sm mt-1">Annual fees at $100K/mo (standard)</p>
+          </div>
+          <div>
+            <p class="font-mono text-[--color-accent] text-2xl font-bold">$960</p>
+            <p class="text-[--color-text-muted] text-sm mt-1">With PRUVIQ referral (20% saved)</p>
+          </div>
+          <div>
+            <p class="font-mono text-[--color-accent] text-2xl font-bold">$240+</p>
+            <p class="text-[--color-text-muted] text-sm mt-1">Stays in your pocket every year</p>
+          </div>
         </div>
-        <p class="text-[--color-text-muted] text-xs mt-4">
-          Based on Binance Futures taker fees. Actual savings depend on your fee tier and trading volume.
-        </p>
       </div>
 
       <div class="text-center">
         <a href="/fees"
            class="inline-block border border-[--color-accent] text-[--color-accent] px-8 py-3 rounded font-semibold hover:bg-[--color-accent] hover:text-[--color-bg] transition-colors">
-          See Full Fee Comparison &rarr;
+          Compare All 9 Exchanges &rarr;
         </a>
         <p class="text-[--color-text-muted] text-xs mt-4">
-          Affiliate disclosure: PRUVIQ earns a commission when you sign up through our referral link.
-          Your fee discount is not affected.
+          Affiliate disclosure: PRUVIQ earns a commission when you sign up through our referral links.
+          Your fee discounts are not affected.
         </p>
       </div>
     </div>

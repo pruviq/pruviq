@@ -2,177 +2,288 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Save on Trading Fees - PRUVIQ" description="Save 20% on Binance Futures fees with PRUVIQ's referral. No catch. Lower fees means more profit stays in your pocket.">
+<Layout title="Compare Exchange Fees - PRUVIQ" description="Compare trading fees across Binance, Bybit, OKX, and more. Save up to 70% with PRUVIQ referral links. Transparent fee comparison.">
 
   <!-- HERO -->
   <section class="py-20">
-    <div class="max-w-4xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">FEES</p>
+    <div class="max-w-5xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">EXCHANGE FEES</p>
       <h1 class="text-3xl md:text-5xl font-bold mb-4">
-        You're Overpaying<br/>on Every Trade.
+        Stop Overpaying.<br/>Compare Every Exchange.
       </h1>
-      <p class="text-[--color-text-muted] text-lg mb-8 max-w-2xl">
-        Most traders never check their fee structure. Over a year of active trading,
-        fees can eat thousands of dollars. Here's how to cut them by 20%.
+      <p class="text-[--color-text-muted] text-lg mb-4 max-w-2xl">
+        Fees eat your profits on every trade. We compared the top exchanges so you don't have to.
+        Sign up through PRUVIQ and get discounted rates.
+      </p>
+      <p class="text-[--color-text-muted] text-xs">
+        Affiliate disclosure: PRUVIQ earns a commission when you sign up through our referral links. Your fee discount is not affected.
       </p>
     </div>
   </section>
 
-  <!-- FEE COMPARISON -->
+  <!-- MULTI-EXCHANGE COMPARISON -->
   <section class="pb-20 border-t border-[--color-border] pt-12">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-8">Binance Futures Fee Comparison</h2>
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-8">Futures Fee Comparison (VIP 0 / Base Tier)</h2>
 
-      <div class="border border-[--color-border] rounded-lg overflow-hidden mb-8">
-        <table class="w-full text-sm">
+      <div class="border border-[--color-border] rounded-lg overflow-x-auto mb-8">
+        <table class="w-full text-sm min-w-[700px]">
           <thead>
             <tr class="bg-[--color-bg-card]">
-              <th class="text-left p-4 font-mono text-[--color-text-muted]">Fee Type</th>
-              <th class="text-center p-4 font-mono text-[--color-red]">Standard</th>
-              <th class="text-center p-4 font-mono text-[--color-accent]">With PRUVIQ</th>
-              <th class="text-center p-4 font-mono text-[--color-accent]">You Save</th>
+              <th class="text-left p-4 font-mono text-[--color-text-muted]">Exchange</th>
+              <th class="text-center p-4 font-mono text-[--color-text-muted]">Maker</th>
+              <th class="text-center p-4 font-mono text-[--color-text-muted]">Taker</th>
+              <th class="text-center p-4 font-mono text-[--color-accent]">PRUVIQ Discount</th>
+              <th class="text-center p-4 font-mono text-[--color-text-muted]">Duration</th>
+              <th class="text-center p-4 font-mono"></th>
             </tr>
           </thead>
           <tbody>
             <tr class="border-t border-[--color-border]">
               <td class="p-4">
-                <span class="font-bold">Futures Taker</span>
-                <p class="text-[--color-text-muted] text-xs mt-1">Market orders, stop-loss triggers</p>
+                <span class="font-bold">Binance</span>
+                <p class="text-[--color-text-muted] text-xs mt-1">Largest volume globally</p>
               </td>
-              <td class="p-4 text-center font-mono text-[--color-red]">0.0500%</td>
-              <td class="p-4 text-center font-mono text-[--color-accent]">0.0400%</td>
-              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20%</td>
+              <td class="p-4 text-center font-mono">0.020%</td>
+              <td class="p-4 text-center font-mono">0.050%</td>
+              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20% off</td>
+              <td class="p-4 text-center text-xs text-[--color-text-muted]">12 months</td>
+              <td class="p-4 text-center">
+                <a href="https://www.binance.com/en/futures/ref/PRUVIQ" target="_blank" rel="noopener"
+                   class="inline-block bg-[--color-accent] text-[--color-bg] px-4 py-1.5 rounded text-xs font-semibold hover:bg-[--color-accent-dim] transition-colors whitespace-nowrap">
+                  Save 20%
+                </a>
+              </td>
             </tr>
             <tr class="border-t border-[--color-border] bg-[--color-bg-card]">
               <td class="p-4">
-                <span class="font-bold">Futures Maker</span>
-                <p class="text-[--color-text-muted] text-xs mt-1">Limit orders that add liquidity</p>
+                <span class="font-bold">Bybit</span>
+                <p class="text-[--color-text-muted] text-xs mt-1">Best for futures traders</p>
               </td>
-              <td class="p-4 text-center font-mono text-[--color-red]">0.0200%</td>
-              <td class="p-4 text-center font-mono text-[--color-accent]">0.0160%</td>
-              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20%</td>
+              <td class="p-4 text-center font-mono">0.020%</td>
+              <td class="p-4 text-center font-mono">0.055%</td>
+              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20% off</td>
+              <td class="p-4 text-center text-xs text-[--color-accent]">Lifetime</td>
+              <td class="p-4 text-center">
+                <a href="https://www.bybit.com/invite?ref=PRUVIQ" target="_blank" rel="noopener"
+                   class="inline-block bg-[--color-accent] text-[--color-bg] px-4 py-1.5 rounded text-xs font-semibold hover:bg-[--color-accent-dim] transition-colors whitespace-nowrap">
+                  Save 20%
+                </a>
+              </td>
             </tr>
             <tr class="border-t border-[--color-border]">
               <td class="p-4">
-                <span class="font-bold">Spot Taker</span>
-                <p class="text-[--color-text-muted] text-xs mt-1">Market orders on spot</p>
+                <span class="font-bold">OKX</span>
+                <p class="text-[--color-text-muted] text-xs mt-1">120+ countries supported</p>
               </td>
-              <td class="p-4 text-center font-mono text-[--color-red]">0.1000%</td>
-              <td class="p-4 text-center font-mono text-[--color-accent]">0.0800%</td>
-              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20%</td>
+              <td class="p-4 text-center font-mono">0.020%</td>
+              <td class="p-4 text-center font-mono">0.050%</td>
+              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20% off</td>
+              <td class="p-4 text-center text-xs text-[--color-accent]">Lifetime</td>
+              <td class="p-4 text-center">
+                <a href="https://www.okx.com/join/PRUVIQ" target="_blank" rel="noopener"
+                   class="inline-block bg-[--color-accent] text-[--color-bg] px-4 py-1.5 rounded text-xs font-semibold hover:bg-[--color-accent-dim] transition-colors whitespace-nowrap">
+                  Save 20%
+                </a>
+              </td>
             </tr>
             <tr class="border-t border-[--color-border] bg-[--color-bg-card]">
               <td class="p-4">
-                <span class="font-bold">Spot Maker</span>
-                <p class="text-[--color-text-muted] text-xs mt-1">Limit orders on spot</p>
+                <span class="font-bold">Bitget</span>
+                <p class="text-[--color-text-muted] text-xs mt-1">Copy trading + on-chain</p>
               </td>
-              <td class="p-4 text-center font-mono text-[--color-red]">0.1000%</td>
-              <td class="p-4 text-center font-mono text-[--color-accent]">0.0800%</td>
-              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20%</td>
+              <td class="p-4 text-center font-mono">0.020%</td>
+              <td class="p-4 text-center font-mono">0.060%</td>
+              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20% off</td>
+              <td class="p-4 text-center text-xs text-[--color-text-muted]">Performance</td>
+              <td class="p-4 text-center">
+                <a href="https://www.bitget.com/referral/register?from=referral&clacCode=PRUVIQ" target="_blank" rel="noopener"
+                   class="inline-block bg-[--color-accent] text-[--color-bg] px-4 py-1.5 rounded text-xs font-semibold hover:bg-[--color-accent-dim] transition-colors whitespace-nowrap">
+                  Save 20%
+                </a>
+              </td>
+            </tr>
+            <tr class="border-t border-[--color-border]">
+              <td class="p-4">
+                <span class="font-bold">MEXC</span>
+                <p class="text-[--color-text-muted] text-xs mt-1">Zero maker fees</p>
+              </td>
+              <td class="p-4 text-center font-mono text-[--color-accent]">0.000%</td>
+              <td class="p-4 text-center font-mono">0.020%</td>
+              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">10% off</td>
+              <td class="p-4 text-center text-xs text-[--color-accent]">Lifetime</td>
+              <td class="p-4 text-center">
+                <a href="https://www.mexc.com/register?inviteCode=PRUVIQ" target="_blank" rel="noopener"
+                   class="inline-block bg-[--color-accent] text-[--color-bg] px-4 py-1.5 rounded text-xs font-semibold hover:bg-[--color-accent-dim] transition-colors whitespace-nowrap">
+                  Save 10%
+                </a>
+              </td>
+            </tr>
+            <tr class="border-t border-[--color-border] bg-[--color-bg-card]">
+              <td class="p-4">
+                <span class="font-bold">Phemex</span>
+                <p class="text-[--color-text-muted] text-xs mt-1">Lowest taker fees</p>
+              </td>
+              <td class="p-4 text-center font-mono">0.010%</td>
+              <td class="p-4 text-center font-mono">0.060%</td>
+              <td class="p-4 text-center font-mono font-bold text-[--color-accent]">20% off</td>
+              <td class="p-4 text-center text-xs text-[--color-accent]">Lifetime</td>
+              <td class="p-4 text-center">
+                <a href="https://phemex.com/register?referralCode=PRUVIQ" target="_blank" rel="noopener"
+                   class="inline-block bg-[--color-accent] text-[--color-bg] px-4 py-1.5 rounded text-xs font-semibold hover:bg-[--color-accent-dim] transition-colors whitespace-nowrap">
+                  Save 20%
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Annual savings calculator -->
+      <p class="text-[--color-text-muted] text-xs mb-8">
+        Fees shown are base rates (VIP 0). Higher-volume traders unlock lower tiers automatically.
+        Referral discounts apply on top of VIP tier discounts. Last updated: Feb 2026.
+      </p>
+
+      <!-- Why it matters -->
       <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] mb-8">
-        <h3 class="font-mono text-[--color-accent] text-sm mb-4">ANNUAL SAVINGS ESTIMATE</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm font-mono">
-            <thead>
-              <tr class="text-[--color-text-muted] text-left">
-                <th class="pb-3">Monthly Volume</th>
-                <th class="pb-3">Annual Fees (Standard)</th>
-                <th class="pb-3">Annual Fees (PRUVIQ)</th>
-                <th class="pb-3 text-[--color-accent]">Annual Savings</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$10,000</td>
-                <td class="py-3 text-[--color-red]">$120</td>
-                <td class="py-3">$96</td>
-                <td class="py-3 text-[--color-accent]">$24</td>
-              </tr>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$50,000</td>
-                <td class="py-3 text-[--color-red]">$600</td>
-                <td class="py-3">$480</td>
-                <td class="py-3 text-[--color-accent]">$120</td>
-              </tr>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$100,000</td>
-                <td class="py-3 text-[--color-red]">$1,200</td>
-                <td class="py-3">$960</td>
-                <td class="py-3 text-[--color-accent]">$240</td>
-              </tr>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$500,000</td>
-                <td class="py-3 text-[--color-red]">$6,000</td>
-                <td class="py-3">$4,800</td>
-                <td class="py-3 text-[--color-accent]">$1,200</td>
-              </tr>
-              <tr class="border-t border-[--color-border]">
-                <td class="py-3">$1,000,000+</td>
-                <td class="py-3 text-[--color-red]">$12,000+</td>
-                <td class="py-3">$9,600+</td>
-                <td class="py-3 text-[--color-accent]">$2,400+</td>
-              </tr>
-            </tbody>
-          </table>
+        <h3 class="font-mono text-[--color-accent] text-sm mb-4">WHY FEES MATTER</h3>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div>
+            <p class="font-mono text-[--color-red] text-2xl font-bold">$1,200</p>
+            <p class="text-[--color-text-muted] text-sm mt-1">Annual fees at $100K/mo volume (standard)</p>
+          </div>
+          <div>
+            <p class="font-mono text-[--color-accent] text-2xl font-bold">$960</p>
+            <p class="text-[--color-text-muted] text-sm mt-1">With PRUVIQ referral (20% saved)</p>
+          </div>
+          <div>
+            <p class="font-mono text-[--color-accent] text-2xl font-bold">$240</p>
+            <p class="text-[--color-text-muted] text-sm mt-1">Stays in your pocket every year</p>
+          </div>
         </div>
-        <p class="text-[--color-text-muted] text-xs mt-4">
-          Based on Binance Futures taker fees (VIP 0 tier). Higher VIP tiers have lower base fees.
-          Actual savings depend on your order types and fee tier.
-        </p>
       </div>
     </div>
   </section>
 
-  <!-- HOW TO SIGN UP -->
+  <!-- DEX COMPARISON -->
   <section class="pb-20 border-t border-[--color-border] pt-12">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-8">How to Get Your Fee Discount</h2>
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-4">Decentralized Exchanges (DEX)</h2>
+      <p class="text-[--color-text-muted] text-sm mb-8">
+        Prefer on-chain trading? These DEXs offer competitive futures fees with no KYC.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-bold mb-2">dYdX</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Maker</span>
+              <span class="font-mono">0.020%</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Taker</span>
+              <span class="font-mono">0.050%</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Referral</span>
+              <span class="font-mono text-[--color-accent]">Up to 50%</span>
+            </div>
+          </div>
+          <p class="text-[--color-text-muted] text-xs mt-3">Instant USDC payouts on-chain</p>
+        </div>
+
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-bold mb-2">Hyperliquid</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Maker</span>
+              <span class="font-mono">0.010%</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Taker</span>
+              <span class="font-mono">0.035%</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Referral</span>
+              <span class="font-mono text-[--color-accent]">4% discount</span>
+            </div>
+          </div>
+          <p class="text-[--color-text-muted] text-xs mt-3">Fastest growing perps DEX</p>
+        </div>
+
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-bold mb-2">GMX</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Open/Close</span>
+              <span class="font-mono">0.050-0.070%</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Borrow</span>
+              <span class="font-mono">Variable</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[--color-text-muted]">Referral</span>
+              <span class="font-mono text-[--color-accent]">5-15%</span>
+            </div>
+          </div>
+          <p class="text-[--color-text-muted] text-xs mt-3">ETH + esGMX rewards</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHICH EXCHANGE -->
+  <section class="pb-20 border-t border-[--color-border] pt-12">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-8">Which Exchange Should You Use?</h2>
 
       <div class="space-y-6">
-        <div class="flex gap-4">
-          <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">01</div>
-          <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex-1">
-            <h3 class="font-bold mb-2">Sign Up Through PRUVIQ's Link</h3>
-            <p class="text-[--color-text-muted] text-sm mb-4">
-              Click the button below to create your Binance account with the 20% fee discount automatically applied.
-              If you already have a Binance account, you can use the referral code when creating a new Futures account.
-            </p>
-            <a href="https://www.binance.com/en/futures/ref/PRUVIQ" target="_blank" rel="noopener"
-               class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] transition-colors">
-              Get 20% Fee Discount
-            </a>
-            <p class="text-[--color-text-muted] text-xs mt-3 font-mono">
-              Referral Code: PRUVIQ
-            </p>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="font-mono text-[--color-accent] font-bold">HIGHEST VOLUME</span>
           </div>
+          <h3 class="font-bold mb-2">Binance &mdash; Best for liquidity and low slippage</h3>
+          <p class="text-[--color-text-muted] text-sm">
+            Deepest order books in crypto. If you trade large positions or use market orders frequently,
+            Binance's liquidity means less slippage per trade.
+            PRUVIQ's own AutoTrader runs on Binance Futures.
+          </p>
         </div>
 
-        <div class="flex gap-4">
-          <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">02</div>
-          <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex-1">
-            <h3 class="font-bold mb-2">Complete Verification</h3>
-            <p class="text-[--color-text-muted] text-sm">
-              Binance requires KYC verification for futures trading.
-              This takes 5-15 minutes. Your fee discount is applied immediately after verification.
-            </p>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="font-mono text-[--color-accent] font-bold">LIFETIME DISCOUNT</span>
           </div>
+          <h3 class="font-bold mb-2">Bybit &mdash; Best long-term fee savings</h3>
+          <p class="text-[--color-text-muted] text-sm">
+            Bybit's referral discount never expires. If you plan to trade for years,
+            the lifetime discount compounds into significant savings.
+            Strong derivatives product with competitive fees.
+          </p>
         </div>
 
-        <div class="flex gap-4">
-          <div class="font-mono text-[--color-accent] text-lg font-bold shrink-0 w-8">03</div>
-          <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex-1">
-            <h3 class="font-bold mb-2">Trade with Lower Fees</h3>
-            <p class="text-[--color-text-muted] text-sm">
-              Every futures trade you make will automatically use the discounted fee rate.
-              No action needed. The discount is built into your account permanently.
-            </p>
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="font-mono text-[--color-accent] font-bold">ZERO MAKER FEES</span>
           </div>
+          <h3 class="font-bold mb-2">MEXC &mdash; Best for limit order traders</h3>
+          <p class="text-[--color-text-muted] text-sm">
+            MEXC charges 0% maker fees on futures. If you primarily use limit orders,
+            your effective trading cost drops to near zero. Widest altcoin selection.
+          </p>
+        </div>
+
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="font-mono text-[--color-accent] font-bold">NO KYC</span>
+          </div>
+          <h3 class="font-bold mb-2">dYdX / Hyperliquid &mdash; Best for on-chain traders</h3>
+          <p class="text-[--color-text-muted] text-sm">
+            Trade perpetual futures directly from your wallet. No account creation, no KYC.
+            Competitive fees with on-chain settlement.
+          </p>
         </div>
       </div>
     </div>
@@ -180,49 +291,55 @@ import Layout from '../layouts/Layout.astro';
 
   <!-- FAQ -->
   <section class="pb-20 border-t border-[--color-border] pt-12">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-8">Frequently Asked Questions</h2>
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-8">FAQ</h2>
 
-      <div class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
           <h3 class="font-bold mb-2">Does PRUVIQ earn from this?</h3>
           <p class="text-[--color-text-muted] text-sm">
-            Yes. When you sign up through our referral link, Binance pays PRUVIQ a commission.
-            This commission comes from Binance's revenue, not from your pocket.
-            Your fees are always lower than if you signed up without a referral.
+            Yes. Exchanges pay PRUVIQ a commission from their revenue.
+            This does NOT come from your pocket. Your fees are always lower with a referral than without one.
           </p>
         </div>
 
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-          <h3 class="font-bold mb-2">I already have a Binance account. Can I still get the discount?</h3>
+          <h3 class="font-bold mb-2">Can I use multiple exchanges?</h3>
           <p class="text-[--color-text-muted] text-sm">
-            If you haven't opened a Futures account yet, you can still use the referral code when enabling Futures trading.
-            If your Futures account is already active, the referral cannot be applied retroactively.
+            Yes. Many traders use different exchanges for different purposes.
+            You can sign up through PRUVIQ on all of them and get discounts on each.
           </p>
         </div>
 
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-          <h3 class="font-bold mb-2">How long does the fee discount last?</h3>
+          <h3 class="font-bold mb-2">I already have accounts. Can I still get discounts?</h3>
           <p class="text-[--color-text-muted] text-sm">
-            Binance Futures referral discounts are applied for a period defined by Binance's program terms.
-            Check Binance's referral program page for the most current details.
+            For most exchanges, referral discounts must be applied at account creation or when enabling futures.
+            If your account is already active, the referral may not apply retroactively.
           </p>
         </div>
 
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
-          <h3 class="font-bold mb-2">Can I stack this with BNB fee discounts?</h3>
+          <h3 class="font-bold mb-2">Which exchange does PRUVIQ use?</h3>
           <p class="text-[--color-text-muted] text-sm">
-            Yes. Holding BNB and using it for fee deduction gives you an additional 10% discount.
-            Combined with the referral discount, your effective fee rate drops even further.
+            PRUVIQ's AutoTrader runs on Binance Futures. We chose it for liquidity and API reliability.
+            But the best exchange depends on your needs &mdash; that's why we compare them all.
+          </p>
+        </div>
+
+        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
+          <h3 class="font-bold mb-2">What about US traders?</h3>
+          <p class="text-[--color-text-muted] text-sm">
+            Some exchanges (Binance, Bybit, OKX) are not available to US residents.
+            US traders can use Coinbase, Kraken, or decentralized exchanges like dYdX.
           </p>
         </div>
 
         <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card]">
           <h3 class="font-bold mb-2">Is this financial advice?</h3>
           <p class="text-[--color-text-muted] text-sm">
-            No. PRUVIQ is an educational and research project. We do not provide financial advice.
+            No. PRUVIQ is an educational project. We compare fees objectively.
             Trading cryptocurrency futures involves substantial risk of loss.
-            You should carefully consider your financial situation before trading.
           </p>
         </div>
       </div>
@@ -231,20 +348,32 @@ import Layout from '../layouts/Layout.astro';
 
   <!-- CTA -->
   <section class="pb-20 border-t border-[--color-border] pt-12">
-    <div class="max-w-4xl mx-auto px-4 text-center">
+    <div class="max-w-5xl mx-auto px-4 text-center">
       <h2 class="text-2xl md:text-3xl font-bold mb-4">
-        Lower Fees = More Profit.
+        Every Dollar Saved on Fees<br/>Stays in Your Account.
       </h2>
       <p class="text-[--color-text-muted] mb-8 max-w-xl mx-auto">
-        It takes 30 seconds to sign up. The discount applies to every trade you make.
+        Pick the exchange that fits your trading style.
+        Use PRUVIQ's referral link. Pay less on every trade.
       </p>
-      <a href="https://www.binance.com/en/futures/ref/PRUVIQ" target="_blank" rel="noopener"
-         class="inline-block bg-[--color-accent] text-[--color-bg] px-10 py-4 rounded font-semibold text-lg hover:bg-[--color-accent-dim] transition-colors">
-        Get 20% Fee Discount
-      </a>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="https://www.binance.com/en/futures/ref/PRUVIQ" target="_blank" rel="noopener"
+           class="bg-[--color-accent] text-[--color-bg] px-6 py-3 rounded font-semibold hover:bg-[--color-accent-dim] transition-colors">
+          Binance -20%
+        </a>
+        <a href="https://www.bybit.com/invite?ref=PRUVIQ" target="_blank" rel="noopener"
+           class="border border-[--color-accent] text-[--color-accent] px-6 py-3 rounded font-semibold hover:bg-[--color-accent] hover:text-[--color-bg] transition-colors">
+          Bybit -20%
+        </a>
+        <a href="https://www.okx.com/join/PRUVIQ" target="_blank" rel="noopener"
+           class="border border-[--color-accent] text-[--color-accent] px-6 py-3 rounded font-semibold hover:bg-[--color-accent] hover:text-[--color-bg] transition-colors">
+          OKX -20%
+        </a>
+      </div>
       <p class="text-[--color-text-muted] text-xs mt-6 max-w-lg mx-auto">
-        Affiliate disclosure: PRUVIQ earns a commission from Binance when you sign up through our referral link.
-        Your trading fee discount is not affected by this commission. Not financial advice.
+        Affiliate disclosure: PRUVIQ earns a commission from exchanges when you sign up through our referral links.
+        Your fee discounts are not affected. Not financial advice.
+        Crypto trading involves substantial risk of loss.
       </p>
     </div>
   </section>
