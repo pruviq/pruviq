@@ -7,6 +7,7 @@ PRUVIQ provides educational content on algorithmic crypto trading, backtesting m
 ## Core Content
 
 - [Home](https://pruviq.com/): Overview of the PRUVIQ trading transparency approach
+- [Strategy Library](https://pruviq.com/strategies): Every strategy tested with full backtest results, live or killed
 - [Strategy Graveyard](https://pruviq.com/graveyard): Autopsy reports of killed strategies with full P&L data
 - [Changelog](https://pruviq.com/changelog): Complete version history with reasoning for every change
 - [Exchange Fee Comparison](https://pruviq.com/fees): 9 exchanges compared with referral discounts

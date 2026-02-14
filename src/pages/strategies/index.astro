@@ -1,0 +1,131 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allStrategies = await getCollection('strategies');
+
+const statusOrder = { live: 0, testing: 1, killed: 2, shelved: 3 };
+const strategies = allStrategies.sort((a, b) => statusOrder[a.data.status] - statusOrder[b.data.status]);
+
+const statusColors: Record<string, string> = {
+  live: '--color-accent',
+  testing: '--color-yellow',
+  killed: '--color-red',
+  shelved: '--color-text-muted',
+};
+
+const statusLabels: Record<string, string> = {
+  live: 'LIVE',
+  testing: 'TESTING',
+  killed: 'KILLED',
+  shelved: 'SHELVED',
+};
+
+const categoryLabels: Record<string, string> = {
+  'mean-reversion': 'Mean Reversion',
+  'momentum': 'Momentum',
+  'breakout': 'Breakout',
+  'volatility': 'Volatility',
+  'hybrid': 'Hybrid',
+};
+
+const difficultyColors: Record<string, string> = {
+  beginner: '--color-accent',
+  intermediate: '--color-yellow',
+  advanced: '--color-red',
+};
+---
+
+<Layout title="Strategy Library - PRUVIQ" description="Every strategy we've tested, with full backtest results. Live strategies, killed strategies, and everything in between. No cherry-picking.">
+  <section class="py-12">
+    <div class="max-w-5xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">STRATEGY LIBRARY</p>
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">Every Strategy. Every Result.</h1>
+      <p class="text-[--color-text-muted] text-lg mb-4 max-w-2xl">
+        We don't hide failures. Every strategy we've tested is documented here with full
+        backtest data, real results, and honest analysis of what worked and what didn't.
+      </p>
+      <p class="text-[--color-text-muted] text-sm mb-12 max-w-2xl">
+        {strategies.length} strategies documented &mdash;
+        {strategies.filter(s => s.data.status === 'live').length} live,
+        {strategies.filter(s => s.data.status === 'killed').length} killed,
+        {strategies.filter(s => s.data.status === 'shelved').length} shelved.
+      </p>
+
+      <div class="space-y-4">
+        {strategies.map((strategy) => (
+          <a href={`/strategies/${strategy.id}`}
+             class="block border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] hover:border-[--color-accent] transition-colors group">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-xs tracking-wider px-2 py-0.5 rounded border"
+                      style={`color: var(${statusColors[strategy.data.status]}); border-color: var(${statusColors[strategy.data.status]})`}>
+                  {statusLabels[strategy.data.status]}
+                </span>
+                <span class="text-[--color-text-muted] text-xs font-mono">
+                  {categoryLabels[strategy.data.category]} &middot; {strategy.data.direction.toUpperCase()} &middot; {strategy.data.timeframe}
+                </span>
+              </div>
+              <span class="text-xs font-mono px-2 py-0.5 rounded border border-[--color-border]"
+                    style={`color: var(${difficultyColors[strategy.data.difficulty]})`}>
+                {strategy.data.difficulty.toUpperCase()}
+              </span>
+            </div>
+
+            <h2 class="text-xl font-bold mb-2 group-hover:text-[--color-accent] transition-colors">
+              {strategy.data.name}
+            </h2>
+            <p class="text-[--color-text-muted] text-sm mb-4">{strategy.data.description}</p>
+
+            {(strategy.data.winRate || strategy.data.profitFactor || strategy.data.totalPnl) && (
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-sm">
+                {strategy.data.winRate !== undefined && (
+                  <div>
+                    <span class="text-[--color-text-muted] text-xs">Win Rate</span>
+                    <p class={`font-bold ${strategy.data.winRate >= 55 ? 'text-[--color-accent]' : strategy.data.winRate >= 50 ? 'text-[--color-yellow]' : 'text-[--color-red]'}`}>
+                      {strategy.data.winRate}%
+                    </p>
+                  </div>
+                )}
+                {strategy.data.profitFactor !== undefined && (
+                  <div>
+                    <span class="text-[--color-text-muted] text-xs">Profit Factor</span>
+                    <p class={`font-bold ${strategy.data.profitFactor >= 1.5 ? 'text-[--color-accent]' : strategy.data.profitFactor >= 1.0 ? 'text-[--color-yellow]' : 'text-[--color-red]'}`}>
+                      {strategy.data.profitFactor}
+                    </p>
+                  </div>
+                )}
+                {strategy.data.totalPnl && (
+                  <div>
+                    <span class="text-[--color-text-muted] text-xs">Total PnL</span>
+                    <p class={`font-bold ${strategy.data.totalPnl.startsWith('+') ? 'text-[--color-accent]' : 'text-[--color-red]'}`}>
+                      {strategy.data.totalPnl}
+                    </p>
+                  </div>
+                )}
+                {strategy.data.coins !== undefined && (
+                  <div>
+                    <span class="text-[--color-text-muted] text-xs">Coins Tested</span>
+                    <p class="font-bold">{strategy.data.coins}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-12 border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] text-center">
+        <p class="font-mono text-[--color-accent] text-sm mb-2">MORE STRATEGIES COMING</p>
+        <p class="text-[--color-text-muted] text-sm mb-4">
+          We continuously test new approaches. Documented strategies will appear here
+          as they complete backtesting validation.
+        </p>
+        <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener"
+           class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] transition-colors">
+          Follow Live Updates &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
