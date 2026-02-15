@@ -8,10 +8,10 @@ export const ko: Record<TranslationKey, string> = {
   'nav.lang': 'EN',
 
   // Hero
-  'hero.tag': '암호화폐 전략 시뮬레이션',
+  'hero.tag': 'PRUVIQ /pruːv·ɪk/ — PROVE + IQ',
   'hero.title1': '믿지 마세요.',
   'hero.title2': '검증하세요.',
-  'hero.subtitle': '모든 전략을 테스트합니다. 모든 결과를 공개합니다.',
+  'hero.subtitle': '모든 전략을 테스트합니다. 모든 결과를 공개합니다. 모든 실패를 보여줍니다.',
   'hero.desc': '500개 이상의 코인, 2년 이상의 데이터로 트레이딩 전략을 시뮬레이션하세요. 수수료, 슬리피지, 드로다운까지 현실적으로 반영. 무료.',
   'hero.cta1': '전략 탐색하기',
   'hero.cta2': '트레이딩 IQ 높이기',
@@ -23,12 +23,15 @@ export const ko: Record<TranslationKey, string> = {
   // Problem
   'problem.tag': '문제점',
   'problem.title': '크립토 트레이딩이 망가졌습니다.',
-  'problem.card1_title': '2025년 청산 규모',
-  'problem.card1_desc': '급락장이 개인 레버리지 트레이더를 쓸어버렸습니다. 대부분의 봇은 이미 끝난 상승장에 최적화되어 있었습니다.',
-  'problem.card2_title': '백테스트 환상',
-  'problem.card2_desc': '"보장된 수익"? 아마 6개월치 데이터에 과적합된 결과일 겁니다. 실제 성과? 어디에도 없습니다.',
-  'problem.card3_title': '시그널 스팸',
-  'problem.card3_desc': '텔레그램 그룹이 "긴급 매수" 알림을 하루 종일 보냅니다. 책임감도, 실적도, 증거도 없이.',
+  'problem.card1_title': '백테스트는 거짓말합니다',
+  'problem.card1_desc': '+400% 백테스트 성과를 보인 전략을 만들었습니다. 시뮬레이션에서 $14,115를 잃었습니다. 캔들 인덱스 하나의 오류. 검증 없는 시스템은 이렇게 취약합니다.',
+  'problem.card1_source': '출처: Momentum LONG 전략, 2026년 1월',
+  'problem.card2_title': '4개 전략 제거',
+  'problem.card2_desc': '535개 코인, 2년 이상 데이터로 5개 전략을 테스트했습니다. 1개만 살아남았습니다. 나머지 4개는 손실. 대부분의 플랫폼은 실패를 보여주지 않습니다.',
+  'problem.card2_source': '출처: PRUVIQ 전략 라이브러리 — 모든 결과 공개',
+  'problem.card3_title': '전문가도 틀렸습니다',
+  'problem.card3_desc': '6명 중 6명의 전문가가 BTC 레짐 필터를 추천했습니다. 백테스트 결과 4개 변형 모두 성과가 악화되었습니다. 데이터가 직감을 이깁니다.',
+  'problem.card3_source': '출처: 2026년 2월 전문가 패널 vs. 2년 백테스트',
   'problem.hook': '더 많은 시그널이 필요한 게 아닙니다.',
   'problem.hook_accent': '스스로 증명하는 하나의 시스템이 필요합니다.',
 
@@ -90,9 +93,9 @@ export const ko: Record<TranslationKey, string> = {
   // CTA
   'cta.tag': '믿지 마세요. 검증하세요.',
   'cta.title': 'Pruv It.',
-  'cta.desc1': '모든 전략을 테스트합니다. 모든 실패를 공개합니다. 모든 결과가 투명합니다. 실제 자금을 투입하기 전에 — 무엇이 되고 안 되는지 확인하세요.',
+  'cta.desc1': '5개 전략 테스트. 4개 제거. 1개 검증. 535개 코인에서 2,898건 거래. $14,115 손실 포함 모든 결과 공개. 이것이 투명한 전략 개발입니다.',
   'cta.desc2': '영원히 무료. 이메일 불필요. 숨겨진 비용 없음. 직접 검증할 수 있는 데이터만.',
-  'cta.button1': '전략 탐색하기',
+  'cta.button1': '전략 검증하기',
   'cta.button2': '커뮤니티 참여',
   'cta.disclaimer': '투자 조언이 아닙니다. 암호화폐 트레이딩은 상당한 손실 위험을 수반합니다. 과거 성과는 미래 결과를 보장하지 않습니다. PRUVIQ는 교육 및 연구 프로젝트입니다.',
 

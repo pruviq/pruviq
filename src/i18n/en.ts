@@ -6,10 +6,10 @@ export const en = {
   'nav.lang': 'KO',
 
   // Hero
-  'hero.tag': 'CRYPTO STRATEGY SIMULATION',
+  'hero.tag': 'PRUVIQ /pruːv·ɪk/ — PROVE + IQ',
   'hero.title1': "Don't Believe.",
   'hero.title2': 'Verify.',
-  'hero.subtitle': 'Every strategy tested. Every result published.',
+  'hero.subtitle': 'Every strategy tested. Every result published. Every failure shown.',
   'hero.desc': 'Simulate trading strategies on 500+ coins with 2+ years of data. Realistic fees, slippage, and drawdowns. No cherry-picking. Free forever.',
   'hero.cta1': 'Explore Strategies',
   'hero.cta2': 'Raise Your Trading IQ',
@@ -21,12 +21,15 @@ export const en = {
   // Problem
   'problem.tag': 'THE PROBLEM',
   'problem.title': 'Crypto Trading is Broken.',
-  'problem.card1_title': 'Liquidated in 2025',
-  'problem.card1_desc': 'Flash crashes wiped out retail leverage traders. Most bots were optimized for bull runs that ended years ago.',
-  'problem.card2_title': 'Backtest Fantasies',
-  'problem.card2_desc': 'That "guaranteed return"? Probably overfitted on 6 months of cherry-picked data. Live results? Nowhere to be found.',
-  'problem.card3_title': 'Signal Spam',
-  'problem.card3_desc': 'Telegram groups spam "URGENT BUY" alerts all day. No accountability. No track record. No proof.',
+  'problem.card1_title': 'Backtests Lie',
+  'problem.card1_desc': 'We built a strategy that backtested +400%. It lost $14,115 in simulation. One candle index error. That\'s how fragile untested systems are.',
+  'problem.card1_source': 'Source: Our Momentum LONG strategy, Jan 2026',
+  'problem.card2_title': '4 Strategies Killed',
+  'problem.card2_desc': 'We tested 5 strategies on 535 coins over 2+ years. Only 1 survived. The other 4 lost money. Most platforms never show you the failures.',
+  'problem.card2_source': 'Source: PRUVIQ strategy library — all results published',
+  'problem.card3_title': 'Experts Were Wrong',
+  'problem.card3_desc': '6 out of 6 expert analysts recommended a BTC regime filter. We backtested it — all 4 variations made performance worse. Data beats intuition.',
+  'problem.card3_source': 'Source: Feb 2026 expert panel vs. 2-year backtest',
   'problem.hook': 'You don\'t need more signals. You need',
   'problem.hook_accent': 'one system that proves itself.',
 
@@ -88,9 +91,9 @@ export const en = {
   // CTA
   'cta.tag': "DON'T BELIEVE. VERIFY.",
   'cta.title': 'Pruv It.',
-  'cta.desc1': "Every strategy tested. Every failure published. Every result transparent. See what works and what doesn't — before risking real money.",
+  'cta.desc1': "5 strategies tested. 4 killed. 1 verified. 2,898 trades across 535 coins. Every result published — including $14,115 in losses. This is what transparent strategy development looks like.",
   'cta.desc2': 'Free forever. No email required. No hidden fees. Just data you can verify yourself.',
-  'cta.button1': 'Explore Strategies',
+  'cta.button1': 'Verify Strategies',
   'cta.button2': 'Join Community',
   'cta.disclaimer': 'Not financial advice. Crypto trading involves substantial risk of loss. Past performance does not guarantee future results. PRUVIQ is an educational and research project.',
 
