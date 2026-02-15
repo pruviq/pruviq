@@ -25,35 +25,29 @@ const labels = {
     search: 'Search coins...',
     coin: 'Coin',
     price: 'Price',
-    change: '24h %',
-    volume: 'Volume',
-    trades: 'Trades',
-    wr: 'Win Rate',
-    pf: 'PF',
-    ret: 'Return',
+    change: '24h',
+    volume: 'Volume (24h)',
     loading: 'Loading coin data...',
     error: 'Failed to load coin data.',
     noResults: 'No coins match your search.',
     showing: (from: number, to: number, total: number) => `${from}-${to} of ${total}`,
+    cta: 'Click any coin to view chart & simulate strategies',
   },
   ko: {
     search: '코인 검색...',
     coin: '코인',
     price: '가격',
-    change: '24h %',
-    volume: '거래량',
-    trades: '거래 수',
-    wr: '승률',
-    pf: 'PF',
-    ret: '수익률',
+    change: '24h',
+    volume: '거래량 (24h)',
     loading: '코인 데이터 로딩 중...',
     error: '코인 데이터 로딩 실패.',
     noResults: '검색 결과가 없습니다.',
     showing: (from: number, to: number, total: number) => `${from}-${to} / ${total}`,
+    cta: '코인을 클릭하면 차트와 전략 시뮬레이션을 볼 수 있습니다',
   },
 };
 
-type SortKey = 'symbol' | 'price' | 'change_24h' | 'volume_24h' | 'trades' | 'win_rate' | 'profit_factor' | 'total_return_pct';
+type SortKey = 'symbol' | 'price' | 'change_24h' | 'volume_24h';
 
 function formatPrice(p: number): string {
   if (p >= 1000) return `$${p.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
@@ -75,7 +69,7 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<SortKey>('win_rate');
+  const [sortBy, setSortBy] = useState<SortKey>('volume_24h');
   const [sortDesc, setSortDesc] = useState(true);
   const [page, setPage] = useState(0);
 
@@ -137,8 +131,8 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
 
   return (
     <div>
-      {/* Search */}
-      <div style={{ marginBottom: '1rem' }}>
+      {/* Search + hint */}
+      <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
         <input
           type="text"
           placeholder={t.search}
@@ -156,6 +150,7 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
             outline: 'none',
           }}
         />
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t.cta}</span>
       </div>
 
       {/* Table */}
@@ -163,26 +158,19 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
         <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '0.8125rem' }}>
           <thead>
             <tr>
-              <th style={{ ...thStyle('symbol'), width: '3rem', textAlign: 'center' }}>#</th>
+              <th style={{ ...thStyle('symbol'), width: '3rem', textAlign: 'center', cursor: 'default' }}>#</th>
               <th style={thStyle('symbol')} onClick={() => handleSort('symbol')}>{t.coin} {sortBy === 'symbol' ? (sortDesc ? '▼' : '▲') : ''}</th>
               <th style={thStyle('price')} onClick={() => handleSort('price')}>{t.price} {sortBy === 'price' ? (sortDesc ? '▼' : '▲') : ''}</th>
               <th style={thStyle('change_24h')} onClick={() => handleSort('change_24h')}>{t.change} {sortBy === 'change_24h' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={{ ...thStyle('trades'), display: 'none' }} class="hidden-mobile">{t.volume}</th>
-              <th style={thStyle('trades')} onClick={() => handleSort('trades')}>{t.trades} {sortBy === 'trades' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('win_rate')} onClick={() => handleSort('win_rate')}>{t.wr} {sortBy === 'win_rate' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('profit_factor')} onClick={() => handleSort('profit_factor')}>{t.pf} {sortBy === 'profit_factor' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('total_return_pct')} onClick={() => handleSort('total_return_pct')}>{t.ret} {sortBy === 'total_return_pct' ? (sortDesc ? '▼' : '▲') : ''}</th>
+              <th style={thStyle('volume_24h')} onClick={() => handleSort('volume_24h')}>{t.volume} {sortBy === 'volume_24h' ? (sortDesc ? '▼' : '▲') : ''}</th>
             </tr>
           </thead>
           <tbody>
             {pageItems.length === 0 && (
-              <tr><td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>{t.noResults}</td></tr>
+              <tr><td colSpan={5} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>{t.noResults}</td></tr>
             )}
             {pageItems.map((coin, i) => {
               const rank = page * PER_PAGE + i + 1;
-              const wrColor = coin.win_rate >= 55 ? 'var(--color-accent)' : coin.win_rate >= 50 ? 'var(--color-yellow)' : 'var(--color-red)';
-              const pfColor = coin.profit_factor >= 1.5 ? 'var(--color-accent)' : coin.profit_factor >= 1.0 ? 'var(--color-yellow)' : 'var(--color-red)';
-              const retColor = coin.total_return_pct >= 0 ? 'var(--color-accent)' : 'var(--color-red)';
               const chgColor = coin.change_24h >= 0 ? 'var(--color-accent)' : 'var(--color-red)';
               return (
                 <tr
@@ -196,11 +184,7 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
                   <td style={{ padding: '0.625rem 0.75rem', fontWeight: 600 }}>{coin.symbol.replace('USDT', '')}<span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>/USDT</span></td>
                   <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right' }}>{formatPrice(coin.price)}</td>
                   <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right', color: chgColor }}>{coin.change_24h > 0 ? '+' : ''}{coin.change_24h}%</td>
-                  <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', display: 'none' }} class="hidden-mobile">{formatVolume(coin.volume_24h)}</td>
-                  <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right' }}>{coin.trades}</td>
-                  <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right', color: wrColor, fontWeight: 600 }}>{coin.win_rate}%</td>
-                  <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right', color: pfColor }}>{coin.profit_factor}</td>
-                  <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right', color: retColor }}>{coin.total_return_pct > 0 ? '+' : ''}{coin.total_return_pct}%</td>
+                  <td style={{ padding: '0.625rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)' }}>{formatVolume(coin.volume_24h)}</td>
                 </tr>
               );
             })}

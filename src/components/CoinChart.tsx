@@ -165,7 +165,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     if (!ohlcv || !chartContainerRef.current) return;
     let disposed = false;
 
-    import('lightweight-charts').then(({ createChart, LineStyle }) => {
+    import('lightweight-charts').then(({ createChart, CandlestickSeries, LineSeries, HistogramSeries }) => {
       if (disposed || !chartContainerRef.current) return;
 
       const chart = createChart(chartContainerRef.current, {
@@ -190,7 +190,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       });
 
       // Candles
-      const candleSeries = chart.addCandlestickSeries({
+      const candleSeries = chart.addSeries(CandlestickSeries, {
         upColor: '#00ff88',
         downColor: '#ff4444',
         wickUpColor: '#00ff88',
@@ -201,9 +201,9 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       candleSeriesRef.current = candleSeries;
 
       // BB Bands
-      const bbUpper = chart.addLineSeries({ color: 'rgba(100,150,255,0.4)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-      const bbMid = chart.addLineSeries({ color: 'rgba(100,150,255,0.2)', lineWidth: 1, lineStyle: LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false });
-      const bbLower = chart.addLineSeries({ color: 'rgba(100,150,255,0.4)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      const bbUpper = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.4)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      const bbMid = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.2)', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false });
+      const bbLower = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.4)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
 
       const bbUpperData = ohlcv.filter(b => b.bb_upper != null).map(b => ({ time: b.t as any, value: b.bb_upper! }));
       const bbMidData = ohlcv.filter(b => b.bb_mid != null).map(b => ({ time: b.t as any, value: b.bb_mid! }));
@@ -216,8 +216,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       bbLowerRef.current = bbLower;
 
       // EMA
-      const ema20 = chart.addLineSeries({ color: '#ffaa00', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-      const ema50 = chart.addLineSeries({ color: '#aa66ff', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      const ema20 = chart.addSeries(LineSeries, { color: '#ffaa00', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      const ema50 = chart.addSeries(LineSeries, { color: '#aa66ff', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
       const ema20Data = ohlcv.filter(b => b.ema20 != null).map(b => ({ time: b.t as any, value: b.ema20! }));
       const ema50Data = ohlcv.filter(b => b.ema50 != null).map(b => ({ time: b.t as any, value: b.ema50! }));
       ema20.setData(ema20Data);
@@ -226,7 +226,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       ema50Ref.current = ema50;
 
       // Volume
-      const volumeSeries = chart.addHistogramSeries({
+      const volumeSeries = chart.addSeries(HistogramSeries, {
         priceFormat: { type: 'volume' },
         priceScaleId: 'volume',
       });

@@ -102,7 +102,7 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
 
     let disposed = false;
 
-    import('lightweight-charts').then(({ createChart }) => {
+    import('lightweight-charts').then(({ createChart, AreaSeries }) => {
       if (disposed || !chartContainerRef.current) return;
 
       const chart = createChart(chartContainerRef.current, {
@@ -131,7 +131,7 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
         },
       });
 
-      const series = chart.addAreaSeries({
+      const series = chart.addSeries(AreaSeries, {
         lineColor: '#00ff88',
         topColor: 'rgba(0, 255, 136, 0.2)',
         bottomColor: 'rgba(0, 255, 136, 0.0)',
