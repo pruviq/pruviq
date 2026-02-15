@@ -367,7 +367,7 @@ def _build_coin_stats(strategy) -> dict:
     for info in data_manager.coins:
         symbol = info["symbol"]
         df = indicator_cache.get(symbol)
-        if df is None or len(df) < 100:
+        if df is None or len(df) < 500:
             continue
 
         result = run_fast(
