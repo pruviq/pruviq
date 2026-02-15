@@ -14,14 +14,14 @@ const { strategy } = Astro.props;
 const { Content } = await render(strategy);
 
 const statusColors: Record<string, string> = {
-  live: '--color-accent',
+  verified: '--color-accent',
   testing: '--color-yellow',
   killed: '--color-red',
   shelved: '--color-text-muted',
 };
 
 const statusLabels: Record<string, string> = {
-  live: 'LIVE',
+  verified: 'VERIFIED',
   testing: 'TESTING',
   killed: 'KILLED',
   shelved: 'SHELVED',
@@ -97,11 +97,11 @@ const statusLabels: Record<string, string> = {
 
       <div class="mt-12 border-t border-[--color-border] pt-8 text-center">
         <p class="text-[--color-text-muted] text-sm mb-4">
-          Want to see this strategy execute in real-time?
+          Want to simulate this strategy with your own parameters?
         </p>
-        <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener"
+        <a href="/strategies"
            class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] transition-colors">
-          See Live Trades &rarr;
+          Explore All Strategies &rarr;
         </a>
       </div>
     </div>

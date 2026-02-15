@@ -20,35 +20,27 @@ Every day in crypto, someone posts a screenshot of a +500% backtest. A Telegram 
 
 And every day, people lose money following these promises.
 
-The problem isn't that these people are stupid. The problem is that **there's no culture of proof** in crypto trading. Nobody asks "show me the live results." Nobody demands "what's the out-of-sample win rate?" Nobody says "prove it actually works."
+The problem isn't that these people are stupid. The problem is that **there's no culture of proof** in crypto trading. Nobody asks "show me the out-of-sample results." Nobody demands "what's the win rate after fees?" Nobody says "prove it actually works."
 
 We got tired of that.
 
-## The Timeline
+## The Journey
 
-### January 2026 — The Beginning
+### The First Hard Lesson — Look-Ahead Bias
 
-A developer starts building an automated trading system. Not to sell signals. Not to launch a token. Just to see: **can a systematic approach actually make money in crypto futures?**
+While building our simulation engine, we discovered **look-ahead bias** in the backtesting code. The system was using future data to make past decisions. Every backtest result was a lie. We scrapped it and started over from scratch.
 
-The first version was terrible. Manual entries, no risk management, gut-feeling parameter choices.
+This became Rule #1: **The simulation must only use data available at the time of decision.**
 
-### January 10 — The First Hard Lesson
+### The $14,000 Lesson
 
-Discovered **look-ahead bias** in the backtesting code. The bot was using future data to make past decisions. Every backtest result was a lie. Started over from scratch.
-
-### January 25 — BB Squeeze Emerges
-
-After testing multiple strategies, one survived: Bollinger Band Squeeze SHORT. Not because it was exciting. Because it was the only one that showed a statistical edge across 500+ coins and 2+ years of data.
-
-### January 31 — The $14,000 Lesson
-
-A "momentum breakout" strategy backtested at +400%. Deployed it live. Lost $14,115 in weeks. The cause? A single line of code using the wrong candle index. One line. Fourteen thousand dollars.
+A "momentum breakout" strategy simulated at +400%. Looked incredible. Then we found a single line of code using the wrong candle index. After fixing it: 37.5% win rate, -$14,115 in simulated losses. One line. Fourteen thousand dollars.
 
 That day, a rule was written:
 
-> "If you can't prove it survives out-of-sample, don't trade it."
+> "If you can't prove it survives 2+ years of out-of-sample data, don't trade it."
 
-### February 2026 — Strategies Start Dying
+### Strategies Start Dying
 
 - **Momentum LONG**: -$14,115. Killed.
 - **BB Squeeze LONG**: -$26. Killed.
@@ -57,19 +49,9 @@ That day, a rule was written:
 
 Four strategies tested. Three killed. One survived. That's the process.
 
-### February 5 — SHORT ONLY
+### The Biggest Lesson — Expert Intuition vs. Data
 
-After 6 independent analyses confirmed it, the system went SHORT-only. Not because we "believe in shorting." Because it was the only direction with a proven, positive expected value.
-
-### February 11 — Continuous Evolution
-
-New discoveries kept coming. Partial fill aggregation bugs. LIMIT IOC order optimization. Income API discrepancies. Each one found, fixed, and documented.
-
-The strategy evolved from v0.5 to v1.6 in 32 days. Not through guessing — through evidence.
-
-### February 14 — The Biggest Lesson
-
-Six expert agents independently recommended a "BTC Regime Filter" as the top priority improvement. Unanimous agreement. Seemed obvious.
+Six independent analyses recommended a "BTC Regime Filter" as the top priority improvement. Unanimous agreement. Seemed obvious.
 
 We backtested it. **All four filter variants failed.** The experts' intuition was wrong. The data was right.
 
@@ -82,9 +64,9 @@ That moment crystallized everything PRUVIQ stands for:
 PRUVIQ isn't a product. It's a constraint:
 
 1. **Every claim must have data behind it.** No "we believe" — only "we tested."
-2. **Every failure is published.** The Strategy Graveyard is as important as the live strategy.
+2. **Every failure is published.** The Strategy Graveyard is as important as the winning strategy.
 3. **Every decision is reversible.** If tomorrow's data says SHORT is dead, we kill it. No ego.
-4. **The system evolves.** What runs today is not what ran last week. That's the point.
+4. **The system evolves.** What's verified today may not be verified tomorrow. That's the point.
 
 ## Why It Matters
 
@@ -106,4 +88,4 @@ That's it. That's the whole philosophy.
 
 ---
 
-*PRUVIQ is an educational and research project. Not financial advice.*
+*PRUVIQ is an educational and research platform. Not financial advice. Past simulation results do not guarantee future performance.*

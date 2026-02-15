@@ -64,7 +64,7 @@ import Layout from '../layouts/Layout.astro';
 
           <h3 class="font-mono text-[--color-accent] text-sm mb-3">WHAT HAPPENED</h3>
           <p class="text-[--color-text-muted] leading-relaxed mb-4">
-            Backtested at +400%. Deployed live. Lost $14,115 in weeks.
+            Backtested at +400%. True performance: -$14,115.
             The strategy was a textbook case of overfitting &mdash; it looked perfect on historical data
             because it was using future information (look-ahead bias) in the backtest.
           </p>
@@ -77,7 +77,7 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-[--color-text-muted] leading-relaxed">
             A single line of code using the wrong candle index turned a losing strategy
             into a fantasy winner. After this, we established the rule: backtest code must
-            be 100% identical to live trading code. No exceptions.
+            be 100% identical to the execution logic. No exceptions.
           </p>
         </div>
 
@@ -188,7 +188,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="flex justify-between"><span class="text-[--color-text-muted]">PnL</span><span>N/A</span></div>
             <div class="flex justify-between"><span class="text-[--color-text-muted]">Edge vs BB</span><span>None</span></div>
             <div class="flex justify-between"><span class="text-[--color-text-muted]">Correlation</span><span>High</span></div>
-            <div class="flex justify-between"><span class="text-[--color-text-muted]">Live Tested</span><span>No</span></div>
+            <div class="flex justify-between"><span class="text-[--color-text-muted]">Simulation Verified</span><span>No</span></div>
             <div class="border-t border-[--color-border] pt-3">
               <span class="text-[--color-text-muted]">Cause of Death</span>
               <p class="text-[--color-text-muted] mt-1">Redundant with BB Squeeze</p>
@@ -235,7 +235,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="space-y-3 text-sm font-mono">
             <div class="flex justify-between"><span class="text-[--color-text-muted]">PnL</span><span>N/A</span></div>
             <div class="flex justify-between"><span class="text-[--color-text-muted]">vs BB Squeeze</span><span>Underperformed</span></div>
-            <div class="flex justify-between"><span class="text-[--color-text-muted]">Live Tested</span><span>No</span></div>
+            <div class="flex justify-between"><span class="text-[--color-text-muted]">Simulation Verified</span><span>No</span></div>
             <div class="border-t border-[--color-border] pt-3">
               <span class="text-[--color-text-muted]">Cause of Death</span>
               <p class="text-[--color-text-muted] mt-1">Didn't outperform existing strategy</p>
@@ -260,9 +260,9 @@ import Layout from '../layouts/Layout.astro';
             significant edge across 500+ coins and 2+ years of data.
           </p>
           <p class="text-[--color-text-muted] leading-relaxed mb-4">
-            It has evolved through 16 versions. Parameters have been optimized,
-            filters have been added and removed based on evidence, and it continues
-            to be validated against live performance data.
+            It has evolved through 16 parameter iterations. Each change was validated
+            against 2+ years of out-of-sample data across 500+ coins, with realistic
+            cost modeling including fees and slippage.
           </p>
           <p class="text-[--color-text-muted] leading-relaxed">
             It's not perfect. It will have losing streaks. But it has one thing
@@ -273,7 +273,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="border border-[--color-accent]/30 rounded-lg p-6 bg-[--color-bg-card]">
           <h3 class="font-mono text-[--color-accent] text-xs mb-4">CURRENT STATUS</h3>
           <div class="space-y-3 text-sm font-mono">
-            <div class="flex justify-between"><span class="text-[--color-text-muted]">Status</span><span class="text-[--color-accent]">LIVE</span></div>
+            <div class="flex justify-between"><span class="text-[--color-text-muted]">Status</span><span class="text-[--color-accent]">VERIFIED</span></div>
             <div class="flex justify-between"><span class="text-[--color-text-muted]">Direction</span><span>SHORT only</span></div>
             <div class="flex justify-between"><span class="text-[--color-text-muted]">Backtest PF</span><span>2.55</span></div>
             <div class="flex justify-between"><span class="text-[--color-text-muted]">Win Rate (BT)</span><span>70.4%</span></div>
@@ -321,9 +321,9 @@ import Layout from '../layouts/Layout.astro';
 
       <p class="font-mono text-[--color-text-muted] text-sm mb-4">DON'T BELIEVE. VERIFY.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener"
+        <a href="/strategies"
            class="inline-block bg-[--color-accent] text-[--color-bg] px-8 py-3 rounded font-semibold hover:bg-[--color-accent-dim] transition-colors">
-          See Live Trades &rarr;
+          Explore Strategies &rarr;
         </a>
         <a href="/blog"
            class="inline-block border border-[--color-border] text-[--color-text] px-8 py-3 rounded font-semibold hover:border-[--color-accent] hover:text-[--color-accent] transition-colors">

@@ -72,7 +72,7 @@ We use approximately **1/20 Kelly** (2% of capital per trade):
 
 1. **Multiple simultaneous positions**: We can have up to 100 positions open. If each risked 6.5% (1/4 Kelly), 15 simultaneous positions would risk 97.5% of capital.
 
-2. **Estimation uncertainty**: Our backtested win rate (70.4%) differs from live (54.69% in first 7 days). The real edge is somewhere between. Conservative sizing protects against this uncertainty.
+2. **Estimation uncertainty**: Backtested win rates can differ from real-world results due to execution costs, market regime changes, and other factors. Conservative sizing protects against this uncertainty.
 
 3. **Correlation risk**: In crypto, when BTC drops, most altcoins drop together. Simultaneous losses across 50 positions are not independent events.
 
@@ -163,4 +163,4 @@ Both have the same edge. But Trader B survives any streak the market throws at t
 
 ---
 
-*PRUVIQ uses 1/20 Kelly sizing with $60 positions at 5x leverage. See our [risk management approach](/blog/risk-management-101) and [live results](https://t.me/PRUVIQ).*
+*PRUVIQ's default simulation uses 1/20 Kelly sizing with $60 positions at 5x leverage. See our [risk management approach](/blog/risk-management-101) and [strategy library](/strategies).*

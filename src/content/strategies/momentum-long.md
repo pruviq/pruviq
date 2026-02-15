@@ -40,7 +40,7 @@ The strategy needed a 71.4% win rate to break even with its R:R profile. At 37.5
 
 ## Root Cause Analysis
 
-1. **Look-ahead bias in initial backtest** — Early tests showed +400% returns due to a subtle coding error (using current candle data instead of previous)
+1. **Look-ahead bias in initial simulation** — Early tests showed +400% returns due to a subtle coding error (using current candle data instead of previous)
 2. **Crypto LONG structural weakness** — In the 2024-2026 bear/sideways market, momentum longs get caught in mean reversion repeatedly
 3. **18 LONG strategies tested, ALL failed** — This wasn't a parameter problem. LONG momentum in crypto has no edge in the current regime
 
@@ -50,7 +50,7 @@ This failure was one of our most expensive lessons. But it was also one of our m
 
 > "If you can't prove it survives 2+ years of out-of-sample data, don't trade it."
 
-We now require minimum 2 years of backtest data across 500+ coins before any strategy goes live.
+We now require minimum 2 years of backtest data across 500+ coins before any strategy is considered verified.
 
 ## Status: KILLED
 

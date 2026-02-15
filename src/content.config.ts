@@ -17,7 +17,7 @@ const strategies = defineCollection({
   schema: z.object({
     name: z.string(),
     description: z.string(),
-    status: z.enum(['live', 'testing', 'killed', 'shelved']),
+    status: z.enum(['verified', 'testing', 'killed', 'shelved']),
     category: z.enum(['mean-reversion', 'momentum', 'breakout', 'volatility', 'hybrid']),
     direction: z.enum(['long', 'short', 'both']),
     difficulty: z.enum(['beginner', 'intermediate', 'advanced']),

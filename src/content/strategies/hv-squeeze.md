@@ -22,7 +22,7 @@ After extensive testing, HV Squeeze showed no statistically significant improvem
 - Marginally different entries (< 0.3% difference in average entry price)
 - No improvement in win rate or profit factor
 
-Given that BB Squeeze is already validated with 2+ years of live-adjacent backtest data, adding a redundant signal source added complexity without edge.
+Given that BB Squeeze is already validated with 2+ years of historical data across 500+ coins, adding a redundant signal source added complexity without edge.
 
 ## Potential Revisit
 

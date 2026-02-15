@@ -4,18 +4,18 @@ import { getCollection } from 'astro:content';
 
 const allStrategies = await getCollection('strategies');
 
-const statusOrder = { live: 0, testing: 1, killed: 2, shelved: 3 };
+const statusOrder = { verified: 0, testing: 1, killed: 2, shelved: 3 };
 const strategies = allStrategies.sort((a, b) => statusOrder[a.data.status] - statusOrder[b.data.status]);
 
 const statusColors: Record<string, string> = {
-  live: '--color-accent',
+  verified: '--color-accent',
   testing: '--color-yellow',
   killed: '--color-red',
   shelved: '--color-text-muted',
 };
 
 const statusLabels: Record<string, string> = {
-  live: 'LIVE',
+  verified: 'VERIFIED',
   testing: 'TESTING',
   killed: 'KILLED',
   shelved: 'SHELVED',
@@ -36,7 +36,7 @@ const difficultyColors: Record<string, string> = {
 };
 ---
 
-<Layout title="Strategy Library - PRUVIQ" description="Every strategy we've tested, with full backtest results. Live strategies, killed strategies, and everything in between. No cherry-picking.">
+<Layout title="Strategy Library - PRUVIQ" description="Every strategy we've tested, with full simulation results. Verified strategies, killed strategies, and everything in between. No cherry-picking.">
   <section class="py-12">
     <div class="max-w-5xl mx-auto px-4">
       <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">STRATEGY LIBRARY</p>
@@ -47,7 +47,7 @@ const difficultyColors: Record<string, string> = {
       </p>
       <p class="text-[--color-text-muted] text-sm mb-12 max-w-2xl">
         {strategies.length} strategies documented &mdash;
-        {strategies.filter(s => s.data.status === 'live').length} live,
+        {strategies.filter(s => s.data.status === 'verified').length} verified,
         {strategies.filter(s => s.data.status === 'killed').length} killed,
         {strategies.filter(s => s.data.status === 'shelved').length} shelved.
       </p>
@@ -123,7 +123,7 @@ const difficultyColors: Record<string, string> = {
         </p>
         <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener"
            class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] transition-colors">
-          Follow Live Updates &rarr;
+          Join Community &rarr;
         </a>
       </div>
     </div>

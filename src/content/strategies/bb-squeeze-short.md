@@ -1,7 +1,7 @@
 ---
 name: "BB Squeeze SHORT"
-description: "Bollinger Band Squeeze detects volatility compression then enters short when expansion begins. Our only live strategy with 2+ years of backtested data."
-status: "live"
+description: "Bollinger Band Squeeze detects volatility compression then enters short when expansion begins. Our only verified strategy with 2+ years of backtested data."
+status: "verified"
 category: "volatility"
 direction: "short"
 difficulty: "intermediate"
@@ -13,7 +13,7 @@ timeframe: "1H"
 dataPoints: 2898
 coins: 535
 dateAdded: "2026-01-10"
-tags: ["bollinger-bands", "squeeze", "volatility", "live"]
+tags: ["bollinger-bands", "squeeze", "volatility", "verified"]
 ---
 
 ## Overview
@@ -60,10 +60,6 @@ We tested both LONG and SHORT variants. The results were definitive:
 
 In the current crypto market structure (2024-2026), short-side mean reversion has a consistent edge. Long strategies showed no statistical significance.
 
-## Live Performance
-
-This strategy has been running live on Binance Futures since February 2026 with real capital. Every trade is published on our [Telegram channel](https://t.me/PRUVIQ).
-
 ## What We Learned
 
 1. **TP expansion beats SL reduction** — Increasing TP from 6% to 8% improved PnL by 24.3%, while reducing SL made things worse
@@ -71,6 +67,6 @@ This strategy has been running live on Binance Futures since February 2026 with 
 3. **Volume is not optional** — Without the 2.0x filter, false signals dominate
 4. **48-hour timeout is optimal** — Tested 30+ early exit variations, all underperformed
 
-## Status: LIVE
+## Status: VERIFIED
 
-Currently running 24/7 on Binance Futures. Configuration: $60 per trade, 5x leverage, 535 coins monitored hourly.
+Simulation-verified across 535 coins, 2+ years of hourly data. Default configuration: $60 per trade, 5x leverage, hourly scans. You can adjust parameters and run your own simulation.
