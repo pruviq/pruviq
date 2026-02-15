@@ -431,10 +431,10 @@ def _build_coin_stats(strategy) -> dict:
             direction="short", market_type="futures",
         )
 
-        # Price & 24h change from last 2 bars
+        # Price & 24h change (compare last close vs 24 bars ago)
         last_close = float(df["close"].iloc[-1])
-        prev_close = float(df["close"].iloc[-2]) if len(df) >= 2 else last_close
-        change_24h = round(((last_close - prev_close) / prev_close) * 100, 2) if prev_close else 0
+        close_24h_ago = float(df["close"].iloc[-25]) if len(df) >= 25 else float(df["close"].iloc[0])
+        change_24h = round(((last_close - close_24h_ago) / close_24h_ago) * 100, 2) if close_24h_ago else 0
         volume_24h = float(df["volume"].iloc[-24:].sum()) if len(df) >= 24 else float(df["volume"].sum())
 
         coins_list.append(CoinStats(
