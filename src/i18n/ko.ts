@@ -120,6 +120,8 @@ export const ko: Record<TranslationKey, string> = {
   'strategies.join': '커뮤니티 참여',
   'strategies.back': '전략 라이브러리로 돌아가기',
   'strategies.explore': '모든 전략 탐색',
+  'strategies.detail_demo_footer': '더 많은 검증된 전략을 탐색하세요.',
+  'strategies.detail_nodemo_footer': '직접 파라미터를 조정하여 시뮬레이션해 보시겠습니까?',
 
   // Strategy labels
   'strategy.verified': '검증됨',

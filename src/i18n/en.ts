@@ -118,6 +118,8 @@ export const en = {
   'strategies.join': 'Join Community',
   'strategies.back': 'Back to Strategy Library',
   'strategies.explore': 'Explore All Strategies',
+  'strategies.detail_demo_footer': 'Explore more verified strategies.',
+  'strategies.detail_nodemo_footer': 'Want to simulate this strategy with your own parameters?',
 
   // Strategy labels
   'strategy.verified': 'VERIFIED',

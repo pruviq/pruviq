@@ -2,6 +2,9 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import StrategyDemo from '../../components/StrategyDemo';
+import { useTranslations } from '../../i18n/index';
+
+const t = useTranslations('en');
 
 export async function getStaticPaths() {
   const strategies = await getCollection('strategies');
@@ -23,10 +26,10 @@ const statusColors: Record<string, string> = {
 };
 
 const statusLabels: Record<string, string> = {
-  verified: 'VERIFIED',
-  testing: 'TESTING',
-  killed: 'KILLED',
-  shelved: 'SHELVED',
+  verified: t('strategy.verified'),
+  testing: t('strategy.testing'),
+  killed: t('strategy.killed'),
+  shelved: t('strategy.shelved'),
 };
 ---
 
@@ -34,7 +37,7 @@ const statusLabels: Record<string, string> = {
   <article class="py-12">
     <div class="max-w-3xl mx-auto px-4">
       <a href="/strategies" class="text-[--color-text-muted] text-sm hover:text-[--color-accent] transition-colors mb-8 inline-block">
-        &larr; Back to Strategy Library
+        &larr; {t('strategies.back')}
       </a>
 
       <div class="mb-8">
@@ -55,7 +58,7 @@ const statusLabels: Record<string, string> = {
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-sm border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] mb-8">
           {strategy.data.winRate !== undefined && (
             <div>
-              <span class="text-[--color-text-muted] text-xs">Win Rate</span>
+              <span class="text-[--color-text-muted] text-xs">{t('strategy.win_rate')}</span>
               <p class={`text-xl font-bold ${strategy.data.winRate >= 55 ? 'text-[--color-accent]' : strategy.data.winRate >= 50 ? 'text-[--color-yellow]' : 'text-[--color-red]'}`}>
                 {strategy.data.winRate}%
               </p>
@@ -63,7 +66,7 @@ const statusLabels: Record<string, string> = {
           )}
           {strategy.data.profitFactor !== undefined && (
             <div>
-              <span class="text-[--color-text-muted] text-xs">Profit Factor</span>
+              <span class="text-[--color-text-muted] text-xs">{t('strategy.profit_factor')}</span>
               <p class={`text-xl font-bold ${strategy.data.profitFactor >= 1.5 ? 'text-[--color-accent]' : strategy.data.profitFactor >= 1.0 ? 'text-[--color-yellow]' : 'text-[--color-red]'}`}>
                 {strategy.data.profitFactor}
               </p>
@@ -71,7 +74,7 @@ const statusLabels: Record<string, string> = {
           )}
           {strategy.data.totalPnl && (
             <div>
-              <span class="text-[--color-text-muted] text-xs">Total PnL</span>
+              <span class="text-[--color-text-muted] text-xs">{t('strategy.total_pnl')}</span>
               <p class={`text-xl font-bold ${strategy.data.totalPnl.startsWith('+') ? 'text-[--color-accent]' : 'text-[--color-red]'}`}>
                 {strategy.data.totalPnl}
               </p>
@@ -79,7 +82,7 @@ const statusLabels: Record<string, string> = {
           )}
           {strategy.data.maxDrawdown !== undefined && (
             <div>
-              <span class="text-[--color-text-muted] text-xs">Max Drawdown</span>
+              <span class="text-[--color-text-muted] text-xs">{t('strategy.max_drawdown')}</span>
               <p class="text-xl font-bold text-[--color-red]">{strategy.data.maxDrawdown}%</p>
             </div>
           )}
@@ -87,10 +90,10 @@ const statusLabels: Record<string, string> = {
       )}
 
       <div class="flex flex-wrap gap-4 text-xs font-mono text-[--color-text-muted] mb-8">
-        <span>Added: {strategy.data.dateAdded}</span>
-        {strategy.data.dateKilled && <span>Killed: {strategy.data.dateKilled}</span>}
-        {strategy.data.coins && <span>{strategy.data.coins} coins tested</span>}
-        {strategy.data.dataPoints && <span>{strategy.data.dataPoints.toLocaleString()} trades analyzed</span>}
+        <span>{t('strategy.added')}: {strategy.data.dateAdded}</span>
+        {strategy.data.dateKilled && <span>{t('strategy.killed_date')}: {strategy.data.dateKilled}</span>}
+        {strategy.data.coins && <span>{strategy.data.coins} {t('strategy.coins_tested')}</span>}
+        {strategy.data.dataPoints && <span>{strategy.data.dataPoints.toLocaleString()} {t('strategy.trades_analyzed')}</span>}
       </div>
 
       <div class="prose">
@@ -103,11 +106,11 @@ const statusLabels: Record<string, string> = {
 
       <div class="mt-12 border-t border-[--color-border] pt-8 text-center">
         <p class="text-[--color-text-muted] text-sm mb-4">
-          {showDemo ? 'Explore more verified strategies.' : 'Want to simulate this strategy with your own parameters?'}
+          {showDemo ? t('strategies.detail_demo_footer') : t('strategies.detail_nodemo_footer')}
         </p>
         <a href="/strategies"
            class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] transition-colors">
-          Explore All Strategies &rarr;
+          {t('strategies.explore')} &rarr;
         </a>
       </div>
     </div>
