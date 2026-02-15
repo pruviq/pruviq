@@ -16,6 +16,9 @@ export default defineConfig({
   },
   integrations: [sitemap(), preact()],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    define: {
+      'import.meta.env.PUBLIC_PRUVIQ_API_URL': JSON.stringify('https://api.pruviq.com')
+    }
   }
 });
