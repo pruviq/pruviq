@@ -1,17 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/index';
+
+const t = useTranslations('ko');
 ---
 
-<Layout title="Changelog - PRUVIQ" description="Complete version history of PRUVIQ's trading system. Every change, every reason, every date.">
+<Layout title={t('meta.changelog_title')} description={t('meta.changelog_desc')}>
 
   <!-- HEADER -->
   <section class="py-20">
     <div class="max-w-6xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">CHANGELOG</p>
-      <h1 class="text-3xl md:text-5xl font-bold mb-4">The Full History.</h1>
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">{t('changelog.tag')}</p>
+      <h1 class="text-3xl md:text-5xl font-bold mb-4">{t('changelog.title')}</h1>
       <p class="text-[--color-text-muted] text-lg max-w-2xl">
-        Every version. Every change. Every reason.
-        This is how the system evolved from day one.
+        {t('changelog.desc')}
       </p>
     </div>
   </section>
@@ -26,16 +28,16 @@ import Layout from '../layouts/Layout.astro';
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.7.0</span>
           <span class="bg-[--color-accent]/20 text-[--color-accent] font-mono text-xs px-2 py-0.5 rounded">NEXT</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Feb 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 2월</span>
         </div>
-        <h3 class="font-bold mb-2">R:R Optimization + Blacklist</h3>
+        <h3 class="font-bold mb-2">R:R 최적화 + 블랙리스트</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; TP 6% &rarr; 8% (backed by 2-year backtest: +24.3% PnL improvement)</li>
-          <li>&bull; GUNUSDT blacklisted (anomalous -$378 loss pattern)</li>
-          <li>&bull; BTC Regime Filter tested and rejected (4 variants, all failed)</li>
-          <li>&bull; 6 expert agents validated every change</li>
+          <li>&bull; TP 6% &rarr; 8% (2년 백테스트 기반: +24.3% PnL 개선)</li>
+          <li>&bull; GUNUSDT 블랙리스트 (이상 손실 패턴 -$378)</li>
+          <li>&bull; BTC 레짐 필터 테스트 및 기각 (4개 변형 모두 실패)</li>
+          <li>&bull; 6개 전문가 에이전트가 모든 변경 검증</li>
         </ul>
-        <p class="text-[--color-text-muted] text-xs mt-2 font-mono">Evidence: 2,898 trades, 535 coins, 2+ years</p>
+        <p class="text-[--color-text-muted] text-xs mt-2 font-mono">근거: 2,898건 거래, 535개 코인, 2년 이상</p>
       </div>
 
       <!-- v1.6.2 -->
@@ -44,13 +46,13 @@ import Layout from '../layouts/Layout.astro';
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.6.2</span>
           <span class="bg-[--color-accent]/20 text-[--color-accent] font-mono text-xs px-2 py-0.5 rounded">CURRENT</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Feb 11, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 2월 11일</span>
         </div>
-        <h3 class="font-bold mb-2">Partial Fill Aggregation Fix</h3>
+        <h3 class="font-bold mb-2">분할 체결 합산 수정</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; Income API partial fills now aggregated (42% of exits were split)</li>
-          <li>&bull; Fixed PnL under-calculation bug (was using last fill only)</li>
-          <li>&bull; 16 new tests + 25 existing tests all pass</li>
+          <li>&bull; Income API 분할 체결 합산 (청산의 42%가 분할 체결)</li>
+          <li>&bull; PnL 과소 계산 버그 수정 (마지막 체결만 사용하던 문제)</li>
+          <li>&bull; 신규 테스트 16개 + 기존 테스트 25개 모두 통과</li>
         </ul>
       </div>
 
@@ -59,13 +61,13 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.6.1</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Feb 11, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 2월 11일</span>
         </div>
-        <h3 class="font-bold mb-2">LIMIT IOC + Slippage Optimization</h3>
+        <h3 class="font-bold mb-2">LIMIT IOC + 슬리피지 최적화</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; TIMEOUT exits use LIMIT IOC (63% fill rate, ~$960/year savings)</li>
-          <li>&bull; Slippage logging: signal_price vs fill_price tracked</li>
-          <li>&bull; Non-crypto pairs removed (INTC/TSLA/HOOD/PAXG)</li>
+          <li>&bull; 타임아웃 청산에 LIMIT IOC 사용 (63% 체결률, 연간 ~$960 절감)</li>
+          <li>&bull; 슬리피지 로깅: signal_price vs fill_price 추적</li>
+          <li>&bull; 비크립토 쌍 제거 (INTC/TSLA/HOOD/PAXG)</li>
         </ul>
       </div>
 
@@ -74,13 +76,13 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.6.0</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Feb 10, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 2월 10일</span>
         </div>
-        <h3 class="font-bold mb-2">SL Optimization (10%)</h3>
+        <h3 class="font-bold mb-2">SL 최적화 (10%)</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; Stop-loss changed from 7% to 10% based on OOS validation</li>
-          <li>&bull; Reduces unnecessary early stops while maintaining risk control</li>
-          <li>&bull; Verified across 2024/2025/2026 periods (no overfitting)</li>
+          <li>&bull; 손절을 7%에서 10%로 변경 (OOS 검증 기반)</li>
+          <li>&bull; 리스크 관리 유지하면서 불필요한 조기 청산 감소</li>
+          <li>&bull; 2024/2025/2026 기간에 걸쳐 검증 (과적합 없음)</li>
         </ul>
       </div>
 
@@ -89,14 +91,14 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.5.0</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Feb 5, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 2월 5일</span>
         </div>
-        <h3 class="font-bold mb-2">SHORT ONLY Confirmed</h3>
+        <h3 class="font-bold mb-2">SHORT ONLY 확정</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; 6 expert agents confirmed SHORT-only is optimal</li>
-          <li>&bull; Momentum LONG killed (-$14,115)</li>
-          <li>&bull; BB Squeeze LONG killed (-$26, no edge)</li>
-          <li>&bull; Only BB Squeeze SHORT survives all validation tests</li>
+          <li>&bull; 6개 전문가 에이전트가 SHORT 전용 최적 확인</li>
+          <li>&bull; 모멘텀 LONG 중단 (-$14,115)</li>
+          <li>&bull; BB Squeeze LONG 중단 (-$26, 엣지 없음)</li>
+          <li>&bull; BB Squeeze SHORT만 모든 검증 테스트 통과</li>
         </ul>
       </div>
 
@@ -105,14 +107,14 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.4.x</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Jan 31 &ndash; Feb 5, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 1월 31일 &ndash; 2월 5일</span>
         </div>
-        <h3 class="font-bold mb-2">DUAL Mode Experiment &rarr; Killed</h3>
+        <h3 class="font-bold mb-2">듀얼 모드 실험 &rarr; 중단</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; v1.4.0: Added Momentum LONG alongside SHORT</li>
-          <li>&bull; v1.4.3: Time filter moved to step 0 (bypass fix)</li>
-          <li>&bull; v1.4.4: Time filter optimized (577 coins, 2yr data)</li>
-          <li>&bull; v1.4.5: 5 expert agents killed LONG strategies</li>
+          <li>&bull; v1.4.0: SHORT과 함께 모멘텀 LONG 추가</li>
+          <li>&bull; v1.4.3: 시간 필터를 step 0으로 이동 (우회 수정)</li>
+          <li>&bull; v1.4.4: 시간 필터 최적화 (577개 코인, 2년 데이터)</li>
+          <li>&bull; v1.4.5: 5개 전문가 에이전트가 LONG 전략 중단</li>
         </ul>
       </div>
 
@@ -121,15 +123,15 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v1.2 &ndash; v1.3</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Jan 25 &ndash; 31, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 1월 25일 &ndash; 31일</span>
         </div>
-        <h3 class="font-bold mb-2">BB Squeeze Optimization Era</h3>
+        <h3 class="font-bold mb-2">BB Squeeze 최적화 시대</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; SL 10% &rarr; 7%, TP 4% &rarr; 6%, Volume filter 2.0x &rarr; 2.5x &rarr; 2.0x</li>
-          <li>&bull; Time filter: 4 hours &rarr; 6 &rarr; 10 &rarr; 7 (evidence-based each time)</li>
-          <li>&bull; BB expansion speed filter added (&ge; 10%)</li>
-          <li>&bull; SHORT-only mode introduced (v1.3.0)</li>
-          <li>&bull; 6x Sharpe improvement (0.39 &rarr; 2.43)</li>
+          <li>&bull; SL 10% &rarr; 7%, TP 4% &rarr; 6%, 볼륨 필터 2.0x &rarr; 2.5x &rarr; 2.0x</li>
+          <li>&bull; 시간 필터: 4시간 &rarr; 6 &rarr; 10 &rarr; 7 (매번 증거 기반)</li>
+          <li>&bull; BB 확장속도 필터 추가 (&ge; 10%)</li>
+          <li>&bull; SHORT 전용 모드 도입 (v1.3.0)</li>
+          <li>&bull; 6배 Sharpe 개선 (0.39 &rarr; 2.43)</li>
         </ul>
       </div>
 
@@ -138,15 +140,15 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v0.5 &ndash; v1.1</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Jan 10 &ndash; 25, 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 1월 10일 &ndash; 25일</span>
         </div>
-        <h3 class="font-bold mb-2">Discovery &amp; First Simulations</h3>
+        <h3 class="font-bold mb-2">발견 &amp; 첫 시뮬레이션</h3>
         <ul class="text-[--color-text-muted] text-sm space-y-1">
-          <li>&bull; BB Squeeze strategy discovered (Jan 10)</li>
-          <li>&bull; Look-ahead bias found and fixed (the first hard lesson)</li>
-          <li>&bull; Simulation engine validated against exchange data</li>
-          <li>&bull; Cost modeling: realistic fees + slippage</li>
-          <li>&bull; First expert code review (5 agents)</li>
+          <li>&bull; BB Squeeze 전략 발견 (1월 10일)</li>
+          <li>&bull; 선행 편향 발견 및 수정 (첫 번째 큰 교훈)</li>
+          <li>&bull; 시뮬레이션 엔진을 거래소 데이터로 검증</li>
+          <li>&bull; 비용 모델링: 현실적인 수수료 + 슬리피지</li>
+          <li>&bull; 첫 전문가 코드 리뷰 (5개 에이전트)</li>
         </ul>
       </div>
 
@@ -155,11 +157,11 @@ import Layout from '../layouts/Layout.astro';
         <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[--color-border] border-2 border-[--color-bg]"></div>
         <div class="flex items-center gap-3 mb-2">
           <span class="font-mono font-bold text-lg">v0.1</span>
-          <span class="text-[--color-text-muted] font-mono text-xs">Jan 2026</span>
+          <span class="text-[--color-text-muted] font-mono text-xs">2026년 1월</span>
         </div>
-        <h3 class="font-bold mb-2">Genesis</h3>
+        <h3 class="font-bold mb-2">제네시스</h3>
         <p class="text-[--color-text-muted] text-sm">
-          First backtest engine built. One question: can a systematic approach actually make money in crypto futures?
+          첫 백테스트 엔진 구축. 하나의 질문: 체계적 접근이 크립토 선물에서 실제로 수익을 낼 수 있을까?
         </p>
       </div>
 
@@ -169,16 +171,14 @@ import Layout from '../layouts/Layout.astro';
   <!-- PHILOSOPHY -->
   <section class="py-16 border-t border-[--color-border]">
     <div class="max-w-6xl mx-auto px-4 text-center">
-      <h2 class="text-2xl md:text-3xl font-bold mb-4">Why a Public Changelog?</h2>
+      <h2 class="text-2xl md:text-3xl font-bold mb-4">{t('changelog.why_title')}</h2>
       <p class="text-[--color-text-muted] text-lg max-w-2xl mx-auto mb-8">
-        Because "version 2.0" means nothing without context.
-        Every change has a reason. Every reason has data.
-        This is what transparent system development looks like.
+        {t('changelog.why_desc')}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/strategies"
+        <a href="/ko/strategies"
            class="bg-[--color-accent] text-[--color-bg] px-6 py-3 rounded font-semibold hover:bg-[--color-accent-dim] transition-colors">
-          Explore Strategies &rarr;
+          {t('strategies.explore')} &rarr;
         </a>
       </div>
     </div>

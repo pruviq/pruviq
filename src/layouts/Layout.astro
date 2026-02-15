@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import { getLangFromUrl, useTranslations, getAlternatePath, getBasePath } from '../i18n/index';
 
 interface Props {
   title: string;
@@ -9,17 +10,32 @@ interface Props {
   category?: string;
 }
 
-const { title, description = "Don't believe. Verify. Free crypto strategy simulation on 500+ coins. Test before you trade.", type = 'website', date, category } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const altPath = getAlternatePath(Astro.url.pathname, lang);
+const basePath = getBasePath(Astro.url.pathname);
+
+const { title, description = t('meta.home_desc'), type = 'website', date, category } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://pruviq.com');
+const enURL = new URL(basePath, Astro.site || 'https://pruviq.com');
+const koURL = new URL(`/ko${basePath === '/' ? '' : basePath}`, Astro.site || 'https://pruviq.com');
+
+const strategiesPath = lang === 'ko' ? '/ko/strategies' : '/strategies';
+const blogPath = lang === 'ko' ? '/ko/blog' : '/blog';
+const feesPath = lang === 'ko' ? '/ko/fees' : '/fees';
+const changelogPath = lang === 'ko' ? '/ko/changelog' : '/changelog';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL.href} />
+    <link rel="alternate" hreflang="en" href={enURL.href} />
+    <link rel="alternate" hreflang="ko" href={koURL.href} />
+    <link rel="alternate" hreflang="x-default" href={enURL.href} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,18 +86,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://pruviq.c
   <body class="min-h-screen">
     <nav class="fixed top-0 w-full z-50 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-md">
       <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2">
+        <a href={lang === 'ko' ? '/ko/' : '/'} class="flex items-center gap-2">
           <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
         </a>
         <div class="hidden md:flex items-center gap-8 text-sm">
-          <a href="/#approach" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Approach</a>
-          <a href="/#evidence" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Evidence</a>
-          <a href="/#system" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">System</a>
-          <a href="/strategies" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Strategies</a>
-          <a href="/graveyard" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Graveyard</a>
-          <a href="/blog" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Trading IQ</a>
-          <a href="/fees" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">Fees</a>
-          <a href="/strategies" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium hover:bg-[--color-accent-dim] transition-colors">Explore Strategies</a>
+          <a href={strategiesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.simulate')}</a>
+          <a href={blogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.learn')}</a>
+          <a href={feesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.fees')}</a>
+          <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -89,14 +101,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://pruviq.c
       </div>
       <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
         <div class="flex flex-col px-4 py-4 gap-4 text-sm">
-          <a href="/#approach" class="text-[--color-text-muted]">Approach</a>
-          <a href="/#evidence" class="text-[--color-text-muted]">Evidence</a>
-          <a href="/#system" class="text-[--color-text-muted]">System</a>
-          <a href="/strategies" class="text-[--color-text-muted]">Strategies</a>
-          <a href="/graveyard" class="text-[--color-text-muted]">Graveyard</a>
-          <a href="/blog" class="text-[--color-text-muted]">Trading IQ</a>
-          <a href="/fees" class="text-[--color-text-muted]">Fees</a>
-          <a href="/strategies" class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-medium text-center">Explore Strategies</a>
+          <a href={strategiesPath} class="text-[--color-text-muted]">{t('nav.simulate')}</a>
+          <a href={blogPath} class="text-[--color-text-muted]">{t('nav.learn')}</a>
+          <a href={feesPath} class="text-[--color-text-muted]">{t('nav.fees')}</a>
+          <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded text-[--color-text-muted] w-fit">{t('nav.lang')}</a>
         </div>
       </div>
     </nav>
@@ -110,19 +118,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://pruviq.c
         <div class="flex flex-col gap-6">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-[--color-text-muted] text-sm">
-              <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; Don't believe. Verify.
+              <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; {t('footer.tagline')}
             </div>
             <div class="flex items-center gap-6 text-xs text-[--color-text-muted]">
-              <a href="/strategies" class="hover:text-[--color-text] transition-colors">Strategies</a>
-              <a href="/graveyard" class="hover:text-[--color-text] transition-colors">Graveyard</a>
-              <a href="/blog" class="hover:text-[--color-text] transition-colors">Trading IQ</a>
-              <a href="/fees" class="hover:text-[--color-text] transition-colors">Save on Fees</a>
-              <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="hover:text-[--color-text] transition-colors">Telegram</a>
+              <a href={strategiesPath} class="hover:text-[--color-text] transition-colors">{t('footer.strategies')}</a>
+              <a href={blogPath} class="hover:text-[--color-text] transition-colors">{t('footer.learn')}</a>
+              <a href={feesPath} class="hover:text-[--color-text] transition-colors">{t('footer.fees')}</a>
+              <a href={changelogPath} class="hover:text-[--color-text] transition-colors">{t('footer.changelog')}</a>
+              <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="hover:text-[--color-text] transition-colors">{t('footer.telegram')}</a>
             </div>
           </div>
           <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-[--color-text-muted]">
-            <p>Not financial advice. Past performance does not guarantee future results.</p>
-            <p>This site contains affiliate links. <a href="/fees" class="text-[--color-accent] hover:underline">Details</a></p>
+            <p>{t('footer.disclaimer')}</p>
+            <p>{t('footer.affiliate')} <a href={feesPath} class="text-[--color-accent] hover:underline">{t('footer.details')}</a></p>
           </div>
         </div>
       </div>

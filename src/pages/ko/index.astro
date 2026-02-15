@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { useTranslations } from '../i18n/index';
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/index';
 
-const t = useTranslations('en');
+const t = useTranslations('ko');
 ---
 
 <Layout title={t('meta.home_title')}>
@@ -23,11 +23,11 @@ const t = useTranslations('en');
           {t('hero.desc')}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 mb-12">
-          <a href="/strategies"
+          <a href="/ko/strategies"
              class="bg-[--color-accent] text-[--color-bg] px-8 py-3 rounded font-semibold text-center hover:bg-[--color-accent-dim] transition-colors">
             {t('hero.cta1')} &rarr;
           </a>
-          <a href="/blog"
+          <a href="/ko/blog"
              class="border border-[--color-border] text-[--color-text] px-8 py-3 rounded font-semibold text-center hover:border-[--color-accent] hover:text-[--color-accent] transition-colors">
             {t('hero.cta2')}
           </a>
@@ -162,7 +162,7 @@ const t = useTranslations('en');
       <div class="border border-[--color-accent] rounded-lg p-6 bg-[--color-bg-card] mb-8">
         <h3 class="font-mono text-[--color-accent] text-sm mb-3">{t('evidence.try_tag')}</h3>
         <p class="text-[--color-text-muted] text-sm leading-relaxed mb-4">{t('evidence.try_desc')}</p>
-        <a href="/strategies/bb-squeeze-short#demo"
+        <a href="/ko/strategies/bb-squeeze-short#demo"
            class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] transition-colors">
           {t('evidence.try_cta')} &rarr;
         </a>
@@ -257,7 +257,7 @@ const t = useTranslations('en');
       <p class="text-[--color-text-muted] text-lg mb-4 max-w-xl mx-auto">{t('cta.desc1')}</p>
       <p class="text-[--color-text-muted] text-sm mb-8 max-w-md mx-auto">{t('cta.desc2')}</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-        <a href="/strategies"
+        <a href="/ko/strategies"
            class="inline-block bg-[--color-accent] text-[--color-bg] px-10 py-4 rounded font-semibold text-lg hover:bg-[--color-accent-dim] transition-colors">
           {t('cta.button1')} &rarr;
         </a>
