@@ -562,8 +562,9 @@ async def refresh_data():
 
 import xml.etree.ElementTree as ET
 import requests as http_requests
+from email.utils import parsedate_to_datetime
 
-MARKET_CACHE_TTL = 300  # 5 minutes
+MARKET_CACHE_TTL = 120  # 2 minutes
 _market_cache: Optional[dict] = None
 _market_cache_time: float = 0
 _news_cache: Optional[dict] = None
@@ -699,6 +700,28 @@ RSS_FEEDS = [
 ]
 
 
+def _parse_pub_date(raw: str) -> str:
+    """Parse various RSS date formats into ISO 8601 string."""
+    if not raw:
+        return ""
+    try:
+        # RFC 2822 (most RSS feeds): "Sun, 15 Feb 2026 20:59:12 +0000"
+        dt = parsedate_to_datetime(raw)
+        return dt.isoformat()
+    except Exception:
+        pass
+    # ISO 8601 (Atom feeds)
+    for fmt in ("%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%d %H:%M:%S"):
+        try:
+            dt = datetime.strptime(raw, fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.isoformat()
+        except Exception:
+            continue
+    return raw
+
+
 def _parse_rss(source: str, url: str) -> list:
     """Parse a single RSS feed into NewsItem dicts."""
     items = []
@@ -713,13 +736,14 @@ def _parse_rss(source: str, url: str) -> list:
         if not rss_items:
             rss_items = root.findall(".//atom:entry", ns)
 
-        for item in rss_items[:10]:  # max 10 per source
+        for item in rss_items[:15]:  # max 15 per source
             title = item.findtext("title") or item.findtext("atom:title", namespaces=ns) or ""
             link = item.findtext("link") or ""
             if not link:
                 link_el = item.find("atom:link", ns)
                 link = link_el.get("href", "") if link_el is not None else ""
-            published = item.findtext("pubDate") or item.findtext("atom:published", namespaces=ns) or ""
+            published_raw = item.findtext("pubDate") or item.findtext("atom:published", namespaces=ns) or ""
+            published = _parse_pub_date(published_raw)
             desc = item.findtext("description") or item.findtext("atom:summary", namespaces=ns) or ""
             # Strip HTML from description
             if "<" in desc:
@@ -731,7 +755,7 @@ def _parse_rss(source: str, url: str) -> list:
                     "title": title.strip(),
                     "link": link.strip(),
                     "source": source,
-                    "published": published.strip(),
+                    "published": published,
                     "summary": desc,
                 })
     except Exception as e:
@@ -745,10 +769,11 @@ def _build_news() -> dict:
     for source, url in RSS_FEEDS:
         all_items.extend(_parse_rss(source, url))
 
-    # Sort by published date (most recent first) — best effort since formats vary
-    # Just keep insertion order (already per-source newest first)
+    # Sort by published date (most recent first)
+    all_items.sort(key=lambda x: x.get("published", ""), reverse=True)
+
     return {
-        "items": [NewsItem(**item) for item in all_items[:40]],
+        "items": [NewsItem(**item) for item in all_items[:50]],
         "generated": datetime.now(timezone.utc).isoformat(),
     }
 

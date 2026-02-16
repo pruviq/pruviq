@@ -20,13 +20,17 @@ const labels = {
     newsLoading: 'Loading news...',
     newsError: 'Failed to load news.',
     updated: 'Updated',
-    disclaimer: 'Market data is for informational purposes only. Not financial advice. Refreshed every 5 min.',
+    disclaimer: 'Market data is for informational purposes only. Not financial advice. Auto-refreshed every 2 min.',
     symbol: 'Symbol',
     price: 'Price',
     change: '24h %',
     volume: 'Volume',
     rate: 'Rate',
     readMore: 'Read more',
+    searchNews: 'Search news...',
+    allSources: 'All',
+    lastUpdated: 'Last updated',
+    ago: 'ago',
   },
   ko: {
     tag: '시장 현황',
@@ -45,13 +49,17 @@ const labels = {
     newsLoading: '뉴스 로딩 중...',
     newsError: '뉴스 로딩 실패.',
     updated: '업데이트',
-    disclaimer: '시장 데이터는 정보 제공 목적으로만 제공됩니다. 투자 조언이 아닙니다. 5분마다 갱신.',
+    disclaimer: '시장 데이터는 정보 제공 목적으로만 제공됩니다. 투자 조언이 아닙니다. 2분마다 자동 갱신.',
     symbol: '심볼',
     price: '가격',
     change: '24h %',
     volume: '거래량',
     rate: '비율',
     readMore: '자세히',
+    searchNews: '뉴스 검색...',
+    allSources: '전체',
+    lastUpdated: '마지막 업데이트',
+    ago: '전',
   },
 };
 
@@ -171,24 +179,48 @@ function MoverTable({ title, movers, l }: { title: string; movers: MarketMover[]
   );
 }
 
+const NEWS_SOURCES = ['CoinDesk', 'CoinTelegraph', 'Decrypt', 'Bitcoin Magazine'];
+const REFRESH_MS = 120_000; // 2 minutes
+
 export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const l = labels[lang] || labels.en;
   const [market, setMarket] = useState<MarketData | null>(null);
   const [news, setNews] = useState<NewsData | null>(null);
   const [marketErr, setMarketErr] = useState(false);
   const [newsErr, setNewsErr] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sourceFilter, setSourceFilter] = useState('');
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
-  useEffect(() => {
+  const fetchMarket = () => {
     fetch(`${API_URL}/market`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(setMarket)
+      .then(d => { setMarket(d); setMarketErr(false); setLastRefresh(new Date()); })
       .catch(() => setMarketErr(true));
+  };
 
+  const fetchNews = () => {
     fetch(`${API_URL}/news`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(setNews)
+      .then(d => { setNews(d); setNewsErr(false); })
       .catch(() => setNewsErr(true));
+  };
+
+  useEffect(() => {
+    fetchMarket();
+    fetchNews();
+    const interval = setInterval(() => { fetchMarket(); fetchNews(); }, REFRESH_MS);
+    return () => clearInterval(interval);
   }, []);
+
+  const filteredNews = news?.items.filter(item => {
+    if (sourceFilter && item.source !== sourceFilter) return false;
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return item.title.toLowerCase().includes(q) || (item.summary || '').toLowerCase().includes(q);
+    }
+    return true;
+  }) ?? [];
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
@@ -281,8 +313,43 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
 
       {/* News Feed */}
       <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden', marginBottom: 24 }}>
-        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', fontSize: 12, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          {l.latestNews}
+        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 'auto' }}>
+            {l.latestNews}
+          </span>
+          <input
+            type="text"
+            placeholder={l.searchNews}
+            value={searchQuery}
+            onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value)}
+            style={{
+              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6,
+              padding: '5px 10px', fontSize: 12, color: '#e8e8e8', outline: 'none', width: 180,
+              fontFamily: 'Inter, sans-serif',
+            }}
+          />
+          <div style={{ display: 'flex', gap: 4 }}>
+            <button
+              onClick={() => setSourceFilter('')}
+              style={{
+                padding: '4px 8px', fontSize: 10, borderRadius: 4, cursor: 'pointer', border: 'none',
+                background: !sourceFilter ? '#00d4aa' : 'rgba(255,255,255,0.06)',
+                color: !sourceFilter ? '#000' : '#888', fontWeight: 600,
+              }}
+            >{l.allSources}</button>
+            {NEWS_SOURCES.map(s => (
+              <button
+                key={s}
+                onClick={() => setSourceFilter(sourceFilter === s ? '' : s)}
+                style={{
+                  padding: '4px 8px', fontSize: 10, borderRadius: 4, cursor: 'pointer', border: 'none',
+                  background: sourceFilter === s ? '#00d4aa' : 'rgba(255,255,255,0.06)',
+                  color: sourceFilter === s ? '#000' : '#888', fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                }}
+              >{s.replace('Bitcoin Magazine', 'BTC Mag')}</button>
+            ))}
+          </div>
         </div>
         {!news && !newsErr && (
           <div style={{ textAlign: 'center', padding: 30, color: '#888', fontSize: 13 }}>{l.newsLoading}</div>
@@ -290,9 +357,9 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
         {newsErr && (
           <div style={{ textAlign: 'center', padding: 30, color: '#ea3943', fontSize: 13 }}>{l.newsError}</div>
         )}
-        {news && news.items.length > 0 && (
+        {news && filteredNews.length > 0 && (
           <div>
-            {news.items.map((item, i) => (
+            {filteredNews.map((item, i) => (
               <a
                 key={`${item.source}-${i}`}
                 href={item.link}
@@ -301,7 +368,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
                 style={{
                   display: 'block',
                   padding: '12px 16px',
-                  borderBottom: i < news.items.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none',
+                  borderBottom: i < filteredNews.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none',
                   textDecoration: 'none',
                   color: 'inherit',
                   transition: 'background 0.15s',
@@ -329,10 +396,20 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
             ))}
           </div>
         )}
+        {news && filteredNews.length === 0 && (
+          <div style={{ textAlign: 'center', padding: 30, color: '#666', fontSize: 13 }}>
+            {lang === 'ko' ? '검색 결과가 없습니다.' : 'No results found.'}
+          </div>
+        )}
       </div>
 
-      {/* Disclaimer */}
-      <p style={{ fontSize: 11, color: '#555', textAlign: 'center', marginTop: 16 }}>{l.disclaimer}</p>
+      {/* Last Updated + Disclaimer */}
+      {lastRefresh && (
+        <p style={{ fontSize: 11, color: '#666', textAlign: 'center', marginTop: 16, fontFamily: 'JetBrains Mono, monospace' }}>
+          {l.lastUpdated}: {lastRefresh.toLocaleTimeString()}
+        </p>
+      )}
+      <p style={{ fontSize: 11, color: '#555', textAlign: 'center', marginTop: 4 }}>{l.disclaimer}</p>
 
       <style>{`
         @media (min-width: 768px) {
