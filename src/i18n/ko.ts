@@ -6,14 +6,15 @@ export const ko: Record<TranslationKey, string> = {
   'nav.coins': '코인',
   'nav.simulate': '전략',
   'nav.learn': '학습',
+  'nav.performance': '실거래',
   'nav.fees': '수수료',
   'nav.lang': 'EN',
 
   // Hero
-  'hero.tag': 'PRUVIQ /pruːv·ɪk/ — PROVE + IQ',
+  'hero.tag': '크립토 전략 실험실',
   'hero.title1': '믿지 마세요.',
   'hero.title2': '검증하세요.',
-  'hero.subtitle': '모든 전략을 테스트합니다. 모든 결과를 공개합니다. 모든 실패를 보여줍니다.',
+  'hero.subtitle': '모든 전략을 검증하고, 실패까지 공개하는 크립토 전략 실험실.',
   'hero.desc': '500개 이상의 코인, 2년 이상의 데이터로 트레이딩 전략을 시뮬레이션하세요. 수수료, 슬리피지, 드로다운까지 현실적으로 반영. 무료.',
   'hero.cta1': '전략 탐색하기',
   'hero.cta2': '트레이딩 IQ 높이기',
@@ -245,7 +246,7 @@ export const ko: Record<TranslationKey, string> = {
   'meta.coins_title': '코인 탐색기 - PRUVIQ',
   'meta.coins_desc': '500개 이상 코인의 캔들 차트와 BB Squeeze 전략 시뮬레이션. 모든 코인의 진입/청산 신호, 승률, 수익 팩터를 확인하세요.',
   'meta.home_title': 'PRUVIQ - 믿지 마세요. 검증하세요.',
-  'meta.home_desc': '믿지 마세요. 검증하세요. 500개 이상 코인에서 무료 암호화폐 전략 시뮬레이션. 트레이딩 전에 테스트하세요.',
+  'meta.home_desc': '크립토 전략 실험실: 535개 코인에서 트레이딩 전략 시뮬레이션. 2년 이상의 실제 데이터로 백테스트하고, 실거래 결과까지 확인하세요. 영원히 무료.',
   'meta.strategies_title': '전략 라이브러리 - PRUVIQ',
   'meta.strategies_desc': '테스트한 모든 전략과 시뮬레이션 결과. 검증된 전략, 중단된 전략, 그 사이의 모든 것. 체리피킹 없음.',
   'meta.blog_title': '트레이딩 IQ - PRUVIQ',
@@ -254,4 +255,6 @@ export const ko: Record<TranslationKey, string> = {
   'meta.fees_desc': 'Binance, Bybit, OKX 등 거래소 수수료 비교. PRUVIQ 추천 링크로 최대 70% 절약. 투명한 수수료 비교.',
   'meta.changelog_title': '변경 이력 - PRUVIQ',
   'meta.changelog_desc': 'PRUVIQ 트레이딩 시스템의 전체 버전 히스토리. 모든 변경, 모든 이유, 모든 날짜.',
+  'meta.performance_title': '실거래 성과 - PRUVIQ',
+  'meta.performance_desc': '실거래 계좌의 모든 거래 결과를 공개합니다. 손실 포함. BB Squeeze SHORT 전략 실거래 성과.',
 };

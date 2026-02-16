@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PerformanceDashboard from '../../components/PerformanceDashboard';
+---
+
+<Layout title="Live Performance - PRUVIQ" description="Real trading results from our live account. Every trade published, including losses. BB Squeeze SHORT strategy performance.">
+  <section class="py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <PerformanceDashboard client:visible lang="en" />
+    </div>
+  </section>
+</Layout>

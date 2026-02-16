@@ -23,6 +23,7 @@ const koURL = new URL(`/ko${basePath === '/' ? '' : basePath}`, Astro.site || 'h
 
 const marketPath = lang === 'ko' ? '/ko/market' : '/market';
 const coinsPath = lang === 'ko' ? '/ko/coins' : '/coins';
+const performancePath = lang === 'ko' ? '/ko/performance' : '/performance';
 const strategiesPath = lang === 'ko' ? '/ko/strategies' : '/strategies';
 const blogPath = lang === 'ko' ? '/ko/blog' : '/blog';
 const feesPath = lang === 'ko' ? '/ko/fees' : '/fees';
@@ -64,10 +65,29 @@ const changelogPath = lang === 'ko' ? '/ko/changelog' : '/changelog';
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "PRUVIQ",
+        "alternateName": "Crypto Strategy Lab",
         "url": "https://pruviq.com",
-        "description": "Free crypto strategy simulation platform. Test strategies on 500+ coins before risking real money.",
+        "description": "Free crypto strategy simulation platform. Backtest trading strategies on 535+ coins with 2+ years of real market data.",
         "founder": { "@type": "Person", "name": "JPLee" },
-        "sameAs": ["https://t.me/PRUVIQ"]
+        "sameAs": ["https://t.me/PRUVIQ"],
+        "knowsAbout": ["cryptocurrency trading", "backtesting", "algorithmic trading", "quantitative finance"]
+      })} />
+    )}
+    <!-- JSON-LD WebApplication (homepage only) -->
+    {type === 'website' && basePath === '/' && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PRUVIQ Strategy Simulator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Simulate crypto trading strategies on 535+ coins. Interactive candlestick charts with entry/exit markers.",
+        "featureList": ["Crypto strategy backtesting", "535 coin simulation", "Interactive charts", "Real trading verification"]
       })} />
     )}
     <!-- JSON-LD Article (for blog posts) -->
@@ -99,6 +119,7 @@ const changelogPath = lang === 'ko' ? '/ko/changelog' : '/changelog';
         <div class="hidden md:flex items-center gap-8 text-sm">
           <a href={marketPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.market')}</a>
           <a href={coinsPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.coins')}</a>
+          <a href={performancePath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.performance')}</a>
           <a href={strategiesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.simulate')}</a>
           <a href={blogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.learn')}</a>
           <a href={feesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.fees')}</a>
@@ -112,6 +133,7 @@ const changelogPath = lang === 'ko' ? '/ko/changelog' : '/changelog';
         <div class="flex flex-col px-4 py-4 gap-4 text-sm">
           <a href={marketPath} class="text-[--color-text-muted]">{t('nav.market')}</a>
           <a href={coinsPath} class="text-[--color-text-muted]">{t('nav.coins')}</a>
+          <a href={performancePath} class="text-[--color-text-muted]">{t('nav.performance')}</a>
           <a href={strategiesPath} class="text-[--color-text-muted]">{t('nav.simulate')}</a>
           <a href={blogPath} class="text-[--color-text-muted]">{t('nav.learn')}</a>
           <a href={feesPath} class="text-[--color-text-muted]">{t('nav.fees')}</a>
@@ -134,6 +156,7 @@ const changelogPath = lang === 'ko' ? '/ko/changelog' : '/changelog';
             <div class="flex items-center gap-6 text-xs text-[--color-text-muted]">
               <a href={marketPath} class="hover:text-[--color-text] transition-colors">{t('nav.market')}</a>
               <a href={coinsPath} class="hover:text-[--color-text] transition-colors">{t('nav.coins')}</a>
+              <a href={performancePath} class="hover:text-[--color-text] transition-colors">{t('nav.performance')}</a>
               <a href={strategiesPath} class="hover:text-[--color-text] transition-colors">{t('footer.strategies')}</a>
               <a href={blogPath} class="hover:text-[--color-text] transition-colors">{t('footer.learn')}</a>
               <a href={feesPath} class="hover:text-[--color-text] transition-colors">{t('footer.fees')}</a>

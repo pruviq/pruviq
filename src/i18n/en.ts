@@ -4,14 +4,15 @@ export const en = {
   'nav.coins': 'Coins',
   'nav.simulate': 'Strategies',
   'nav.learn': 'Learn',
+  'nav.performance': 'Performance',
   'nav.fees': 'Fees',
   'nav.lang': 'KO',
 
   // Hero
-  'hero.tag': 'PRUVIQ /pruːv·ɪk/ — PROVE + IQ',
+  'hero.tag': 'CRYPTO STRATEGY LAB',
   'hero.title1': "Don't Believe.",
   'hero.title2': 'Verify.',
-  'hero.subtitle': 'Every strategy tested. Every result published. Every failure shown.',
+  'hero.subtitle': 'The crypto strategy lab where every result is published — including failures.',
   'hero.desc': 'Simulate trading strategies on 500+ coins with 2+ years of data. Realistic fees, slippage, and drawdowns. No cherry-picking. Free forever.',
   'hero.cta1': 'Explore Strategies',
   'hero.cta2': 'Raise Your Trading IQ',
@@ -241,9 +242,9 @@ export const en = {
   'meta.market_title': 'Market Dashboard - PRUVIQ',
   'meta.market_desc': 'Real-time crypto market overview. Fear & Greed Index, BTC dominance, top gainers/losers, funding rates, and aggregated crypto news.',
   'meta.coins_title': 'Coin Explorer - PRUVIQ',
-  'meta.coins_desc': 'Explore 500+ coins with candlestick charts and BB Squeeze strategy simulation. See entry/exit signals, win rates, and profit factors for every coin.',
+  'meta.coins_desc': 'Explore 535 coins with interactive candlestick charts. Apply BB Squeeze strategy, see entry/exit arrows, win rates, and profit factors. Free crypto strategy simulator.',
   'meta.home_title': "PRUVIQ - Don't Believe. Verify.",
-  'meta.home_desc': "Don't believe. Verify. Free crypto strategy simulation on 500+ coins. Test before you trade.",
+  'meta.home_desc': "Crypto strategy lab: simulate trading strategies on 500+ coins with 2+ years of real data. Backtest, verify, and see actual live trading results. Free forever.",
   'meta.strategies_title': 'Strategy Library - PRUVIQ',
   'meta.strategies_desc': "Every strategy we've tested, with full simulation results. Verified strategies, killed strategies, and everything in between. No cherry-picking.",
   'meta.blog_title': 'Trading IQ - PRUVIQ',
@@ -252,6 +253,8 @@ export const en = {
   'meta.fees_desc': 'Compare trading fees across Binance, Bybit, OKX, and more. Save up to 70% with PRUVIQ referral links. Transparent fee comparison.',
   'meta.changelog_title': 'Changelog - PRUVIQ',
   'meta.changelog_desc': "Complete version history of PRUVIQ's trading system. Every change, every reason, every date.",
+  'meta.performance_title': 'Live Performance - PRUVIQ',
+  'meta.performance_desc': 'Real trading results from our live account. Every trade published, including losses. BB Squeeze SHORT strategy performance.',
 } as const;
 
 export type TranslationKey = keyof typeof en;

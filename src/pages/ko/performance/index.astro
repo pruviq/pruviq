@@ -1,0 +1,12 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import PerformanceDashboard from '../../../components/PerformanceDashboard';
+---
+
+<Layout title="실거래 성과 - PRUVIQ" description="실거래 계좌의 모든 거래 결과를 공개합니다. 손실 포함. BB Squeeze SHORT 전략 실거래 성과.">
+  <section class="py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <PerformanceDashboard client:visible lang="ko" />
+    </div>
+  </section>
+</Layout>

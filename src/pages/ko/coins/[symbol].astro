@@ -13,9 +13,21 @@ export async function getStaticPaths() {
 const { symbol } = Astro.params;
 const { symbolUpper } = Astro.props;
 const displayName = symbolUpper.replace('USDT', '') + '/USDT';
+const coinName = symbolUpper.replace('USDT', '');
+const metaDesc = `${coinName} 트레이딩 전략 시뮬레이션 — ${displayName}에서 BB Squeeze 백테스트. 2년 이상 데이터로 진입/청산 신호, 승률, 수익 팩터 확인. PRUVIQ 무료 제공.`;
+const datasetJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": `${coinName} Trading Strategy Backtest`,
+  "description": `BB Squeeze SHORT strategy simulation results for ${displayName} with 2+ years of historical OHLCV data`,
+  "temporalCoverage": "2024/2026",
+  "creator": { "@type": "Organization", "name": "PRUVIQ" },
+  "license": "https://creativecommons.org/licenses/by-nc/4.0/"
+});
 ---
 
-<Layout title={`${displayName} - 코인 탐색기 - PRUVIQ`} description={`${displayName} 캔들 차트와 BB Squeeze 전략 시뮬레이션. 진입/청산 신호, 승률, 수익 팩터를 확인하세요.`}>
+<Layout title={`${displayName} - 코인 탐색기 - PRUVIQ`} description={metaDesc}>
+  <script type="application/ld+json" set:html={datasetJsonLd} />
   <section class="py-8">
     <div class="max-w-6xl mx-auto px-4">
       <a href="/ko/coins" class="inline-flex items-center gap-1 text-[--color-text-muted] hover:text-[--color-accent] transition-colors text-sm font-mono mb-4">
