@@ -105,6 +105,17 @@ def update_symbol(csv_path: Path, symbol: str, dry_run: bool = False) -> int:
         for row in new_rows:
             f.write(f'{row["timestamp"]},{row["open"]},{row["high"]},{row["low"]},{row["close"]},{row["volume"]},{row["quote_volume"]},{row["trades"]}\n')
 
+    # Post-append dedup: read back and remove any duplicates
+    try:
+        df = pd.read_csv(csv_path)
+        before = len(df)
+        df = df.drop_duplicates(subset=["timestamp"], keep="last")
+        if len(df) < before:
+            df.to_csv(csv_path, index=False)
+            print(f"    dedup: removed {before - len(df)} duplicate rows")
+    except Exception:
+        pass  # dedup is best-effort; append already succeeded
+
     return len(new_rows)
 
 

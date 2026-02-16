@@ -20,18 +20,8 @@ fi
 
 cd "$REPO_DIR/backend"
 
-# Run update (only fetch new candles since last timestamp)
-python3 -c "
-import sys
-sys.path.insert(0, '.')
-from src.data.downloader import OHLCVDownloader
-from pathlib import Path
-
-data_dir = Path('$DATA_DIR')
-dl = OHLCVDownloader(data_dir)
-results = dl.download_all('binance_futures', '1h', days=730, update=True)
-print(f'Updated: {results[\"downloaded\"]} coins')
-"
+# Run incremental update (append new candles + dedup)
+python3 scripts/update_ohlcv.py --data-dir "$DATA_DIR"
 
 # Regenerate demo data (if needed)
 if [ "$1" = "--demo" ]; then

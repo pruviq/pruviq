@@ -191,7 +191,7 @@ class OHLCVDownloader:
 
             df = self.download_ohlcv(exchange_key, pair["ccxt_symbol"], timeframe, days, since_ms)
 
-            if df.empty or len(df) < 100:
+            if df.empty or (not update and len(df) < 100):
                 print("SKIP (insufficient)")
                 results["skipped"] += 1
                 continue
@@ -201,7 +201,7 @@ class OHLCVDownloader:
             if update and filepath.exists():
                 df_old = pd.read_csv(filepath)
                 df_old["timestamp"] = pd.to_datetime(df_old["timestamp"])
-                combined = pd.concat([df_old, df]).drop_duplicates(subset=["timestamp"])
+                combined = pd.concat([df_old, df]).drop_duplicates(subset=["timestamp"], keep="last")
                 combined = combined.sort_values("timestamp").reset_index(drop=True)
                 new_rows = len(combined) - len(df_old)
                 combined.to_csv(filepath, index=False)
