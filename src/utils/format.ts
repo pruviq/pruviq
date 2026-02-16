@@ -8,11 +8,42 @@ export function formatPrice(p: number): string {
   return p.toLocaleString('en-US', { maximumFractionDigits: 6 });
 }
 
-export function formatVolume(v: number): string {
-  if (v >= 1e9) return `$${(v / 1e9).toFixed(1)}B`;
-  if (v >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
-  if (v >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
-  return `$${v.toFixed(0)}`;
+export function formatVolume(v: number, prefix = '$'): string {
+  if (v >= 1e9) return `${prefix}${(v / 1e9).toFixed(1)}B`;
+  if (v >= 1e6) return `${prefix}${(v / 1e6).toFixed(1)}M`;
+  if (v >= 1e3) return `${prefix}${(v / 1e3).toFixed(0)}K`;
+  return `${prefix}${v.toFixed(0)}`;
+}
+
+export function formatVolumeRaw(v: number): string {
+  if (v >= 1e9) return `${(v / 1e9).toFixed(2)}B`;
+  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M`;
+  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K`;
+  return v.toFixed(1);
+}
+
+export function formatUsd(v: number): string {
+  const sign = v >= 0 ? '+' : '';
+  return `${sign}$${Math.abs(v).toFixed(2)}`;
+}
+
+export function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}`;
+}
+
+export function formatDateFull(dateStr: string): string {
+  const d = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+export function formatReasonLabel(reason: string): string {
+  if (reason === 'TP') return 'TP';
+  if (reason === 'SL') return 'SL';
+  if (reason === 'TIMEOUT') return 'TO';
+  return reason;
 }
 
 export function changeColor(v: number): string {

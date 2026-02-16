@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
-import { formatPrice, formatVolume } from '../utils/format';
+import { formatPrice, formatVolume, formatVolumeRaw } from '../utils/format';
 import DiscreteSlider from './DiscreteSlider';
 
 interface OhlcvBar {
@@ -133,13 +133,6 @@ function formatChartPrice(p: number): string {
   return p.toFixed(7);
 }
 
-function formatVol(v: number): string {
-  if (v >= 1e9) return `${(v / 1e9).toFixed(2)}B`;
-  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M`;
-  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K`;
-  return v.toFixed(1);
-}
-
 function formatTime(unix: number): string {
   const d = new Date(unix * 1000);
   return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:00`;
@@ -180,7 +173,7 @@ function ToggleBtn({ active, activeColor, label, onClick }: { active: boolean; a
 function ChartSkeleton() {
   return (
     <div class="bg-[#0a0a0a] border border-[--color-border] rounded-xl overflow-hidden mb-3">
-      <div class="w-full" style={{ height: '480px', position: 'relative' }}>
+      <div class="w-full h-[480px] relative">
         <div class="absolute top-4 left-4 flex gap-2">
           <div class="skeleton h-3 w-8" />
           <div class="skeleton h-3 w-12" />
@@ -475,7 +468,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         <div class="flex gap-6 flex-wrap font-mono text-[0.6875rem] text-[--color-text-muted]">
           <span>{t.h24high}: <span class="text-[#16c784]">${formatChartPrice(high24)}</span></span>
           <span>{t.h24low}: <span class="text-[--color-red]">${formatChartPrice(low24)}</span></span>
-          <span>{t.h24vol}: <span class="text-[--color-text]">{formatVol(vol24)}</span></span>
+          <span>{t.h24vol}: <span class="text-[--color-text]">{formatVolumeRaw(vol24)}</span></span>
           <span>{t.dataRange}: {formatDateRange(ohlcv[0].t, lastBar.t)}</span>
         </div>
       </div>
@@ -488,7 +481,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
           <span class="text-[#666]">{t.high} <span class="text-[#16c784]">{formatChartPrice(displayBar.h)}</span></span>
           <span class="text-[#666]">{t.low} <span class="text-[--color-red]">{formatChartPrice(displayBar.l)}</span></span>
           <span class="text-[#666]">{t.close} <span style={{ color: displayBar.c >= displayBar.o ? '#16c784' : '#ff4444' }}>{formatChartPrice(displayBar.c)}</span></span>
-          <span class="text-[#666]">{t.vol} <span class="text-[--color-text-muted]">{formatVol(displayBar.v)}</span></span>
+          <span class="text-[#666]">{t.vol} <span class="text-[--color-text-muted]">{formatVolumeRaw(displayBar.v)}</span></span>
           <span class={`font-semibold ${displayChange >= 0 ? 'text-[#16c784]' : 'text-[--color-red]'}`}>
             {displayChange > 0 ? '+' : ''}{displayChange.toFixed(2)}%
           </span>
@@ -507,11 +500,11 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
           </button>
         </div>
 
-        <div ref={chartContainerRef} class="w-full" style={{ height: '480px' }} />
+        <div ref={chartContainerRef} class="w-full h-[480px]" />
 
         {/* TradingView Attribution */}
         <div class="absolute bottom-1.5 right-3 z-10 font-mono text-[0.5625rem]">
-          <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[#444] no-underline hover:text-[#666] transition-colors">
+          <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] no-underline hover:text-[--color-text] transition-colors">
             Powered by TradingView
           </a>
         </div>
@@ -528,7 +521,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         >
           {simLoading ? (
             <span class="flex items-center gap-2">
-              <span class="spinner" style={{ width: '14px', height: '14px', borderWidth: '2px' }} />
+              <span class="spinner w-3.5 h-3.5 border-2" />
               {t.simLoading}
             </span>
           ) : (simResult ? t.resim : t.apply)}
@@ -572,7 +565,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       </div>
 
       {/* Disclaimer */}
-      <p class="font-mono text-[0.5625rem] text-[#444] mb-4 leading-relaxed">
+      <p class="font-mono text-[0.5625rem] text-[--color-text-muted] mb-4 leading-relaxed">
         * {t.disclaimer}
       </p>
 

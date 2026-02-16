@@ -166,7 +166,7 @@ function MoverTable({ title, movers, l }: { title: string; movers: MarketMover[]
       <div className="px-4 py-3 border-b border-[--color-border] text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider">
         {title}
       </div>
-      <table className="w-full text-[13px]" style={{ borderCollapse: 'collapse' }}>
+      <table className="w-full text-[13px] border-collapse">
         <thead>
           <tr className="border-b border-[--color-border]">
             <th className="text-left px-4 py-2 text-[--color-text-muted] font-medium text-[11px]">{l.symbol}</th>
@@ -303,7 +303,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
           {/* BTC + ETH Price Bar */}
           <div className="flex gap-4 flex-wrap mb-4">
             <div className={`flex items-center gap-3 border border-[--color-border] rounded-lg py-3 px-5 bg-[--color-bg-card] flex-1 min-w-[200px] ${btcFlash}`}>
-              <span className="text-sm font-semibold" style={{ color: '#f7931a' }}>BTC</span>
+              <span className="text-sm font-semibold text-[#f7931a]">BTC</span>
               <span className="text-xl font-bold font-mono text-[--color-text]">
                 ${market.btc_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </span>
@@ -312,7 +312,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
               </span>
             </div>
             <div className={`flex items-center gap-3 border border-[--color-border] rounded-lg py-3 px-5 bg-[--color-bg-card] flex-1 min-w-[200px] ${ethFlash}`}>
-              <span className="text-sm font-semibold" style={{ color: '#627eea' }}>ETH</span>
+              <span className="text-sm font-semibold text-[#627eea]">ETH</span>
               <span className="text-xl font-bold font-mono text-[--color-text]">
                 ${market.eth_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </span>

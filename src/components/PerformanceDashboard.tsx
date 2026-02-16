@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
-import { formatPrice } from '../utils/format';
+import { formatPrice, formatUsd, formatDate, formatDateFull, formatReasonLabel } from '../utils/format';
 
 interface DailyEntry {
   date: string;
@@ -116,30 +116,6 @@ const labels = {
     curBal: '현재',
   },
 };
-
-function formatUsd(v: number): string {
-  const sign = v >= 0 ? '+' : '';
-  return `${sign}$${Math.abs(v).toFixed(2)}`;
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[d.getMonth()]} ${d.getDate()}`;
-}
-
-function formatDateFull(dateStr: string): string {
-  const d = new Date(dateStr);
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-}
-
-function formatReasonLabel(reason: string): string {
-  if (reason === 'TP') return 'TP';
-  if (reason === 'SL') return 'SL';
-  if (reason === 'TIMEOUT') return 'TO';
-  return reason;
-}
 
 function MetricCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
@@ -290,7 +266,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
             <div class="skeleton h-3 w-28" />
             <div class="skeleton h-4 w-16" />
           </div>
-          <div class="skeleton w-full" style={{ height: '320px' }} />
+          <div class="skeleton w-full h-[320px]" />
         </div>
       </div>
     );
@@ -344,9 +320,9 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
           <span class="font-mono text-[0.6875rem] text-[--color-accent] tracking-widest uppercase font-semibold">{t.dailyChart}</span>
           <span class="font-mono text-xs font-semibold" style={{ color: pnlColor }}>{formatUsd(s.total_pnl)}</span>
         </div>
-        <div ref={chartContainerRef} class="w-full" style={{ height: '320px' }} />
+        <div ref={chartContainerRef} class="w-full h-[320px]" />
         <div class="px-3 py-1.5 text-right font-mono text-[0.5625rem]">
-          <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[#444] no-underline hover:text-[#666] transition-colors">Powered by TradingView</a>
+          <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] no-underline hover:text-[--color-text] transition-colors">Powered by TradingView</a>
         </div>
       </div>
 
@@ -483,7 +459,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       )}
 
       {/* Disclaimer */}
-      <p class="font-mono text-[0.625rem] text-[#555] leading-relaxed px-4 py-3 bg-[rgba(255,255,255,0.02)] border border-[--color-border] rounded-lg">
+      <p class="font-mono text-[0.625rem] text-[--color-text-muted] leading-relaxed px-4 py-3 bg-[rgba(255,255,255,0.02)] border border-[--color-border] rounded-lg">
         * {t.disclaimer}
       </p>
     </div>

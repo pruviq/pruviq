@@ -95,7 +95,7 @@ function DemoSkeleton() {
           <div class="px-4 pt-3">
             <div class="skeleton h-3 w-36" />
           </div>
-          <div class="skeleton w-full" style={{ height: '300px' }} />
+          <div class="skeleton w-full h-[300px]" />
         </div>
       </div>
     </div>
@@ -282,7 +282,7 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
 
           <div class="bg-[--color-bg-card] border border-[--color-border] rounded-xl overflow-hidden">
             <div class="px-4 pt-3 font-mono text-[0.625rem] text-[--color-text-muted] tracking-widest uppercase">{t.chart}</div>
-            <div ref={chartContainerRef} class="w-full" style={{ height: '300px' }} />
+            <div ref={chartContainerRef} class="w-full h-[300px]" />
           </div>
         </div>
       </div>
