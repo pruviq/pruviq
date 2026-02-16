@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { formatPrice, formatVolume } from '../utils/format';
 import DiscreteSlider from './DiscreteSlider';
 
 interface OhlcvBar {
@@ -124,7 +125,7 @@ const labels = {
   },
 };
 
-function formatPrice(p: number): string {
+function formatChartPrice(p: number): string {
   if (p >= 10000) return p.toLocaleString(undefined, { maximumFractionDigits: 1 });
   if (p >= 1000) return p.toLocaleString(undefined, { maximumFractionDigits: 2 });
   if (p >= 1) return p.toFixed(3);
@@ -153,37 +154,51 @@ function formatDateRange(startUnix: number, endUnix: number): string {
 
 function MetricBox({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div style={{
-      padding: '0.625rem',
-      borderRadius: '0.375rem',
-      backgroundColor: 'rgba(17, 17, 17, 0.8)',
-      border: '1px solid var(--color-border)',
-    }}>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5625rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '0.125rem' }}>{label}</div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 700, color }}>{value}</div>
+    <div class="p-2.5 rounded-md bg-[rgba(17,17,17,0.8)] border border-[--color-border]">
+      <div class="font-mono text-[0.5625rem] text-[--color-text-muted] uppercase tracking-wider mb-0.5">{label}</div>
+      <div class="font-mono text-base font-bold" style={{ color }}>{value}</div>
     </div>
   );
 }
 
-// Toggle button component
 function ToggleBtn({ active, activeColor, label, onClick }: { active: boolean; activeColor: string; label: string; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
+      class="px-2.5 py-1 rounded font-mono text-[0.6875rem] cursor-pointer transition-all"
       style={{
-        padding: '0.3rem 0.625rem',
-        borderRadius: '0.25rem',
         border: `1px solid ${active ? activeColor : 'var(--color-border)'}`,
         backgroundColor: active ? `${activeColor}15` : 'transparent',
         color: active ? activeColor : 'var(--color-text-muted)',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.6875rem',
-        cursor: 'pointer',
-        transition: 'all 0.15s',
       }}
     >
       {label}
     </button>
+  );
+}
+
+function ChartSkeleton() {
+  return (
+    <div class="bg-[#0a0a0a] border border-[--color-border] rounded-xl overflow-hidden mb-3">
+      <div class="w-full" style={{ height: '480px', position: 'relative' }}>
+        <div class="absolute top-4 left-4 flex gap-2">
+          <div class="skeleton h-3 w-8" />
+          <div class="skeleton h-3 w-12" />
+          <div class="skeleton h-3 w-8" />
+          <div class="skeleton h-3 w-12" />
+        </div>
+        <div class="absolute top-4 right-4 flex gap-2">
+          <div class="skeleton h-6 w-16 rounded" />
+          <div class="skeleton h-6 w-16 rounded" />
+          <div class="skeleton h-6 w-14 rounded" />
+        </div>
+        <div class="flex items-end justify-center h-full px-8 pb-10 gap-1">
+          {Array.from({ length: 40 }, (_, i) => (
+            <div key={i} class="skeleton" style={{ width: '6px', height: `${30 + Math.sin(i * 0.3) * 20 + Math.random() * 30}%`, opacity: 0.3 + (i / 40) * 0.4 }} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -239,7 +254,6 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     if (!ohlcv || !chartContainerRef.current) return;
     let disposed = false;
 
-    // Build lookup map for crosshair
     const map = new Map<number, OhlcvBar>();
     for (const bar of ohlcv) map.set(bar.t, bar);
     ohlcvMapRef.current = map;
@@ -284,7 +298,6 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         },
       });
 
-      // Candles
       const candleSeries = chart.addSeries(CandlestickSeries, {
         upColor: '#00ff88',
         downColor: '#ff4444',
@@ -296,39 +309,29 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       candleSeries.setData(ohlcv.map(b => ({ time: b.t as any, open: b.o, high: b.h, low: b.l, close: b.c })));
       candleSeriesRef.current = candleSeries;
 
-      // BB Bands
       const bbUpper = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.5)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
       const bbMid = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.25)', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
       const bbLower = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.5)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
 
-      const bbUpperData = ohlcv.filter(b => b.bb_upper != null).map(b => ({ time: b.t as any, value: b.bb_upper! }));
-      const bbMidData = ohlcv.filter(b => b.bb_mid != null).map(b => ({ time: b.t as any, value: b.bb_mid! }));
-      const bbLowerData = ohlcv.filter(b => b.bb_lower != null).map(b => ({ time: b.t as any, value: b.bb_lower! }));
-      bbUpper.setData(bbUpperData);
-      bbMid.setData(bbMidData);
-      bbLower.setData(bbLowerData);
+      bbUpper.setData(ohlcv.filter(b => b.bb_upper != null).map(b => ({ time: b.t as any, value: b.bb_upper! })));
+      bbMid.setData(ohlcv.filter(b => b.bb_mid != null).map(b => ({ time: b.t as any, value: b.bb_mid! })));
+      bbLower.setData(ohlcv.filter(b => b.bb_lower != null).map(b => ({ time: b.t as any, value: b.bb_lower! })));
       bbUpperRef.current = bbUpper;
       bbMidRef.current = bbMid;
       bbLowerRef.current = bbLower;
 
-      // EMA
       const ema20 = chart.addSeries(LineSeries, { color: '#ffaa00', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, visible: false, crosshairMarkerVisible: false });
       const ema50 = chart.addSeries(LineSeries, { color: '#aa66ff', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, visible: false, crosshairMarkerVisible: false });
-      const ema20Data = ohlcv.filter(b => b.ema20 != null).map(b => ({ time: b.t as any, value: b.ema20! }));
-      const ema50Data = ohlcv.filter(b => b.ema50 != null).map(b => ({ time: b.t as any, value: b.ema50! }));
-      ema20.setData(ema20Data);
-      ema50.setData(ema50Data);
+      ema20.setData(ohlcv.filter(b => b.ema20 != null).map(b => ({ time: b.t as any, value: b.ema20! })));
+      ema50.setData(ohlcv.filter(b => b.ema50 != null).map(b => ({ time: b.t as any, value: b.ema50! })));
       ema20Ref.current = ema20;
       ema50Ref.current = ema50;
 
-      // Volume
       const volumeSeries = chart.addSeries(HistogramSeries, {
         priceFormat: { type: 'volume' },
         priceScaleId: 'volume',
       });
-      chart.priceScale('volume').applyOptions({
-        scaleMargins: { top: 0.82, bottom: 0 },
-      });
+      chart.priceScale('volume').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
       volumeSeries.setData(ohlcv.map(b => ({
         time: b.t as any,
         value: b.v,
@@ -336,12 +339,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       })));
       volumeSeriesRef.current = volumeSeries;
 
-      // Crosshair move handler
       chart.subscribeCrosshairMove((param: any) => {
-        if (!param || !param.time) {
-          setCrosshairData(null);
-          return;
-        }
+        if (!param || !param.time) { setCrosshairData(null); return; }
         const bar = ohlcvMapRef.current.get(param.time as number);
         if (bar) setCrosshairData(bar);
       });
@@ -349,25 +348,19 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       chartRef.current = chart;
       chart.timeScale().fitContent();
 
-      // Responsive
       const ro = new ResizeObserver(entries => {
         for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
       });
       ro.observe(chartContainerRef.current);
-
       return () => ro.disconnect();
     });
 
     return () => {
       disposed = true;
-      if (chartRef.current) {
-        chartRef.current.remove();
-        chartRef.current = null;
-      }
+      if (chartRef.current) { chartRef.current.remove(); chartRef.current = null; }
     };
   }, [ohlcv]);
 
-  // Toggle BB bands visibility
   useEffect(() => {
     if (bbUpperRef.current) {
       bbUpperRef.current.applyOptions({ visible: showBB });
@@ -376,7 +369,6 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     }
   }, [showBB]);
 
-  // Toggle EMA visibility
   useEffect(() => {
     if (ema20Ref.current) {
       ema20Ref.current.applyOptions({ visible: showEMA });
@@ -384,14 +376,10 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     }
   }, [showEMA]);
 
-  // Toggle Volume visibility
   useEffect(() => {
-    if (volumeSeriesRef.current) {
-      volumeSeriesRef.current.applyOptions({ visible: showVol });
-    }
+    if (volumeSeriesRef.current) volumeSeriesRef.current.applyOptions({ visible: showVol });
   }, [showVol]);
 
-  // Apply strategy simulation
   const runSimulation = async () => {
     setSimLoading(true);
     try {
@@ -405,26 +393,13 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       const result: SimResult = await res.json();
       setSimResult(result);
 
-      // Add markers to chart
       if (candleSeriesRef.current && result.trades.length > 0) {
         const markers: any[] = [];
         for (const trade of result.trades) {
-          markers.push({
-            time: trade.entry_time as any,
-            position: 'aboveBar',
-            shape: 'arrowDown',
-            color: '#ff6666',
-            text: 'S',
-          });
+          markers.push({ time: trade.entry_time as any, position: 'aboveBar', shape: 'arrowDown', color: '#ff6666', text: 'S' });
           const exitColor = trade.exit_reason === 'tp' ? '#00ff88' : trade.exit_reason === 'sl' ? '#ff4444' : '#888888';
-          const exitText = trade.exit_reason === 'tp' ? `TP` : trade.exit_reason === 'sl' ? `SL` : `TO`;
-          markers.push({
-            time: trade.exit_time as any,
-            position: 'belowBar',
-            shape: 'arrowUp',
-            color: exitColor,
-            text: exitText,
-          });
+          const exitText = trade.exit_reason === 'tp' ? 'TP' : trade.exit_reason === 'sl' ? 'SL' : 'TO';
+          markers.push({ time: trade.exit_time as any, position: 'belowBar', shape: 'arrowUp', color: exitColor, text: exitText });
         }
         markers.sort((a, b) => a.time - b.time);
         candleSeriesRef.current.setMarkers(markers);
@@ -436,20 +411,35 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     }
   };
 
-  // Auto-run simulation on first load
   useEffect(() => {
     if (ohlcv && !autoSimDoneRef.current && chartRef.current) {
       autoSimDoneRef.current = true;
-      // Small delay to let chart render first
       setTimeout(() => runSimulation(), 300);
     }
   }, [ohlcv, chartRef.current]);
 
   if (loading) {
-    return <div style={{ padding: '3rem 0', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{t.loading}</div>;
+    return (
+      <div class="fade-in">
+        {/* Skeleton header */}
+        <div class="mb-3">
+          <div class="flex items-baseline gap-3 flex-wrap mb-2">
+            <div class="skeleton h-7 w-40" />
+            <div class="skeleton h-6 w-24" />
+            <div class="skeleton h-5 w-16 rounded" />
+          </div>
+          <div class="flex gap-6 flex-wrap">
+            <div class="skeleton h-3 w-28" />
+            <div class="skeleton h-3 w-28" />
+            <div class="skeleton h-3 w-20" />
+          </div>
+        </div>
+        <ChartSkeleton />
+      </div>
+    );
   }
   if (error || !ohlcv) {
-    return <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'var(--color-red)', fontSize: '0.875rem' }}>{t.error}</div>;
+    return <div class="py-8 text-center font-mono text-sm text-[--color-red]">{t.error}</div>;
   }
 
   const lastBar = ohlcv[ohlcv.length - 1];
@@ -457,270 +447,165 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
   const change = prevBar.c ? ((lastBar.c - prevBar.c) / prevBar.c * 100) : 0;
   const isDefault = sl === DEFAULT_SL && tp === DEFAULT_TP;
 
-  // 24h stats (last 24 bars)
   const last24 = ohlcv.slice(-24);
   const high24 = Math.max(...last24.map(b => b.h));
   const low24 = Math.min(...last24.map(b => b.l));
   const vol24 = last24.reduce((s, b) => s + b.v, 0);
 
-  // Data for crosshair overlay
   const displayBar = crosshairData || lastBar;
-  const displayChange = crosshairData && ohlcv.length > 1
+  const displayChange = crosshairData
     ? ((crosshairData.c - crosshairData.o) / crosshairData.o * 100)
     : change;
 
   return (
-    <div>
-      {/* Header — Price + 24h Stats */}
-      <div style={{ marginBottom: '0.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-          <h1 style={{ fontSize: '1.375rem', fontWeight: 700, fontFamily: 'var(--font-mono)', margin: 0 }}>
-            {SYMBOL.replace('USDT', '')}<span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>/USDT</span>
+    <div class="fade-in">
+      {/* Header */}
+      <div class="mb-3">
+        <div class="flex items-baseline gap-3 flex-wrap mb-2">
+          <h1 class="text-[1.375rem] font-bold font-mono m-0">
+            {SYMBOL.replace('USDT', '')}<span class="text-[--color-text-muted] font-normal">/USDT</span>
           </h1>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', fontWeight: 600 }}>
-            ${formatPrice(lastBar.c)}
-          </span>
-          <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', fontWeight: 600,
-            color: change >= 0 ? 'var(--color-accent)' : 'var(--color-red)',
-            backgroundColor: change >= 0 ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
-            padding: '0.125rem 0.5rem', borderRadius: '0.25rem',
-          }}>
+          <span class="font-mono text-xl font-semibold">${formatChartPrice(lastBar.c)}</span>
+          <span
+            class={`font-mono text-[0.8125rem] font-semibold px-2 py-0.5 rounded ${change >= 0 ? 'text-[#16c784] bg-[rgba(0,255,136,0.1)]' : 'text-[--color-red] bg-[rgba(255,68,68,0.1)]'}`}
+          >
             {change > 0 ? '+' : ''}{change.toFixed(2)}%
           </span>
         </div>
-        {/* 24h stats row */}
-        <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
-          <span>{t.h24high}: <span style={{ color: 'var(--color-accent)' }}>${formatPrice(high24)}</span></span>
-          <span>{t.h24low}: <span style={{ color: 'var(--color-red)' }}>${formatPrice(low24)}</span></span>
-          <span>{t.h24vol}: <span style={{ color: 'var(--color-text)' }}>{formatVol(vol24)}</span></span>
+        <div class="flex gap-6 flex-wrap font-mono text-[0.6875rem] text-[--color-text-muted]">
+          <span>{t.h24high}: <span class="text-[#16c784]">${formatChartPrice(high24)}</span></span>
+          <span>{t.h24low}: <span class="text-[--color-red]">${formatChartPrice(low24)}</span></span>
+          <span>{t.h24vol}: <span class="text-[--color-text]">{formatVol(vol24)}</span></span>
           <span>{t.dataRange}: {formatDateRange(ohlcv[0].t, lastBar.t)}</span>
         </div>
       </div>
 
       {/* Chart Container */}
-      <div style={{
-        backgroundColor: '#0a0a0a',
-        border: '1px solid var(--color-border)',
-        borderRadius: '0.75rem',
-        overflow: 'hidden',
-        marginBottom: '0.75rem',
-        position: 'relative',
-      }}>
-        {/* OHLCV Overlay — top left */}
-        <div style={{
-          position: 'absolute',
-          top: '0.5rem',
-          left: '0.75rem',
-          zIndex: 10,
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6875rem',
-          display: 'flex',
-          gap: '0.625rem',
-          flexWrap: 'wrap',
-          pointerEvents: 'none',
-        }}>
-          <span style={{ color: '#666' }}>{t.open} <span style={{ color: 'var(--color-text)' }}>{formatPrice(displayBar.o)}</span></span>
-          <span style={{ color: '#666' }}>{t.high} <span style={{ color: 'var(--color-accent)' }}>{formatPrice(displayBar.h)}</span></span>
-          <span style={{ color: '#666' }}>{t.low} <span style={{ color: 'var(--color-red)' }}>{formatPrice(displayBar.l)}</span></span>
-          <span style={{ color: '#666' }}>{t.close} <span style={{ color: displayBar.c >= displayBar.o ? 'var(--color-accent)' : 'var(--color-red)' }}>{formatPrice(displayBar.c)}</span></span>
-          <span style={{ color: '#666' }}>{t.vol} <span style={{ color: 'var(--color-text-muted)' }}>{formatVol(displayBar.v)}</span></span>
-          <span style={{
-            color: displayChange >= 0 ? 'var(--color-accent)' : 'var(--color-red)',
-            fontWeight: 600,
-          }}>
+      <div class="bg-[#0a0a0a] border border-[--color-border] rounded-xl overflow-hidden mb-3 relative">
+        {/* OHLCV Overlay */}
+        <div class="absolute top-2 left-3 z-10 font-mono text-[0.6875rem] flex gap-2.5 flex-wrap pointer-events-none">
+          <span class="text-[#666]">{t.open} <span class="text-[--color-text]">{formatChartPrice(displayBar.o)}</span></span>
+          <span class="text-[#666]">{t.high} <span class="text-[#16c784]">{formatChartPrice(displayBar.h)}</span></span>
+          <span class="text-[#666]">{t.low} <span class="text-[--color-red]">{formatChartPrice(displayBar.l)}</span></span>
+          <span class="text-[#666]">{t.close} <span style={{ color: displayBar.c >= displayBar.o ? '#16c784' : '#ff4444' }}>{formatChartPrice(displayBar.c)}</span></span>
+          <span class="text-[#666]">{t.vol} <span class="text-[--color-text-muted]">{formatVol(displayBar.v)}</span></span>
+          <span class={`font-semibold ${displayChange >= 0 ? 'text-[#16c784]' : 'text-[--color-red]'}`}>
             {displayChange > 0 ? '+' : ''}{displayChange.toFixed(2)}%
           </span>
         </div>
 
-        {/* Indicator toggles + zoom reset — top right */}
-        <div style={{
-          position: 'absolute',
-          top: '0.5rem',
-          right: '0.75rem',
-          zIndex: 10,
-          display: 'flex',
-          gap: '0.375rem',
-        }}>
+        {/* Indicator toggles */}
+        <div class="absolute top-2 right-3 z-10 flex gap-1.5">
           <ToggleBtn active={showBB} activeColor="rgba(100,150,255,0.8)" label={t.bbBands} onClick={() => setShowBB(!showBB)} />
           <ToggleBtn active={showEMA} activeColor="#ffaa00" label={t.ema} onClick={() => setShowEMA(!showEMA)} />
           <ToggleBtn active={showVol} activeColor="rgba(0,255,136,0.6)" label={t.volume} onClick={() => setShowVol(!showVol)} />
           <button
             onClick={() => chartRef.current?.timeScale().fitContent()}
-            style={{
-              padding: '0.3rem 0.5rem',
-              borderRadius: '0.25rem',
-              border: '1px solid var(--color-border)',
-              backgroundColor: 'rgba(17,17,17,0.8)',
-              color: 'var(--color-text-muted)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.6875rem',
-              cursor: 'pointer',
-            }}
+            class="px-2 py-1 rounded border border-[--color-border] bg-[rgba(17,17,17,0.8)] text-[--color-text-muted] font-mono text-[0.6875rem] cursor-pointer hover:border-[--color-accent] transition-colors"
           >
             {t.resetZoom}
           </button>
         </div>
 
-        {/* Chart */}
-        <div ref={chartContainerRef} style={{ width: '100%', height: '480px' }} />
+        <div ref={chartContainerRef} class="w-full" style={{ height: '480px' }} />
 
-        {/* TradingView Attribution — bottom right */}
-        <div style={{
-          position: 'absolute',
-          bottom: '0.375rem',
-          right: '0.75rem',
-          zIndex: 10,
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.5625rem',
-          pointerEvents: 'auto',
-        }}>
-          <a
-            href="https://www.tradingview.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#444', textDecoration: 'none' }}
-          >
+        {/* TradingView Attribution */}
+        <div class="absolute bottom-1.5 right-3 z-10 font-mono text-[0.5625rem]">
+          <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[#444] no-underline hover:text-[#666] transition-colors">
             Powered by TradingView
           </a>
         </div>
       </div>
 
       {/* Strategy Controls */}
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '0.75rem',
-        alignItems: 'center',
-        marginBottom: '1rem',
-        padding: '0.75rem 1rem',
-        backgroundColor: 'var(--color-bg-card)',
-        border: '1px solid var(--color-border)',
-        borderRadius: '0.75rem',
-      }}>
-        <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--color-accent)',
-          letterSpacing: '0.1em', textTransform: 'uppercase' as const, fontWeight: 600,
-        }}>
-          {t.strategy}
-        </span>
-        <div style={{ flex: 1 }} />
+      <div class="flex flex-wrap gap-3 items-center mb-4 px-4 py-3 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
+        <span class="font-mono text-[0.625rem] text-[--color-accent] tracking-widest uppercase font-semibold">{t.strategy}</span>
+        <div class="flex-1" />
         <button
           onClick={runSimulation}
           disabled={simLoading}
-          style={{
-            padding: '0.5rem 1.5rem',
-            borderRadius: '0.375rem',
-            border: 'none',
-            backgroundColor: 'var(--color-accent)',
-            color: 'var(--color-bg)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.8125rem',
-            fontWeight: 600,
-            cursor: simLoading ? 'wait' : 'pointer',
-            opacity: simLoading ? 0.7 : 1,
-            transition: 'opacity 0.15s',
-          }}
+          class={`px-6 py-2 rounded-md border-none bg-[--color-accent] text-[--color-bg] font-mono text-[0.8125rem] font-semibold transition-opacity ${simLoading ? 'opacity-70 cursor-wait' : 'opacity-100 cursor-pointer hover:opacity-90'}`}
         >
-          {simLoading ? t.simLoading : (simResult ? t.resim : t.apply)}
+          {simLoading ? (
+            <span class="flex items-center gap-2">
+              <span class="spinner" style={{ width: '14px', height: '14px', borderWidth: '2px' }} />
+              {t.simLoading}
+            </span>
+          ) : (simResult ? t.resim : t.apply)}
         </button>
       </div>
 
       {/* SL/TP Sliders + Results */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-        {/* Sliders */}
-        <div style={{ padding: '1.25rem', backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '0.75rem' }}>
+      <div class="grid gap-4 mb-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+        <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
           <DiscreteSlider label={t.sl} values={SL_VALUES} value={sl} defaultValue={DEFAULT_SL} onChange={setSl} />
           <DiscreteSlider label={t.tp} values={TP_VALUES} value={tp} defaultValue={DEFAULT_TP} onChange={setTp} />
         </div>
 
-        {/* Results */}
-        <div style={{ padding: '1.25rem', backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '0.75rem' }}>
+        <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
           {simResult ? (
             <div>
               {isDefault && (
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--color-accent)', letterSpacing: '0.1em', marginBottom: '0.75rem', textTransform: 'uppercase' as const }}>{t.live}</div>
+                <div class="font-mono text-[0.625rem] text-[--color-accent] tracking-widest mb-3 uppercase">{t.live}</div>
               )}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                <MetricBox label={t.winRate} value={`${simResult.win_rate}%`} color={simResult.win_rate >= 55 ? 'var(--color-accent)' : simResult.win_rate >= 50 ? 'var(--color-yellow)' : 'var(--color-red)'} />
-                <MetricBox label={t.pf} value={`${simResult.profit_factor}`} color={simResult.profit_factor >= 1.5 ? 'var(--color-accent)' : simResult.profit_factor >= 1.0 ? 'var(--color-yellow)' : 'var(--color-red)'} />
-                <MetricBox label={t.totalReturn} value={`${simResult.total_return_pct > 0 ? '+' : ''}${simResult.total_return_pct}%`} color={simResult.total_return_pct >= 0 ? 'var(--color-accent)' : 'var(--color-red)'} />
-                <MetricBox label={t.maxDD} value={`${simResult.max_drawdown_pct}%`} color="var(--color-red)" />
+              <div class="grid grid-cols-2 gap-2 mb-3">
+                <MetricBox label={t.winRate} value={`${simResult.win_rate}%`} color={simResult.win_rate >= 55 ? '#16c784' : simResult.win_rate >= 50 ? '#eab308' : '#ff4444'} />
+                <MetricBox label={t.pf} value={`${simResult.profit_factor}`} color={simResult.profit_factor >= 1.5 ? '#16c784' : simResult.profit_factor >= 1.0 ? '#eab308' : '#ff4444'} />
+                <MetricBox label={t.totalReturn} value={`${simResult.total_return_pct > 0 ? '+' : ''}${simResult.total_return_pct}%`} color={simResult.total_return_pct >= 0 ? '#16c784' : '#ff4444'} />
+                <MetricBox label={t.maxDD} value={`${simResult.max_drawdown_pct}%`} color="#ff4444" />
               </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+              <div class="font-mono text-xs text-[--color-text-muted] mb-2">
                 {simResult.total_trades} {t.tradesLabel} &middot; TP:{simResult.tp_count} SL:{simResult.sl_count} TO:{simResult.timeout_count}
               </div>
-              {/* Exit distribution bar */}
-              <div style={{ display: 'flex', height: '4px', borderRadius: '2px', overflow: 'hidden', backgroundColor: 'var(--color-border)' }}>
+              <div class="flex h-1 rounded-sm overflow-hidden bg-[--color-border]">
                 {simResult.total_trades > 0 && (<>
-                  <div style={{ width: `${(simResult.tp_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-accent)' }} title={`TP: ${simResult.tp_count}`} />
-                  <div style={{ width: `${(simResult.sl_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-red)' }} title={`SL: ${simResult.sl_count}`} />
-                  <div style={{ width: `${(simResult.timeout_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-text-muted)' }} title={`TO: ${simResult.timeout_count}`} />
+                  <div class="bg-[#16c784]" style={{ width: `${(simResult.tp_count / simResult.total_trades) * 100}%` }} />
+                  <div class="bg-[--color-red]" style={{ width: `${(simResult.sl_count / simResult.total_trades) * 100}%` }} />
+                  <div class="bg-[--color-text-muted]" style={{ width: `${(simResult.timeout_count / simResult.total_trades) * 100}%` }} />
                 </>)}
               </div>
             </div>
           ) : (
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>{t.noTrades}</div>
+            <div class="font-mono text-[0.8125rem] text-[--color-text-muted] py-4">{t.noTrades}</div>
           )}
         </div>
       </div>
 
       {/* Disclaimer */}
-      <p style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.5625rem',
-        color: '#444',
-        marginBottom: '1rem',
-        lineHeight: 1.5,
-      }}>
+      <p class="font-mono text-[0.5625rem] text-[#444] mb-4 leading-relaxed">
         * {t.disclaimer}
       </p>
 
       {/* Trade History */}
       {simResult && simResult.trades.length > 0 && (
-        <div style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '0.75rem', overflow: 'hidden' }}>
+        <div class="bg-[--color-bg-card] border border-[--color-border] rounded-xl overflow-hidden">
           <button
             onClick={() => setShowTrades(!showTrades)}
-            style={{
-              width: '100%',
-              padding: '0.75rem 1rem',
-              backgroundColor: 'transparent',
-              border: 'none',
-              borderBottom: showTrades ? '1px solid var(--color-border)' : 'none',
-              color: 'var(--color-text)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8125rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              textAlign: 'left',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            class={`w-full px-4 py-3 bg-transparent border-none text-[--color-text] font-mono text-[0.8125rem] font-semibold cursor-pointer text-left flex justify-between items-center hover:bg-[--color-bg-hover] transition-colors ${showTrades ? 'border-b border-[--color-border]' : ''}`}
           >
-            <span>{showTrades ? '▼' : '▶'} {t.trades} ({simResult.trades.length})</span>
+            <span>{showTrades ? '\u25BC' : '\u25B6'} {t.trades} ({simResult.trades.length})</span>
           </button>
           {showTrades && (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse font-mono text-xs">
                 <thead>
-                  <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.625rem' }}>#</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: 'var(--color-text-muted)', fontSize: '0.625rem' }}>{t.entry}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: 'var(--color-text-muted)', fontSize: '0.625rem' }}>{t.exit}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.625rem' }}>{t.result}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.625rem' }}>{t.pnl}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.625rem' }}>{t.bars}</th>
+                  <tr class="border-b border-[--color-border]">
+                    <th class="px-3 py-2 text-center text-[--color-text-muted] text-[0.625rem]">#</th>
+                    <th class="px-3 py-2 text-left text-[--color-text-muted] text-[0.625rem]">{t.entry}</th>
+                    <th class="px-3 py-2 text-left text-[--color-text-muted] text-[0.625rem]">{t.exit}</th>
+                    <th class="px-3 py-2 text-center text-[--color-text-muted] text-[0.625rem]">{t.result}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem]">{t.pnl}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem]">{t.bars}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {simResult.trades.map((trade, i) => {
-                    const color = trade.exit_reason === 'tp' ? 'var(--color-accent)' : trade.exit_reason === 'sl' ? 'var(--color-red)' : 'var(--color-text-muted)';
+                    const color = trade.exit_reason === 'tp' ? '#16c784' : trade.exit_reason === 'sl' ? '#ff4444' : '#888888';
                     const label = trade.exit_reason.toUpperCase();
                     return (
                       <tr
                         key={i}
-                        style={{ borderBottom: '1px solid var(--color-border)', cursor: 'pointer' }}
+                        class="border-b border-[--color-border] cursor-pointer row-hover"
                         onClick={() => {
                           if (chartRef.current) {
                             chartRef.current.timeScale().setVisibleRange({
@@ -729,17 +614,15 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
                             });
                           }
                         }}
-                        onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(0,255,136,0.03)'}
-                        onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'}
                       >
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>{i + 1}</td>
-                        <td style={{ padding: '0.5rem 0.75rem' }}>{formatTime(trade.entry_time)}</td>
-                        <td style={{ padding: '0.5rem 0.75rem' }}>{formatTime(trade.exit_time)}</td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'center', color, fontWeight: 600 }}>{label}</td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: trade.pnl_pct >= 0 ? 'var(--color-accent)' : 'var(--color-red)' }}>
+                        <td class="px-3 py-2 text-center text-[--color-text-muted]">{i + 1}</td>
+                        <td class="px-3 py-2">{formatTime(trade.entry_time)}</td>
+                        <td class="px-3 py-2">{formatTime(trade.exit_time)}</td>
+                        <td class="px-3 py-2 text-center font-semibold" style={{ color }}>{label}</td>
+                        <td class="px-3 py-2 text-right" style={{ color: trade.pnl_pct >= 0 ? '#16c784' : '#ff4444' }}>
                           {trade.pnl_pct > 0 ? '+' : ''}{trade.pnl_pct.toFixed(2)}%
                         </td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)' }}>{trade.bars_held}</td>
+                        <td class="px-3 py-2 text-right text-[--color-text-muted]">{trade.bars_held}</td>
                       </tr>
                     );
                   })}

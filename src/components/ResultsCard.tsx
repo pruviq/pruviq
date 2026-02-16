@@ -36,30 +36,9 @@ const labels = {
 
 function MetricBox({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div style={{
-      padding: '0.75rem',
-      borderRadius: '0.5rem',
-      backgroundColor: 'rgba(17, 17, 17, 0.8)',
-      border: '1px solid var(--color-border)',
-    }}>
-      <div style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.625rem',
-        color: 'var(--color-text-muted)',
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.05em',
-        marginBottom: '0.25rem',
-      }}>
-        {label}
-      </div>
-      <div style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '1.25rem',
-        fontWeight: 700,
-        color,
-      }}>
-        {value}
-      </div>
+    <div class="p-3 rounded-lg bg-[rgba(17,17,17,0.8)] border border-[--color-border]">
+      <div class="font-mono text-[0.625rem] text-[--color-text-muted] uppercase tracking-wider mb-1">{label}</div>
+      <div class="font-mono text-xl font-bold" style={{ color }}>{value}</div>
     </div>
   );
 }
@@ -77,68 +56,34 @@ export default function ResultsCard({ data, isDefault, lang = 'en' }: ResultsCar
 
   return (
     <div>
-      {/* Badge */}
       {isDefault && (
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.625rem',
-          color: 'var(--color-accent)',
-          letterSpacing: '0.1em',
-          marginBottom: '0.75rem',
-          textTransform: 'uppercase' as const,
-        }}>
-          {t.live}
-        </div>
+        <div class="font-mono text-[0.625rem] text-[--color-accent] tracking-widest mb-3 uppercase">{t.live}</div>
       )}
 
-      {/* Main metrics grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '0.5rem',
-        marginBottom: '1rem',
-      }}>
+      <div class="grid grid-cols-2 gap-2 mb-4">
         <MetricBox label={t.winRate} value={`${data.win_rate}%`} color={wrColor} />
         <MetricBox label={t.pf} value={`${data.profit_factor}`} color={pfColor} />
         <MetricBox label={t.totalReturn} value={`${data.total_return_pct > 0 ? '+' : ''}${data.total_return_pct}%`} color={retColor} />
         <MetricBox label={t.maxDD} value={`${data.max_drawdown_pct}%`} color="var(--color-red)" />
       </div>
 
-      {/* Trade count */}
-      <div style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.75rem',
-        color: 'var(--color-text-muted)',
-        marginBottom: '0.75rem',
-      }}>
+      <div class="font-mono text-xs text-[--color-text-muted] mb-3">
         {data.total_trades.toLocaleString()} {t.trades}
       </div>
 
       {/* Exit reason bar */}
-      <div style={{ marginBottom: '0.25rem' }}>
-        <div style={{
-          display: 'flex',
-          height: '6px',
-          borderRadius: '3px',
-          overflow: 'hidden',
-          backgroundColor: 'var(--color-border)',
-        }}>
-          <div style={{ width: `${tpPct}%`, backgroundColor: 'var(--color-accent)', transition: 'width 0.3s ease' }} />
-          <div style={{ width: `${slPct}%`, backgroundColor: 'var(--color-red)', transition: 'width 0.3s ease' }} />
-          <div style={{ width: `${toPct}%`, backgroundColor: 'var(--color-text-muted)', transition: 'width 0.3s ease' }} />
+      <div class="mb-1">
+        <div class="flex h-1.5 rounded-full overflow-hidden bg-[--color-border]">
+          <div class="bg-[--color-accent] transition-[width] duration-300" style={{ width: `${tpPct}%` }} />
+          <div class="bg-[--color-red] transition-[width] duration-300" style={{ width: `${slPct}%` }} />
+          <div class="bg-[--color-text-muted] transition-[width] duration-300" style={{ width: `${toPct}%` }} />
         </div>
       </div>
 
-      {/* Exit reason legend */}
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.625rem',
-      }}>
-        <span style={{ color: 'var(--color-accent)' }}>TP {tpPct.toFixed(0)}%</span>
-        <span style={{ color: 'var(--color-red)' }}>SL {slPct.toFixed(0)}%</span>
-        <span style={{ color: 'var(--color-text-muted)' }}>TO {toPct.toFixed(0)}%</span>
+      <div class="flex gap-4 font-mono text-[0.625rem]">
+        <span class="text-[--color-accent]">TP {tpPct.toFixed(0)}%</span>
+        <span class="text-[--color-red]">SL {slPct.toFixed(0)}%</span>
+        <span class="text-[--color-text-muted]">TO {toPct.toFixed(0)}%</span>
       </div>
     </div>
   );

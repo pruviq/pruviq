@@ -30,6 +30,17 @@ const feesPath = lang === 'ko' ? '/ko/fees' : '/fees';
 const changelogPath = lang === 'ko' ? '/ko/changelog' : '/changelog';
 const privacyPath = lang === 'ko' ? '/ko/privacy' : '/privacy';
 const termsPath = lang === 'ko' ? '/ko/terms' : '/terms';
+
+// Active nav detection
+const navItems = [
+  { href: marketPath, match: '/market', label: t('nav.market') },
+  { href: coinsPath, match: '/coins', label: t('nav.coins') },
+  { href: performancePath, match: '/performance', label: t('nav.performance') },
+  { href: strategiesPath, match: '/strategies', label: t('nav.simulate') },
+  { href: blogPath, match: '/blog', label: t('nav.learn') },
+  { href: feesPath, match: '/fees', label: t('nav.fees') },
+];
+const isActive = (match: string) => basePath.startsWith(match);
 ---
 
 <!doctype html>
@@ -121,12 +132,12 @@ const termsPath = lang === 'ko' ? '/ko/terms' : '/terms';
           <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
         </a>
         <div class="hidden md:flex items-center gap-8 text-sm">
-          <a href={marketPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.market')}</a>
-          <a href={coinsPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.coins')}</a>
-          <a href={performancePath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.performance')}</a>
-          <a href={strategiesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.simulate')}</a>
-          <a href={blogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.learn')}</a>
-          <a href={feesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.fees')}</a>
+          {navItems.map(item => (
+            <a href={item.href} class:list={[
+              'transition-colors',
+              isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted] hover:text-[--color-text]'
+            ]}>{item.label}</a>
+          ))}
           <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]" aria-label="Toggle menu" aria-expanded="false">
@@ -135,12 +146,11 @@ const termsPath = lang === 'ko' ? '/ko/terms' : '/terms';
       </div>
       <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
         <div class="flex flex-col px-4 py-4 gap-4 text-sm">
-          <a href={marketPath} class="text-[--color-text-muted]">{t('nav.market')}</a>
-          <a href={coinsPath} class="text-[--color-text-muted]">{t('nav.coins')}</a>
-          <a href={performancePath} class="text-[--color-text-muted]">{t('nav.performance')}</a>
-          <a href={strategiesPath} class="text-[--color-text-muted]">{t('nav.simulate')}</a>
-          <a href={blogPath} class="text-[--color-text-muted]">{t('nav.learn')}</a>
-          <a href={feesPath} class="text-[--color-text-muted]">{t('nav.fees')}</a>
+          {navItems.map(item => (
+            <a href={item.href} class:list={[
+              isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted]'
+            ]}>{item.label}</a>
+          ))}
           <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded text-[--color-text-muted] w-fit">{t('nav.lang')}</a>
         </div>
       </div>
@@ -152,33 +162,47 @@ const termsPath = lang === 'ko' ? '/ko/terms' : '/terms';
 
     <footer class="border-t border-[--color-border] mt-20">
       <div class="max-w-6xl mx-auto px-4 py-12">
-        <div class="flex flex-col gap-6">
-          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-[--color-text-muted] text-sm">
-              <span class="text-[--color-accent] font-mono font-bold">PRUVIQ</span> &mdash; {t('footer.tagline')}
+        <!-- Brand + 3-column links -->
+        <div class="flex flex-col md:flex-row gap-10 mb-10">
+          <div class="md:w-1/3">
+            <span class="text-[--color-accent] font-mono font-bold text-lg">PRUVIQ</span>
+            <p class="text-[--color-text-muted] text-sm mt-2">{t('footer.tagline')}</p>
+          </div>
+          <div class="grid grid-cols-3 gap-8 md:w-2/3 text-sm">
+            <div>
+              <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">Product</p>
+              <div class="flex flex-col gap-2">
+                <a href={marketPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.market')}</a>
+                <a href={coinsPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.coins')}</a>
+                <a href={strategiesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.strategies')}</a>
+                <a href={performancePath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.performance')}</a>
+                <a href={feesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.fees')}</a>
+              </div>
             </div>
-            <div class="flex items-center gap-6 text-xs text-[--color-text-muted]">
-              <a href={marketPath} class="hover:text-[--color-text] transition-colors">{t('nav.market')}</a>
-              <a href={coinsPath} class="hover:text-[--color-text] transition-colors">{t('nav.coins')}</a>
-              <a href={performancePath} class="hover:text-[--color-text] transition-colors">{t('nav.performance')}</a>
-              <a href={strategiesPath} class="hover:text-[--color-text] transition-colors">{t('footer.strategies')}</a>
-              <a href={blogPath} class="hover:text-[--color-text] transition-colors">{t('footer.learn')}</a>
-              <a href={feesPath} class="hover:text-[--color-text] transition-colors">{t('footer.fees')}</a>
-              <a href={changelogPath} class="hover:text-[--color-text] transition-colors">{t('footer.changelog')}</a>
-              <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="hover:text-[--color-text] transition-colors">{t('footer.telegram')}</a>
+            <div>
+              <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">Resources</p>
+              <div class="flex flex-col gap-2">
+                <a href={blogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.learn')}</a>
+                <a href={changelogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.changelog')}</a>
+                <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.telegram')}</a>
+              </div>
+            </div>
+            <div>
+              <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">Legal</p>
+              <div class="flex flex-col gap-2">
+                <a href={privacyPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.privacy')}</a>
+                <a href={termsPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.terms')}</a>
+                <a href="mailto:pruviq@gmail.com" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">pruviq@gmail.com</a>
+              </div>
             </div>
           </div>
-          <div class="flex items-center gap-6 text-xs text-[--color-text-muted]">
-            <a href={privacyPath} class="hover:text-[--color-text] transition-colors">{t('footer.privacy')}</a>
-            <a href={termsPath} class="hover:text-[--color-text] transition-colors">{t('footer.terms')}</a>
-            <a href="mailto:pruviq@gmail.com" class="hover:text-[--color-text] transition-colors">pruviq@gmail.com</a>
-          </div>
-          <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-[--color-text-muted]">
-            <p>{t('footer.disclaimer')}</p>
+        </div>
+        <!-- Divider -->
+        <div class="border-t border-[--color-border] pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-[--color-text-muted]">
+          <p>{t('footer.disclaimer')}</p>
+          <div class="flex items-center gap-4">
             <p>{t('footer.affiliate')} <a href={feesPath} class="text-[--color-accent] hover:underline">{t('footer.details')}</a></p>
-          </div>
-          <div class="text-center text-xs text-[--color-text-muted] mt-2">
-            <p>&copy; 2026 PRUVIQ. All rights reserved.</p>
+            <span>&copy; 2026 PRUVIQ</span>
           </div>
         </div>
       </div>

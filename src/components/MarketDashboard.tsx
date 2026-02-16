@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
+import { formatPrice, formatVolume, changeColor, fgColor, timeAgo } from '../utils/format';
 
 const API_URL = import.meta.env.PUBLIC_PRUVIQ_API_URL || '';
 
@@ -88,87 +89,107 @@ type NewsData = {
   generated: string;
 };
 
-function formatPrice(p: number): string {
-  if (p >= 10000) return p.toLocaleString('en-US', { maximumFractionDigits: 0 });
-  if (p >= 100) return p.toLocaleString('en-US', { maximumFractionDigits: 2 });
-  if (p >= 1) return p.toLocaleString('en-US', { maximumFractionDigits: 3 });
-  return p.toLocaleString('en-US', { maximumFractionDigits: 6 });
+/* --- Skeleton Components --- */
+
+function SkeletonCard() {
+  return (
+    <div className="border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card]">
+      <div className="skeleton h-3 w-20 mb-3" />
+      <div className="skeleton h-7 w-28 mb-2" />
+      <div className="skeleton h-3 w-14" />
+    </div>
+  );
 }
 
-function formatVolume(v: number): string {
-  if (v >= 1e9) return `$${(v / 1e9).toFixed(1)}B`;
-  if (v >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
-  if (v >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
-  return `$${v.toFixed(0)}`;
+function SkeletonPriceBar() {
+  return (
+    <div className="flex gap-4 flex-wrap mb-4">
+      <div className="flex-1 min-w-[200px] border border-[--color-border] rounded-lg p-3 bg-[--color-bg-card] flex items-center gap-3">
+        <div className="skeleton h-4 w-10" />
+        <div className="skeleton h-6 w-24" />
+        <div className="skeleton h-4 w-16" />
+      </div>
+      <div className="flex-1 min-w-[200px] border border-[--color-border] rounded-lg p-3 bg-[--color-bg-card] flex items-center gap-3">
+        <div className="skeleton h-4 w-10" />
+        <div className="skeleton h-6 w-24" />
+        <div className="skeleton h-4 w-16" />
+      </div>
+    </div>
+  );
 }
 
-function fgColor(idx: number): string {
-  if (idx <= 25) return '#ea3943';
-  if (idx <= 45) return '#ea8c00';
-  if (idx <= 55) return '#c8c8c8';
-  if (idx <= 75) return '#93d900';
-  return '#16c784';
+function SkeletonTable() {
+  return (
+    <div className="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden">
+      <div className="px-4 py-3 border-b border-[--color-border]">
+        <div className="skeleton h-3 w-24" />
+      </div>
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="flex items-center justify-between px-4 py-2 border-b border-[--color-border] last:border-0">
+          <div className="skeleton h-4 w-16" />
+          <div className="skeleton h-4 w-20" />
+          <div className="skeleton h-4 w-14" />
+        </div>
+      ))}
+    </div>
+  );
 }
 
-function changeColor(v: number): string {
-  return v >= 0 ? '#16c784' : '#ea3943';
+function SkeletonNews() {
+  return (
+    <div>
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="px-4 py-3 border-b border-[--color-border] last:border-0">
+          <div className="skeleton h-4 w-3/4 mb-2" />
+          <div className="skeleton h-3 w-1/2" />
+        </div>
+      ))}
+    </div>
+  );
 }
 
-function timeAgo(dateStr: string): string {
-  if (!dateStr) return '';
-  try {
-    const d = new Date(dateStr);
-    const now = Date.now();
-    const diff = Math.floor((now - d.getTime()) / 60000);
-    if (diff < 1) return 'now';
-    if (diff < 60) return `${diff}m`;
-    if (diff < 1440) return `${Math.floor(diff / 60)}h`;
-    return `${Math.floor(diff / 1440)}d`;
-  } catch {
-    return '';
-  }
-}
+/* --- Data Components --- */
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
-    <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '16px 20px' }}>
-      <div style={{ fontSize: 11, color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>{label}</div>
-      <div style={{ fontSize: 24, fontWeight: 700, color: color || '#e8e8e8', fontFamily: 'JetBrains Mono, monospace' }}>{value}</div>
-      {sub && <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>{sub}</div>}
+    <div className="border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] card-hover">
+      <div className="text-[11px] text-[--color-text-muted] uppercase tracking-wider mb-1.5">{label}</div>
+      <div className="text-2xl font-bold font-mono" style={{ color: color || 'var(--color-text)' }}>{value}</div>
+      {sub && <div className="text-xs text-[--color-text-muted] mt-1">{sub}</div>}
     </div>
   );
 }
 
 function MoverTable({ title, movers, l }: { title: string; movers: MarketMover[]; l: typeof labels.en }) {
   return (
-    <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden' }}>
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', fontSize: 12, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+    <div className="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden">
+      <div className="px-4 py-3 border-b border-[--color-border] text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider">
         {title}
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+      <table className="w-full text-[13px]" style={{ borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-            <th style={{ textAlign: 'left', padding: '8px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>{l.symbol}</th>
-            <th style={{ textAlign: 'right', padding: '8px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>{l.price}</th>
-            <th style={{ textAlign: 'right', padding: '8px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>{l.change}</th>
-            <th style={{ textAlign: 'right', padding: '8px 16px', color: '#666', fontWeight: 500, fontSize: 11, display: 'none' }} class="md-show">{l.volume}</th>
+          <tr className="border-b border-[--color-border]">
+            <th className="text-left px-4 py-2 text-[--color-text-muted] font-medium text-[11px]">{l.symbol}</th>
+            <th className="text-right px-4 py-2 text-[--color-text-muted] font-medium text-[11px]">{l.price}</th>
+            <th className="text-right px-4 py-2 text-[--color-text-muted] font-medium text-[11px]">{l.change}</th>
+            <th className="text-right px-4 py-2 text-[--color-text-muted] font-medium text-[11px] hidden md:table-cell">{l.volume}</th>
           </tr>
         </thead>
         <tbody>
           {movers.map((m, i) => (
-            <tr key={m.symbol} style={{ borderBottom: i < movers.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>
-              <td style={{ padding: '8px 16px', fontFamily: 'JetBrains Mono, monospace', fontWeight: 500, color: '#e8e8e8' }}>
-                <a href={`/coins/${m.symbol.toLowerCase().replace('usdt', '')}usdt`} style={{ color: '#e8e8e8', textDecoration: 'none' }}>
+            <tr key={m.symbol} className="row-hover border-b border-[--color-border] last:border-0">
+              <td className="px-4 py-2 font-mono font-medium text-[--color-text]">
+                <a href={`/coins/${m.symbol.toLowerCase().replace('usdt', '')}usdt`} className="text-[--color-text] no-underline hover:text-[--color-accent] transition-colors">
                   {m.symbol.replace('USDT', '')}
                 </a>
               </td>
-              <td style={{ textAlign: 'right', padding: '8px 16px', fontFamily: 'JetBrains Mono, monospace', color: '#ccc' }}>
+              <td className="text-right px-4 py-2 font-mono text-[--color-text-muted]">
                 ${formatPrice(m.price)}
               </td>
-              <td style={{ textAlign: 'right', padding: '8px 16px', fontFamily: 'JetBrains Mono, monospace', color: changeColor(m.change_24h), fontWeight: 600 }}>
+              <td className="text-right px-4 py-2 font-mono font-semibold" style={{ color: changeColor(m.change_24h) }}>
                 {m.change_24h > 0 ? '+' : ''}{m.change_24h.toFixed(2)}%
               </td>
-              <td style={{ textAlign: 'right', padding: '8px 16px', fontFamily: 'JetBrains Mono, monospace', color: '#888', fontSize: 12, display: 'none' }} class="md-show">
+              <td className="text-right px-4 py-2 font-mono text-[--color-text-muted] text-xs hidden md:table-cell">
                 {formatVolume(m.volume_24h)}
               </td>
             </tr>
@@ -180,7 +201,7 @@ function MoverTable({ title, movers, l }: { title: string; movers: MarketMover[]
 }
 
 const NEWS_SOURCES = ['CoinDesk', 'CoinTelegraph', 'Decrypt', 'Bitcoin Magazine'];
-const REFRESH_MS = 120_000; // 2 minutes
+const REFRESH_MS = 120_000;
 
 export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const l = labels[lang] || labels.en;
@@ -191,11 +212,33 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
   const [searchQuery, setSearchQuery] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+  const [refreshAgo, setRefreshAgo] = useState('');
+
+  // Price flash tracking
+  const prevBtc = useRef<number>(0);
+  const prevEth = useRef<number>(0);
+  const [btcFlash, setBtcFlash] = useState('');
+  const [ethFlash, setEthFlash] = useState('');
 
   const fetchMarket = () => {
     fetch(`${API_URL}/market`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(d => { setMarket(d); setMarketErr(false); setLastRefresh(new Date()); })
+      .then((d: MarketData) => {
+        // Price flash detection
+        if (prevBtc.current && d.btc_price !== prevBtc.current) {
+          setBtcFlash(d.btc_price > prevBtc.current ? 'flash-up' : 'flash-down');
+          setTimeout(() => setBtcFlash(''), 600);
+        }
+        if (prevEth.current && d.eth_price !== prevEth.current) {
+          setEthFlash(d.eth_price > prevEth.current ? 'flash-up' : 'flash-down');
+          setTimeout(() => setEthFlash(''), 600);
+        }
+        prevBtc.current = d.btc_price;
+        prevEth.current = d.eth_price;
+        setMarket(d);
+        setMarketErr(false);
+        setLastRefresh(new Date());
+      })
       .catch(() => setMarketErr(true));
   };
 
@@ -213,6 +256,19 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
     return () => clearInterval(interval);
   }, []);
 
+  // Live "updated X ago" counter
+  useEffect(() => {
+    const tick = () => {
+      if (!lastRefresh) return;
+      const sec = Math.floor((Date.now() - lastRefresh.getTime()) / 1000);
+      if (sec < 60) setRefreshAgo(`${sec}s`);
+      else setRefreshAgo(`${Math.floor(sec / 60)}m`);
+    };
+    tick();
+    const id = setInterval(tick, 10_000);
+    return () => clearInterval(id);
+  }, [lastRefresh]);
+
   const filteredNews = news?.items.filter(item => {
     if (sourceFilter && item.source !== sourceFilter) return false;
     if (searchQuery) {
@@ -223,83 +279,80 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
   }) ?? [];
 
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-      {/* Market Overview Cards */}
+    <div className="max-w-[1100px] mx-auto">
+      {/* Loading skeleton */}
       {!market && !marketErr && (
-        <div style={{ textAlign: 'center', padding: 40, color: '#888' }}>{l.loading}</div>
+        <div>
+          <SkeletonPriceBar />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <SkeletonTable />
+            <SkeletonTable />
+          </div>
+        </div>
       )}
+
       {marketErr && (
-        <div style={{ textAlign: 'center', padding: 40, color: '#ea3943' }}>{l.error}</div>
+        <div className="text-center py-10 text-[--color-red] text-sm">{l.error}</div>
       )}
+
       {market && (
-        <>
+        <div className="fade-in">
           {/* BTC + ETH Price Bar */}
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '12px 20px', flex: '1 1 200px' }}>
-              <span style={{ fontSize: 14, fontWeight: 600, color: '#f7931a' }}>BTC</span>
-              <span style={{ fontSize: 20, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: '#e8e8e8' }}>
+          <div className="flex gap-4 flex-wrap mb-4">
+            <div className={`flex items-center gap-3 border border-[--color-border] rounded-lg py-3 px-5 bg-[--color-bg-card] flex-1 min-w-[200px] ${btcFlash}`}>
+              <span className="text-sm font-semibold" style={{ color: '#f7931a' }}>BTC</span>
+              <span className="text-xl font-bold font-mono text-[--color-text]">
                 ${market.btc_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </span>
-              <span style={{ fontSize: 14, fontWeight: 600, fontFamily: 'JetBrains Mono, monospace', color: changeColor(market.btc_change_24h) }}>
+              <span className="text-sm font-semibold font-mono" style={{ color: changeColor(market.btc_change_24h) }}>
                 {market.btc_change_24h > 0 ? '+' : ''}{market.btc_change_24h.toFixed(2)}%
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '12px 20px', flex: '1 1 200px' }}>
-              <span style={{ fontSize: 14, fontWeight: 600, color: '#627eea' }}>ETH</span>
-              <span style={{ fontSize: 20, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: '#e8e8e8' }}>
+            <div className={`flex items-center gap-3 border border-[--color-border] rounded-lg py-3 px-5 bg-[--color-bg-card] flex-1 min-w-[200px] ${ethFlash}`}>
+              <span className="text-sm font-semibold" style={{ color: '#627eea' }}>ETH</span>
+              <span className="text-xl font-bold font-mono text-[--color-text]">
                 ${market.eth_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </span>
-              <span style={{ fontSize: 14, fontWeight: 600, fontFamily: 'JetBrains Mono, monospace', color: changeColor(market.eth_change_24h) }}>
+              <span className="text-sm font-semibold font-mono" style={{ color: changeColor(market.eth_change_24h) }}>
                 {market.eth_change_24h > 0 ? '+' : ''}{market.eth_change_24h.toFixed(2)}%
               </span>
             </div>
           </div>
 
           {/* Stat Cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 24 }}>
-            <StatCard
-              label={l.fearGreed}
-              value={`${market.fear_greed_index}`}
-              sub={market.fear_greed_label}
-              color={fgColor(market.fear_greed_index)}
-            />
-            <StatCard
-              label={l.totalMcap}
-              value={`$${market.total_market_cap_b.toFixed(0)}B`}
-            />
-            <StatCard
-              label={l.btcDom}
-              value={`${market.btc_dominance}%`}
-            />
-            <StatCard
-              label={l.volume24h}
-              value={`$${market.total_volume_24h_b.toFixed(0)}B`}
-            />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <StatCard label={l.fearGreed} value={`${market.fear_greed_index}`} sub={market.fear_greed_label} color={fgColor(market.fear_greed_index)} />
+            <StatCard label={l.totalMcap} value={`$${market.total_market_cap_b.toFixed(0)}B`} />
+            <StatCard label={l.btcDom} value={`${market.btc_dominance}%`} />
+            <StatCard label={l.volume24h} value={`$${market.total_volume_24h_b.toFixed(0)}B`} />
           </div>
 
           {/* Top Gainers / Losers */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16, marginBottom: 24 }}>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
             <MoverTable title={l.topGainers} movers={market.top_gainers} l={l} />
             <MoverTable title={l.topLosers} movers={market.top_losers} l={l} />
           </div>
 
           {/* Funding Rates */}
           {market.extreme_funding.length > 0 && (
-            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden', marginBottom: 24 }}>
-              <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', fontSize: 12, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div className="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden mb-6">
+              <div className="px-4 py-3 border-b border-[--color-border] text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider">
                 {l.fundingRates}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 0 }}>
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
                 {market.extreme_funding.map(f => (
-                  <div key={f.symbol} style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.03)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 500, color: '#ccc' }}>
+                  <div key={f.symbol} className="flex justify-between items-center px-4 py-2.5 border-b border-[--color-border] last:border-0">
+                    <span className="font-mono text-[13px] font-medium text-[--color-text-muted]">
                       {f.symbol.replace('USDT', '')}
                     </span>
-                    <div style={{ textAlign: 'right' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 600, color: f.rate >= 0 ? '#16c784' : '#ea3943' }}>
+                    <div className="text-right">
+                      <span className="font-mono text-[13px] font-semibold" style={{ color: changeColor(f.rate) }}>
                         {f.rate > 0 ? '+' : ''}{f.rate.toFixed(4)}%
                       </span>
-                      <div style={{ fontSize: 10, color: '#666' }}>
+                      <div className="text-[10px] text-[--color-text-muted]">
                         {l.annual}: {f.annual_pct > 0 ? '+' : ''}{f.annual_pct.toFixed(0)}%
                       </div>
                     </div>
@@ -308,13 +361,13 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
 
       {/* News Feed */}
-      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden', marginBottom: 24 }}>
-        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 12, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 'auto' }}>
+      <div className="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden mb-6">
+        <div className="px-4 py-3 border-b border-[--color-border] flex flex-wrap items-center gap-2.5">
+          <span className="text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider mr-auto">
             {l.latestNews}
           </span>
           <input
@@ -322,74 +375,55 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
             placeholder={l.searchNews}
             value={searchQuery}
             onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value)}
-            style={{
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6,
-              padding: '5px 10px', fontSize: 12, color: '#e8e8e8', outline: 'none', width: 180,
-              fontFamily: 'Inter, sans-serif',
-            }}
+            className="bg-[--color-bg-hover] border border-[--color-border] rounded-md px-2.5 py-1 text-xs text-[--color-text] outline-none w-44 font-sans focus:border-[--color-accent] transition-colors"
           />
-          <div style={{ display: 'flex', gap: 4 }}>
+          <div className="flex gap-1">
             <button
               onClick={() => setSourceFilter('')}
-              style={{
-                padding: '4px 8px', fontSize: 10, borderRadius: 4, cursor: 'pointer', border: 'none',
-                background: !sourceFilter ? '#00d4aa' : 'rgba(255,255,255,0.06)',
-                color: !sourceFilter ? '#000' : '#888', fontWeight: 600,
-              }}
+              className={`px-2 py-1 text-[10px] rounded font-semibold cursor-pointer border-none transition-colors ${
+                !sourceFilter ? 'bg-[--color-accent] text-[--color-bg]' : 'bg-[--color-bg-hover] text-[--color-text-muted] hover:text-[--color-text]'
+              }`}
             >{l.allSources}</button>
             {NEWS_SOURCES.map(s => (
               <button
                 key={s}
                 onClick={() => setSourceFilter(sourceFilter === s ? '' : s)}
-                style={{
-                  padding: '4px 8px', fontSize: 10, borderRadius: 4, cursor: 'pointer', border: 'none',
-                  background: sourceFilter === s ? '#00d4aa' : 'rgba(255,255,255,0.06)',
-                  color: sourceFilter === s ? '#000' : '#888', fontWeight: 600,
-                  whiteSpace: 'nowrap',
-                }}
+                className={`px-2 py-1 text-[10px] rounded font-semibold cursor-pointer border-none whitespace-nowrap transition-colors ${
+                  sourceFilter === s ? 'bg-[--color-accent] text-[--color-bg]' : 'bg-[--color-bg-hover] text-[--color-text-muted] hover:text-[--color-text]'
+                }`}
               >{s.replace('Bitcoin Magazine', 'BTC Mag')}</button>
             ))}
           </div>
         </div>
-        {!news && !newsErr && (
-          <div style={{ textAlign: 'center', padding: 30, color: '#888', fontSize: 13 }}>{l.newsLoading}</div>
-        )}
+
+        {!news && !newsErr && <SkeletonNews />}
         {newsErr && (
-          <div style={{ textAlign: 'center', padding: 30, color: '#ea3943', fontSize: 13 }}>{l.newsError}</div>
+          <div className="text-center py-8 text-[--color-red] text-[13px]">{l.newsError}</div>
         )}
         {news && filteredNews.length > 0 && (
-          <div>
+          <div className="fade-in">
             {filteredNews.map((item, i) => (
               <a
                 key={`${item.source}-${i}`}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: 'block',
-                  padding: '12px 16px',
-                  borderBottom: i < filteredNews.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                className="block px-4 py-3 border-b border-[--color-border] last:border-0 no-underline text-inherit row-hover"
               >
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: '#e8e8e8', lineHeight: 1.4, marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-[--color-text] leading-snug mb-1 truncate">
                       {item.title}
                     </div>
                     {item.summary && (
-                      <div style={{ fontSize: 12, color: '#888', lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div className="text-xs text-[--color-text-muted] leading-snug truncate">
                         {item.summary}
                       </div>
                     )}
                   </div>
-                  <div style={{ flexShrink: 0, textAlign: 'right' }}>
-                    <div style={{ fontSize: 10, color: '#00d4aa', fontWeight: 600, letterSpacing: '0.03em' }}>{item.source}</div>
-                    <div style={{ fontSize: 10, color: '#555', marginTop: 2 }}>{timeAgo(item.published)}</div>
+                  <div className="shrink-0 text-right">
+                    <div className="text-[10px] text-[--color-accent] font-semibold tracking-wide">{item.source}</div>
+                    <div className="text-[10px] text-[--color-text-muted] mt-0.5">{timeAgo(item.published)}</div>
                   </div>
                 </div>
               </a>
@@ -397,7 +431,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
           </div>
         )}
         {news && filteredNews.length === 0 && (
-          <div style={{ textAlign: 'center', padding: 30, color: '#666', fontSize: 13 }}>
+          <div className="text-center py-8 text-[--color-text-muted] text-[13px]">
             {lang === 'ko' ? '검색 결과가 없습니다.' : 'No results found.'}
           </div>
         )}
@@ -405,17 +439,11 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
 
       {/* Last Updated + Disclaimer */}
       {lastRefresh && (
-        <p style={{ fontSize: 11, color: '#666', textAlign: 'center', marginTop: 16, fontFamily: 'JetBrains Mono, monospace' }}>
-          {l.lastUpdated}: {lastRefresh.toLocaleTimeString()}
+        <p className="text-[11px] text-[--color-text-muted] text-center mt-4 font-mono">
+          {l.lastUpdated}: {refreshAgo} {l.ago}
         </p>
       )}
-      <p style={{ fontSize: 11, color: '#555', textAlign: 'center', marginTop: 4 }}>{l.disclaimer}</p>
-
-      <style>{`
-        @media (min-width: 768px) {
-          .md-show { display: table-cell !important; }
-        }
-      `}</style>
+      <p className="text-[11px] text-[--color-text-muted] text-center mt-1 opacity-60">{l.disclaimer}</p>
     </div>
   );
 }

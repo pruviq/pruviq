@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
+import { formatPrice, formatVolume } from '../utils/format';
 
 interface CoinRow {
   symbol: string;
@@ -57,18 +58,20 @@ const labels = {
 
 type SortKey = 'symbol' | 'price' | 'change_24h' | 'volume_24h' | 'trades' | 'win_rate' | 'profit_factor' | 'total_return_pct';
 
-function formatPrice(p: number): string {
-  if (p >= 1000) return `$${p.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
-  if (p >= 1) return `$${p.toFixed(2)}`;
-  if (p >= 0.01) return `$${p.toFixed(4)}`;
-  return `$${p.toFixed(6)}`;
-}
-
-function formatVolume(v: number): string {
-  if (v >= 1e9) return `$${(v / 1e9).toFixed(1)}B`;
-  if (v >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
-  if (v >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
-  return `$${v.toFixed(0)}`;
+function SkeletonRow({ i }: { i: number }) {
+  return (
+    <tr class="border-b border-[--color-border]">
+      <td class="px-2.5 py-3 text-center"><div class="skeleton h-3 w-5 mx-auto" /></td>
+      <td class="px-2.5 py-3"><div class="skeleton h-4 w-20" /></td>
+      <td class="px-2.5 py-3 text-right"><div class="skeleton h-3 w-16 ml-auto" /></td>
+      <td class="px-2.5 py-3 text-right"><div class="skeleton h-3 w-12 ml-auto" /></td>
+      <td class="px-2.5 py-3 text-right hidden md:table-cell"><div class="skeleton h-3 w-14 ml-auto" /></td>
+      <td class="px-2.5 py-3 text-right hidden md:table-cell"><div class="skeleton h-3 w-8 ml-auto" /></td>
+      <td class="px-2.5 py-3 text-right"><div class="skeleton h-3 w-10 ml-auto" /></td>
+      <td class="px-2.5 py-3 text-right hidden md:table-cell"><div class="skeleton h-3 w-8 ml-auto" /></td>
+      <td class="px-2.5 py-3 text-right"><div class="skeleton h-3 w-12 ml-auto" /></td>
+    </tr>
+  );
 }
 
 export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en' | 'ko'; apiUrl?: string }) {
@@ -99,10 +102,39 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
   }, [apiUrl]);
 
   if (loading) {
-    return <div style={{ padding: '3rem 0', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{t.loading}</div>;
+    return (
+      <div>
+        <div class="mb-4">
+          <div class="skeleton h-10 w-80 max-w-full rounded-lg" />
+        </div>
+        <div class="mb-3">
+          <div class="skeleton h-3 w-64" />
+        </div>
+        <div class="overflow-x-auto border border-[--color-border] rounded-xl bg-[--color-bg-card]">
+          <table class="w-full border-collapse font-mono text-[0.8125rem]">
+            <thead>
+              <tr>
+                <th class="px-2.5 py-2 text-center font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted] w-10">#</th>
+                <th class="px-2.5 py-2 text-left font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted]">{t.coin}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted]">{t.price}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted]">{t.change}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted] hidden md:table-cell">{t.volume}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted] hidden md:table-cell">{t.trades}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted]">{t.winRate}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted] hidden md:table-cell">{t.pf}</th>
+                <th class="px-2.5 py-2 text-right font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted]">{t.returnPct}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({ length: 10 }, (_, i) => <SkeletonRow key={i} i={i} />)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   }
   if (error) {
-    return <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'var(--color-red)', fontSize: '0.875rem' }}>{t.error}</div>;
+    return <div class="py-8 text-center font-mono text-sm text-[--color-red]">{t.error}</div>;
   }
 
   const filtered = data.filter(c => c.symbol.toLowerCase().includes(search.toLowerCase()));
@@ -123,91 +155,68 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
 
   const basePath = lang === 'ko' ? '/ko/coins' : '/coins';
 
-  const thStyle = (key: SortKey): any => ({
-    padding: '0.5rem 0.75rem',
-    textAlign: key === 'symbol' ? 'left' : 'right' as const,
-    cursor: 'pointer',
-    fontFamily: 'var(--font-mono)',
-    fontSize: '0.625rem',
-    color: sortBy === key ? 'var(--color-accent)' : 'var(--color-text-muted)',
-    letterSpacing: '0.05em',
-    textTransform: 'uppercase' as const,
-    whiteSpace: 'nowrap' as const,
-    borderBottom: '1px solid var(--color-border)',
-    userSelect: 'none' as const,
-  });
+  const thCls = (key: SortKey, align: 'left' | 'right' | 'center' = 'right', hide = false) =>
+    `px-2.5 py-2 cursor-pointer select-none font-mono text-[0.625rem] tracking-wider uppercase whitespace-nowrap border-b border-[--color-border] text-${align} ${hide ? 'hidden md:table-cell' : ''} ${sortBy === key ? 'text-[--color-accent]' : 'text-[--color-text-muted]'}`;
 
   return (
-    <div>
+    <div class="fade-in">
       {/* Search */}
-      <div style={{ marginBottom: '1rem' }}>
+      <div class="mb-4">
         <input
           type="text"
           placeholder={t.search}
           value={search}
           onInput={(e) => { setSearch((e.target as HTMLInputElement).value); setPage(0); }}
-          style={{
-            width: '100%', maxWidth: '320px',
-            padding: '0.625rem 1rem',
-            backgroundColor: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border)',
-            borderRadius: '0.5rem',
-            color: 'var(--color-text)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.875rem',
-            outline: 'none',
-          }}
+          class="w-full max-w-xs px-4 py-2.5 bg-[--color-bg-card] border border-[--color-border] rounded-lg text-[--color-text] font-mono text-sm outline-none focus:border-[--color-accent] transition-colors"
         />
       </div>
 
       {/* Strategy badge */}
-      <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
-        <span style={{ color: 'var(--color-accent)', fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase' as const, fontWeight: 600 }}>{t.cta}</span>
+      <div class="mb-3 flex items-center gap-2 font-mono text-[0.6875rem] text-[--color-text-muted]">
+        <span class="text-[--color-accent] text-[0.625rem] tracking-widest uppercase font-semibold">{t.cta}</span>
       </div>
 
       {/* Table */}
-      <div style={{ overflowX: 'auto', border: '1px solid var(--color-border)', borderRadius: '0.75rem', backgroundColor: 'var(--color-bg-card)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '0.8125rem' }}>
+      <div class="overflow-x-auto border border-[--color-border] rounded-xl bg-[--color-bg-card]">
+        <table class="w-full border-collapse font-mono text-[0.8125rem]">
           <thead>
             <tr>
-              <th style={{ ...thStyle('symbol'), width: '2.5rem', textAlign: 'center', cursor: 'default' }}>#</th>
-              <th style={thStyle('symbol')} onClick={() => handleSort('symbol')}>{t.coin} {sortBy === 'symbol' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('price')} onClick={() => handleSort('price')}>{t.price} {sortBy === 'price' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('change_24h')} onClick={() => handleSort('change_24h')}>{t.change} {sortBy === 'change_24h' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('volume_24h')} onClick={() => handleSort('volume_24h')}>{t.volume} {sortBy === 'volume_24h' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('trades')} onClick={() => handleSort('trades')}>{t.trades} {sortBy === 'trades' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('win_rate')} onClick={() => handleSort('win_rate')}>{t.winRate} {sortBy === 'win_rate' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('profit_factor')} onClick={() => handleSort('profit_factor')}>{t.pf} {sortBy === 'profit_factor' ? (sortDesc ? '▼' : '▲') : ''}</th>
-              <th style={thStyle('total_return_pct')} onClick={() => handleSort('total_return_pct')}>{t.returnPct} {sortBy === 'total_return_pct' ? (sortDesc ? '▼' : '▲') : ''}</th>
+              <th class="px-2.5 py-2 text-center font-mono text-[0.625rem] tracking-wider uppercase border-b border-[--color-border] text-[--color-text-muted] w-10 cursor-default select-none">#</th>
+              <th class={thCls('symbol', 'left')} onClick={() => handleSort('symbol')}>{t.coin} {sortBy === 'symbol' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('price')} onClick={() => handleSort('price')}>{t.price} {sortBy === 'price' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('change_24h')} onClick={() => handleSort('change_24h')}>{t.change} {sortBy === 'change_24h' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('volume_24h', 'right', true)} onClick={() => handleSort('volume_24h')}>{t.volume} {sortBy === 'volume_24h' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('trades', 'right', true)} onClick={() => handleSort('trades')}>{t.trades} {sortBy === 'trades' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('win_rate')} onClick={() => handleSort('win_rate')}>{t.winRate} {sortBy === 'win_rate' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('profit_factor', 'right', true)} onClick={() => handleSort('profit_factor')}>{t.pf} {sortBy === 'profit_factor' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
+              <th class={thCls('total_return_pct')} onClick={() => handleSort('total_return_pct')}>{t.returnPct} {sortBy === 'total_return_pct' ? (sortDesc ? '\u25BC' : '\u25B2') : ''}</th>
             </tr>
           </thead>
           <tbody>
             {pageItems.length === 0 && (
-              <tr><td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>{t.noResults}</td></tr>
+              <tr><td colSpan={9} class="py-8 text-center text-[--color-text-muted]">{t.noResults}</td></tr>
             )}
             {pageItems.map((coin, i) => {
               const rank = page * PER_PAGE + i + 1;
-              const chgColor = coin.change_24h >= 0 ? 'var(--color-accent)' : 'var(--color-red)';
-              const wrColor = coin.win_rate >= 60 ? 'var(--color-accent)' : coin.win_rate >= 50 ? 'var(--color-yellow, #eab308)' : 'var(--color-red)';
-              const pfColor = coin.profit_factor >= 2 ? 'var(--color-accent)' : coin.profit_factor >= 1 ? 'var(--color-text)' : 'var(--color-red)';
-              const retColor = coin.total_return_pct >= 0 ? 'var(--color-accent)' : 'var(--color-red)';
+              const chgColor = coin.change_24h >= 0 ? 'text-[#16c784]' : 'text-[--color-red]';
+              const wrColor = coin.win_rate >= 60 ? 'text-[#16c784]' : coin.win_rate >= 50 ? 'text-[--color-yellow]' : 'text-[--color-red]';
+              const pfColor = coin.profit_factor >= 2 ? 'text-[#16c784]' : coin.profit_factor >= 1 ? 'text-[--color-text]' : 'text-[--color-red]';
+              const retColor = coin.total_return_pct >= 0 ? 'text-[#16c784]' : 'text-[--color-red]';
               return (
                 <tr
                   key={coin.symbol}
                   onClick={() => { window.location.href = `${basePath}/${coin.symbol.toLowerCase()}`; }}
-                  style={{ cursor: 'pointer', borderBottom: '1px solid var(--color-border)' }}
-                  onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(0,255,136,0.03)'}
-                  onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'}
+                  class="cursor-pointer border-b border-[--color-border] row-hover"
                 >
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.6875rem' }}>{rank}</td>
-                  <td style={{ padding: '0.5rem 0.625rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{coin.symbol.replace('USDT', '')}<span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>/USDT</span></td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right' }}>{formatPrice(coin.price)}</td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right', color: chgColor }}>{coin.change_24h > 0 ? '+' : ''}{coin.change_24h}%</td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right', color: 'var(--color-text-muted)' }}>{formatVolume(coin.volume_24h)}</td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right', color: 'var(--color-text-muted)' }}>{coin.trades}</td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right', color: wrColor, fontWeight: 600 }}>{coin.win_rate}%</td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right', color: pfColor }}>{coin.profit_factor.toFixed(1)}</td>
-                  <td style={{ padding: '0.5rem 0.625rem', textAlign: 'right', color: retColor, fontWeight: 600 }}>{coin.total_return_pct > 0 ? '+' : ''}{coin.total_return_pct}%</td>
+                  <td class="px-2.5 py-2 text-center text-[--color-text-muted] text-[0.6875rem]">{rank}</td>
+                  <td class="px-2.5 py-2 font-semibold whitespace-nowrap">{coin.symbol.replace('USDT', '')}<span class="text-[--color-text-muted] font-normal">/USDT</span></td>
+                  <td class="px-2.5 py-2 text-right">${formatPrice(coin.price)}</td>
+                  <td class={`px-2.5 py-2 text-right ${chgColor}`}>{coin.change_24h > 0 ? '+' : ''}{coin.change_24h}%</td>
+                  <td class="px-2.5 py-2 text-right text-[--color-text-muted] hidden md:table-cell">{formatVolume(coin.volume_24h)}</td>
+                  <td class="px-2.5 py-2 text-right text-[--color-text-muted] hidden md:table-cell">{coin.trades}</td>
+                  <td class={`px-2.5 py-2 text-right font-semibold ${wrColor}`}>{coin.win_rate}%</td>
+                  <td class={`px-2.5 py-2 text-right hidden md:table-cell ${pfColor}`}>{coin.profit_factor.toFixed(1)}</td>
+                  <td class={`px-2.5 py-2 text-right font-semibold ${retColor}`}>{coin.total_return_pct > 0 ? '+' : ''}{coin.total_return_pct}%</td>
                 </tr>
               );
             })}
@@ -217,43 +226,25 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
-          <span style={{ color: 'var(--color-text-muted)' }}>
+        <div class="flex justify-between items-center mt-4 font-mono text-xs">
+          <span class="text-[--color-text-muted]">
             {t.showing(page * PER_PAGE + 1, Math.min((page + 1) * PER_PAGE, sorted.length), sorted.length)}
           </span>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div class="flex gap-2">
             <button
               disabled={page === 0}
               onClick={() => setPage(p => p - 1)}
-              style={{
-                padding: '0.375rem 0.75rem',
-                border: '1px solid var(--color-border)',
-                borderRadius: '0.375rem',
-                backgroundColor: 'transparent',
-                color: page === 0 ? 'var(--color-text-muted)' : 'var(--color-text)',
-                cursor: page === 0 ? 'default' : 'pointer',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.75rem',
-              }}
+              class={`px-3 py-1.5 border border-[--color-border] rounded-md bg-transparent font-mono text-xs transition-colors ${page === 0 ? 'text-[--color-text-muted] cursor-default' : 'text-[--color-text] hover:border-[--color-accent] cursor-pointer'}`}
             >
               &lt;
             </button>
-            <span style={{ padding: '0.375rem 0.5rem', color: 'var(--color-text-muted)' }}>
+            <span class="px-2 py-1.5 text-[--color-text-muted]">
               {page + 1}/{totalPages}
             </span>
             <button
               disabled={page >= totalPages - 1}
               onClick={() => setPage(p => p + 1)}
-              style={{
-                padding: '0.375rem 0.75rem',
-                border: '1px solid var(--color-border)',
-                borderRadius: '0.375rem',
-                backgroundColor: 'transparent',
-                color: page >= totalPages - 1 ? 'var(--color-text-muted)' : 'var(--color-text)',
-                cursor: page >= totalPages - 1 ? 'default' : 'pointer',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.75rem',
-              }}
+              class={`px-3 py-1.5 border border-[--color-border] rounded-md bg-transparent font-mono text-xs transition-colors ${page >= totalPages - 1 ? 'text-[--color-text-muted] cursor-default' : 'text-[--color-text] hover:border-[--color-accent] cursor-pointer'}`}
             >
               &gt;
             </button>

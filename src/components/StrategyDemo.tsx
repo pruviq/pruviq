@@ -67,6 +67,41 @@ const labels = {
   },
 };
 
+function DemoSkeleton() {
+  return (
+    <div class="fade-in border-t border-[--color-border] pt-10 mt-10">
+      <div class="mb-6">
+        <div class="skeleton h-3 w-40 mb-2" />
+        <div class="skeleton h-7 w-48 mb-2" />
+        <div class="skeleton h-4 w-96 max-w-full" />
+      </div>
+      <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl mb-6">
+        <div class="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+          <div class="skeleton h-12 w-full rounded" />
+          <div class="skeleton h-12 w-full rounded" />
+        </div>
+      </div>
+      <div class="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+        <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="skeleton h-16 rounded-lg" />
+            <div class="skeleton h-16 rounded-lg" />
+            <div class="skeleton h-16 rounded-lg" />
+            <div class="skeleton h-16 rounded-lg" />
+          </div>
+          <div class="skeleton h-1.5 w-full rounded-full" />
+        </div>
+        <div class="bg-[--color-bg-card] border border-[--color-border] rounded-xl overflow-hidden">
+          <div class="px-4 pt-3">
+            <div class="skeleton h-3 w-36" />
+          </div>
+          <div class="skeleton w-full" style={{ height: '300px' }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const t = labels[lang] || labels.en;
   const [data, setData] = useState<DemoData | null>(null);
@@ -79,7 +114,6 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const chartRef = useRef<any>(null);
   const seriesRef = useRef<any>(null);
 
-  // Load data once
   useEffect(() => {
     fetch('/data/demo-results.json')
       .then((res) => {
@@ -96,10 +130,8 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
       });
   }, []);
 
-  // Initialize chart
   useEffect(() => {
     if (!data || !chartContainerRef.current) return;
-
     let disposed = false;
 
     import('lightweight-charts').then(({ createChart, AreaSeries }) => {
@@ -118,13 +150,8 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
           vertLines: { color: '#1a1a1a' },
           horzLines: { color: '#1a1a1a' },
         },
-        rightPriceScale: {
-          borderColor: '#222222',
-        },
-        timeScale: {
-          borderColor: '#222222',
-          timeVisible: false,
-        },
+        rightPriceScale: { borderColor: '#222222' },
+        timeScale: { borderColor: '#222222', timeVisible: false },
         crosshair: {
           vertLine: { color: '#00ff8844', width: 1, style: 2 },
           horzLine: { color: '#00ff8844', width: 1, style: 2 },
@@ -145,15 +172,11 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
       chartRef.current = chart;
       seriesRef.current = series;
 
-      // Responsive resize
       const ro = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          chart.applyOptions({ width: entry.contentRect.width });
-        }
+        for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
       });
       ro.observe(chartContainerRef.current);
 
-      // Initial data
       const key = `sl${sl}_tp${tp}`;
       const result = data.results[key];
       if (result?.equity_curve?.length) {
@@ -161,9 +184,7 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
         chart.timeScale().fitContent();
       }
 
-      return () => {
-        ro.disconnect();
-      };
+      return () => { ro.disconnect(); };
     });
 
     return () => {
@@ -176,24 +197,19 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
     };
   }, [data]);
 
-  // Fetch from live API when combo not in static grid
   const fetchFromApi = async (slVal: number, tpVal: number): Promise<ResultData | null> => {
     if (!API_URL) return null;
     try {
       const res = await fetch(`${API_URL}/simulate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          strategy: 'bb-squeeze', direction: 'short',
-          sl_pct: slVal, tp_pct: tpVal, top_n: 50,
-        }),
+        body: JSON.stringify({ strategy: 'bb-squeeze', direction: 'short', sl_pct: slVal, tp_pct: tpVal, top_n: 50 }),
       });
       if (!res.ok) return null;
       return await res.json();
     } catch { return null; }
   };
 
-  // Update chart when SL/TP changes
   useEffect(() => {
     if (!data || !seriesRef.current) return;
 
@@ -225,32 +241,10 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
     }
   }, [sl, tp, data]);
 
-  if (loading) {
-    return (
-      <div style={{
-        padding: '3rem 0',
-        textAlign: 'center',
-        fontFamily: 'var(--font-mono)',
-        color: 'var(--color-text-muted)',
-        fontSize: '0.875rem',
-      }}>
-        {t.loading}
-      </div>
-    );
-  }
+  if (loading) return <DemoSkeleton />;
 
   if (error || !data) {
-    return (
-      <div style={{
-        padding: '2rem',
-        textAlign: 'center',
-        fontFamily: 'var(--font-mono)',
-        color: 'var(--color-red)',
-        fontSize: '0.875rem',
-      }}>
-        {t.error}
-      </div>
-    );
+    return <div class="py-8 text-center font-mono text-sm text-[--color-red]">{t.error}</div>;
   }
 
   const key = `sl${sl}_tp${tp}`;
@@ -258,167 +252,53 @@ export default function StrategyDemo({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const isDefault = sl === DEFAULT_SL && tp === DEFAULT_TP;
 
   return (
-    <div id="demo" style={{
-      borderTop: '1px solid var(--color-border)',
-      paddingTop: '2.5rem',
-      marginTop: '2.5rem',
-    }}>
+    <div id="demo" class="border-t border-[--color-border] pt-10 mt-10 fade-in">
       {/* Header */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          color: 'var(--color-accent)',
-          letterSpacing: '0.1em',
-          marginBottom: '0.5rem',
-          textTransform: 'uppercase' as const,
-        }}>
-          {t.tag}
-        </div>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-          {t.title}
-        </h2>
-        <p style={{
-          color: 'var(--color-text-muted)',
-          fontSize: '0.875rem',
-          lineHeight: 1.6,
-        }}>
-          {t.desc(data.coins, data.data_range)}
-        </p>
+      <div class="mb-6">
+        <div class="font-mono text-xs text-[--color-accent] tracking-widest mb-2 uppercase">{t.tag}</div>
+        <h2 class="text-2xl font-bold mb-2">{t.title}</h2>
+        <p class="text-[--color-text-muted] text-sm leading-relaxed">{t.desc(data.coins, data.data_range)}</p>
       </div>
 
-      {/* Main content: sliders + results on left/top, chart on right/bottom */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1fr)',
-        gap: '1.5rem',
-      }}>
+      {/* Main content */}
+      <div class="grid gap-6" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
         {/* Sliders */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '1rem',
-          padding: '1.25rem',
-          backgroundColor: 'var(--color-bg-card)',
-          border: '1px solid var(--color-border)',
-          borderRadius: '0.75rem',
-        }}>
-          <DiscreteSlider
-            label={t.sl}
-            values={data.grid.sl_values}
-            value={sl}
-            defaultValue={DEFAULT_SL}
-            onChange={setSl}
-          />
-          <DiscreteSlider
-            label={t.tp}
-            values={data.grid.tp_values}
-            value={tp}
-            defaultValue={DEFAULT_TP}
-            onChange={setTp}
-          />
+        <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
+          <div class="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+            <DiscreteSlider label={t.sl} values={data.grid.sl_values} value={sl} defaultValue={DEFAULT_SL} onChange={setSl} />
+            <DiscreteSlider label={t.tp} values={data.grid.tp_values} value={tp} defaultValue={DEFAULT_TP} onChange={setTp} />
+          </div>
         </div>
 
-        {/* Results + Chart side by side on larger screens */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '1.5rem',
-        }}>
-          {/* Results Card */}
-          <div style={{
-            padding: '1.25rem',
-            backgroundColor: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border)',
-            borderRadius: '0.75rem',
-          }}>
+        {/* Results + Chart */}
+        <div class="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
             {result ? (
               <ResultsCard data={result} isDefault={isDefault} lang={lang} />
             ) : (
-              <div style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.875rem',
-                color: 'var(--color-text-muted)',
-              }}>
-                {t.noData}
-              </div>
+              <div class="font-mono text-sm text-[--color-text-muted]">{t.noData}</div>
             )}
           </div>
 
-          {/* Chart */}
-          <div style={{
-            backgroundColor: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border)',
-            borderRadius: '0.75rem',
-            overflow: 'hidden',
-          }}>
-            <div style={{
-              padding: '0.75rem 1rem 0',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.625rem',
-              color: 'var(--color-text-muted)',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase' as const,
-            }}>
-              {t.chart}
-            </div>
-            <div ref={chartContainerRef} style={{ width: '100%', height: '300px' }} />
+          <div class="bg-[--color-bg-card] border border-[--color-border] rounded-xl overflow-hidden">
+            <div class="px-4 pt-3 font-mono text-[0.625rem] text-[--color-text-muted] tracking-widest uppercase">{t.chart}</div>
+            <div ref={chartContainerRef} class="w-full" style={{ height: '300px' }} />
           </div>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <p style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.625rem',
-        color: 'var(--color-text-muted)',
-        marginTop: '1rem',
-        lineHeight: 1.6,
-      }}>
-        {t.disclaimer}
-      </p>
+      <p class="font-mono text-[0.625rem] text-[--color-text-muted] mt-4 leading-relaxed">{t.disclaimer}</p>
 
-      {/* CTA after demo */}
-      <div style={{
-        marginTop: '2rem',
-        padding: '1.5rem',
-        backgroundColor: 'var(--color-bg-card)',
-        border: '1px solid var(--color-border)',
-        borderRadius: '0.75rem',
-      }}>
-        <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-          {t.ctaTitle}
-        </h3>
-        <p style={{
-          color: 'var(--color-text-muted)',
-          fontSize: '0.875rem',
-          marginBottom: '1rem',
-        }}>
-          {t.ctaDesc}
-        </p>
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <a href={lang === 'ko' ? '/ko/fees' : '/fees'} style={{
-            display: 'inline-block',
-            backgroundColor: 'var(--color-accent)',
-            color: 'var(--color-bg)',
-            padding: '0.625rem 1.25rem',
-            borderRadius: '0.5rem',
-            fontWeight: 600,
-            fontSize: '0.875rem',
-            textDecoration: 'none',
-          }}>
+      {/* CTA */}
+      <div class="mt-8 p-6 bg-[--color-bg-card] border border-[--color-border] rounded-xl card-hover">
+        <h3 class="text-lg font-bold mb-2">{t.ctaTitle}</h3>
+        <p class="text-[--color-text-muted] text-sm mb-4">{t.ctaDesc}</p>
+        <div class="flex gap-3 flex-wrap">
+          <a href={lang === 'ko' ? '/ko/fees' : '/fees'} class="inline-block bg-[--color-accent] text-[--color-bg] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity">
             {t.ctaFees} &rarr;
           </a>
-          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" style={{
-            display: 'inline-block',
-            border: '1px solid var(--color-border)',
-            color: 'var(--color-text)',
-            padding: '0.625rem 1.25rem',
-            borderRadius: '0.5rem',
-            fontWeight: 600,
-            fontSize: '0.875rem',
-            textDecoration: 'none',
-          }}>
+          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="inline-block border border-[--color-border] text-[--color-text] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:border-[--color-accent] transition-colors">
             {t.ctaCommunity}
           </a>
         </div>

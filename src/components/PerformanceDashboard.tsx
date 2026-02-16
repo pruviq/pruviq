@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { formatPrice } from '../utils/format';
 
 interface DailyEntry {
   date: string;
@@ -121,14 +122,6 @@ function formatUsd(v: number): string {
   return `${sign}$${Math.abs(v).toFixed(2)}`;
 }
 
-function formatPrice(p: number): string {
-  if (p >= 10000) return p.toLocaleString(undefined, { maximumFractionDigits: 1 });
-  if (p >= 1000) return p.toLocaleString(undefined, { maximumFractionDigits: 2 });
-  if (p >= 1) return p.toFixed(3);
-  if (p >= 0.01) return p.toFixed(5);
-  return p.toFixed(7);
-}
-
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -148,34 +141,24 @@ function formatReasonLabel(reason: string): string {
   return reason;
 }
 
-// KPI Metric card
 function MetricCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div style={{
-      padding: '1rem',
-      borderRadius: '0.5rem',
-      backgroundColor: 'var(--color-bg-card)',
-      border: '1px solid var(--color-border)',
-      textAlign: 'center',
-      minWidth: '0',
-    }}>
-      <div style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.625rem',
-        color: 'var(--color-text-muted)',
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.05em',
-        marginBottom: '0.375rem',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-      }}>{label}</div>
-      <div style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '1.125rem',
-        fontWeight: 700,
-        color,
-      }}>{value}</div>
+    <div class="p-4 rounded-lg bg-[--color-bg-card] border border-[--color-border] text-center min-w-0">
+      <div class="font-mono text-[0.625rem] text-[--color-text-muted] uppercase tracking-wider mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{label}</div>
+      <div class="font-mono text-lg font-bold" style={{ color }}>{value}</div>
+    </div>
+  );
+}
+
+function SkeletonMetrics() {
+  return (
+    <div class="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))' }}>
+      {Array.from({ length: 5 }, (_, i) => (
+        <div key={i} class="p-4 rounded-lg bg-[--color-bg-card] border border-[--color-border] text-center">
+          <div class="skeleton h-2.5 w-16 mx-auto mb-3" />
+          <div class="skeleton h-5 w-20 mx-auto" />
+        </div>
+      ))}
     </div>
   );
 }
@@ -191,7 +174,6 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
 
-  // Fetch performance data
   useEffect(() => {
     fetch('/data/performance.json')
       .then(res => {
@@ -208,18 +190,13 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       });
   }, []);
 
-  // Initialize cumulative PnL chart
   useEffect(() => {
     if (!data || !chartContainerRef.current) return;
     let disposed = false;
 
-    // Use cum_pnl from daily data
     const cumulativeData = data.daily
       .filter(d => d.trades > 0 || d.cum_pnl !== 0)
-      .map(d => ({
-        time: d.date,
-        value: parseFloat(d.cum_pnl.toFixed(2)),
-      }));
+      .map(d => ({ time: d.date, value: parseFloat(d.cum_pnl.toFixed(2)) }));
 
     import('lightweight-charts').then(({ createChart, AreaSeries }) => {
       if (disposed || !chartContainerRef.current) return;
@@ -259,7 +236,6 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
         },
       });
 
-      // Determine colors based on final PnL
       const finalValue = cumulativeData.length > 0 ? cumulativeData[cumulativeData.length - 1].value : 0;
       const lineColor = finalValue >= 0 ? '#00ff88' : '#ff4444';
       const topColor = finalValue >= 0 ? 'rgba(0, 255, 136, 0.3)' : 'rgba(255, 68, 68, 0.3)';
@@ -270,10 +246,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
         topColor,
         bottomColor,
         lineWidth: 2,
-        priceFormat: {
-          type: 'custom',
-          formatter: (price: number) => `$${price.toFixed(0)}`,
-        },
+        priceFormat: { type: 'custom', formatter: (price: number) => `$${price.toFixed(0)}` },
         crosshairMarkerRadius: 5,
         crosshairMarkerBackgroundColor: lineColor,
         crosshairMarkerBorderColor: '#0a0a0a',
@@ -281,79 +254,52 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       });
 
       areaSeries.setData(cumulativeData as any);
-
-      // Add baseline at $0
-      areaSeries.createPriceLine({
-        price: 0,
-        color: '#444444',
-        lineWidth: 1,
-        lineStyle: 2,
-        axisLabelVisible: true,
-        title: '',
-      });
+      areaSeries.createPriceLine({ price: 0, color: '#444444', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '' });
 
       chart.timeScale().fitContent();
       chartRef.current = chart;
 
-      // Responsive
       const ro = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          chart.applyOptions({ width: entry.contentRect.width });
-        }
+        for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
       });
       ro.observe(chartContainerRef.current);
-
       return () => ro.disconnect();
     });
 
     return () => {
       disposed = true;
-      if (chartRef.current) {
-        chartRef.current.remove();
-        chartRef.current = null;
-      }
+      if (chartRef.current) { chartRef.current.remove(); chartRef.current = null; }
     };
   }, [data]);
 
-  // Loading state
   if (loading) {
     return (
-      <div style={{
-        padding: '4rem 0',
-        textAlign: 'center',
-        fontFamily: 'var(--font-mono)',
-        color: 'var(--color-text-muted)',
-        fontSize: '0.875rem',
-      }}>
-        <div style={{
-          width: '24px',
-          height: '24px',
-          border: '2px solid var(--color-border)',
-          borderTop: '2px solid var(--color-accent)',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite',
-          margin: '0 auto 1rem',
-        }} />
-        {t.loading}
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div class="fade-in">
+        <div class="mb-8">
+          <div class="skeleton h-3 w-32 mb-3" />
+          <div class="skeleton h-8 w-72 mb-3" />
+          <div class="skeleton h-4 w-96 max-w-full mb-4" />
+          <div class="flex gap-6">
+            <div class="skeleton h-3 w-40" />
+            <div class="skeleton h-3 w-56" />
+          </div>
+        </div>
+        <SkeletonMetrics />
+        <div class="bg-[#0a0a0a] border border-[--color-border] rounded-xl overflow-hidden mb-6">
+          <div class="px-4 py-3 border-b border-[--color-border] flex justify-between items-center">
+            <div class="skeleton h-3 w-28" />
+            <div class="skeleton h-4 w-16" />
+          </div>
+          <div class="skeleton w-full" style={{ height: '320px' }} />
+        </div>
       </div>
     );
   }
 
-  // Error state
   if (error || !data) {
     return (
-      <div style={{
-        padding: '3rem',
-        textAlign: 'center',
-        fontFamily: 'var(--font-mono)',
-        color: 'var(--color-text-muted)',
-        fontSize: '0.875rem',
-        backgroundColor: 'var(--color-bg-card)',
-        border: '1px solid var(--color-border)',
-        borderRadius: '0.75rem',
-      }}>
-        <div style={{ fontSize: '2rem', marginBottom: '1rem', opacity: 0.3 }}>!</div>
+      <div class="py-12 text-center font-mono text-sm text-[--color-text-muted] bg-[--color-bg-card] border border-[--color-border] rounded-xl">
+        <div class="text-2xl mb-4 opacity-30">!</div>
         {t.error}
       </div>
     );
@@ -371,56 +317,20 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
   const wrColor = s.win_rate >= 55 ? '#00ff88' : s.win_rate >= 50 ? 'var(--color-yellow)' : '#ff4444';
 
   return (
-    <div>
+    <div class="fade-in">
       {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6875rem',
-          color: 'var(--color-accent)',
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase' as const,
-          marginBottom: '0.75rem',
-        }}>
-          {t.tag}
-        </div>
-        <h1 style={{
-          fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
-          fontWeight: 700,
-          lineHeight: 1.2,
-          marginBottom: '0.75rem',
-        }}>
-          {t.title}
-        </h1>
-        <p style={{
-          color: 'var(--color-text-muted)',
-          fontSize: '1rem',
-          lineHeight: 1.6,
-          maxWidth: '600px',
-          marginBottom: '1rem',
-        }}>
-          {t.desc}
-        </p>
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          color: 'var(--color-text-muted)',
-          display: 'flex',
-          gap: '1.5rem',
-          flexWrap: 'wrap',
-        }}>
-          <span>{t.strategy}: <span style={{ color: 'var(--color-text)' }}>{data.strategy}</span></span>
-          <span>{t.period}: <span style={{ color: 'var(--color-text)' }}>{formatDateFull(data.period.from)} &mdash; {formatDateFull(data.period.to)}</span></span>
+      <div class="mb-8">
+        <div class="font-mono text-[0.6875rem] text-[--color-accent] tracking-[0.15em] uppercase mb-3">{t.tag}</div>
+        <h1 class="font-bold leading-tight mb-3" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.25rem)' }}>{t.title}</h1>
+        <p class="text-[--color-text-muted] text-base leading-relaxed max-w-[600px] mb-4">{t.desc}</p>
+        <div class="font-mono text-xs text-[--color-text-muted] flex gap-6 flex-wrap">
+          <span>{t.strategy}: <span class="text-[--color-text]">{data.strategy}</span></span>
+          <span>{t.period}: <span class="text-[--color-text]">{formatDateFull(data.period.from)} &mdash; {formatDateFull(data.period.to)}</span></span>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-        gap: '0.75rem',
-        marginBottom: '1.5rem',
-      }}>
+      <div class="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))' }}>
         <MetricCard label={t.trades} value={s.total_trades.toLocaleString()} color="var(--color-text)" />
         <MetricCard label={t.winRate} value={`${s.win_rate}%`} color={wrColor} />
         <MetricCard label={t.pnl} value={formatUsd(s.total_pnl)} color={pnlColor} />
@@ -429,261 +339,139 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       </div>
 
       {/* Cumulative PnL Chart */}
-      <div style={{
-        backgroundColor: '#0a0a0a',
-        border: '1px solid var(--color-border)',
-        borderRadius: '0.75rem',
-        overflow: 'hidden',
-        marginBottom: '1.5rem',
-      }}>
-        <div style={{
-          padding: '0.75rem 1rem',
-          borderBottom: '1px solid var(--color-border)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-          <span style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.6875rem',
-            color: 'var(--color-accent)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase' as const,
-            fontWeight: 600,
-          }}>
-            {t.dailyChart}
-          </span>
-          <span style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            color: pnlColor,
-            fontWeight: 600,
-          }}>
-            {formatUsd(s.total_pnl)}
-          </span>
+      <div class="bg-[#0a0a0a] border border-[--color-border] rounded-xl overflow-hidden mb-6">
+        <div class="px-4 py-3 border-b border-[--color-border] flex justify-between items-center">
+          <span class="font-mono text-[0.6875rem] text-[--color-accent] tracking-widest uppercase font-semibold">{t.dailyChart}</span>
+          <span class="font-mono text-xs font-semibold" style={{ color: pnlColor }}>{formatUsd(s.total_pnl)}</span>
         </div>
-        <div ref={chartContainerRef} style={{ width: '100%', height: '320px' }} />
-        {/* TradingView Attribution */}
-        <div style={{
-          padding: '0.25rem 0.75rem 0.5rem',
-          textAlign: 'right',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.5625rem',
-        }}>
-          <a
-            href="https://www.tradingview.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#444', textDecoration: 'none' }}
-          >
-            Powered by TradingView
-          </a>
+        <div ref={chartContainerRef} class="w-full" style={{ height: '320px' }} />
+        <div class="px-3 py-1.5 text-right font-mono text-[0.5625rem]">
+          <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[#444] no-underline hover:text-[#666] transition-colors">Powered by TradingView</a>
         </div>
       </div>
 
-      {/* Daily Stats + Exit Breakdown row */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-        gap: '1rem',
-        marginBottom: '1.5rem',
-      }}>
+      {/* Daily Stats + Exit Breakdown */}
+      <div class="grid gap-4 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
         {/* Daily Stats */}
-        <div style={{
-          padding: '1.25rem',
-          backgroundColor: 'var(--color-bg-card)',
-          border: '1px solid var(--color-border)',
-          borderRadius: '0.75rem',
-        }}>
-          <div style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.625rem',
-            color: 'var(--color-text-muted)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase' as const,
-            marginBottom: '1rem',
-          }}>
-            DAILY STATS
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>{t.bestDay}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 700, color: '#00ff88' }}>{formatUsd(s.best_day_pnl)}</span>
+        <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
+          <div class="font-mono text-[0.625rem] text-[--color-text-muted] tracking-widest uppercase mb-4">DAILY STATS</div>
+          <div class="flex flex-col gap-3">
+            <div class="flex justify-between items-center">
+              <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">{t.bestDay}</span>
+              <span class="font-mono text-base font-bold text-[#00ff88]">{formatUsd(s.best_day_pnl)}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>{t.worstDay}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 700, color: '#ff4444' }}>{formatUsd(s.worst_day_pnl)}</span>
+            <div class="flex justify-between items-center">
+              <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">{t.worstDay}</span>
+              <span class="font-mono text-base font-bold text-[#ff4444]">{formatUsd(s.worst_day_pnl)}</span>
             </div>
-            <div style={{ height: '1px', backgroundColor: 'var(--color-border)' }} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>{t.avgTrade}</span>
-              <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '1rem',
-                fontWeight: 700,
-                color: s.avg_trade_pnl >= 0 ? '#00ff88' : '#ff4444',
-              }}>{formatUsd(s.avg_trade_pnl)}</span>
+            <div class="h-px bg-[--color-border]" />
+            <div class="flex justify-between items-center">
+              <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">{t.avgTrade}</span>
+              <span class="font-mono text-base font-bold" style={{ color: s.avg_trade_pnl >= 0 ? '#00ff88' : '#ff4444' }}>{formatUsd(s.avg_trade_pnl)}</span>
             </div>
-            <div style={{ height: '1px', backgroundColor: 'var(--color-border)' }} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>{t.balance}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>
-                ${s.starting_balance.toLocaleString()} &rarr; <span style={{ color: s.current_balance >= s.starting_balance ? '#00ff88' : '#ff4444', fontWeight: 600 }}>${s.current_balance.toLocaleString()}</span>
+            <div class="h-px bg-[--color-border]" />
+            <div class="flex justify-between items-center">
+              <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">{t.balance}</span>
+              <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">
+                ${s.starting_balance.toLocaleString()} &rarr; <span class="font-semibold" style={{ color: s.current_balance >= s.starting_balance ? '#00ff88' : '#ff4444' }}>${s.current_balance.toLocaleString()}</span>
               </span>
             </div>
           </div>
         </div>
 
         {/* Exit Breakdown */}
-        <div style={{
-          padding: '1.25rem',
-          backgroundColor: 'var(--color-bg-card)',
-          border: '1px solid var(--color-border)',
-          borderRadius: '0.75rem',
-        }}>
-          <div style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.625rem',
-            color: 'var(--color-text-muted)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase' as const,
-            marginBottom: '1rem',
-          }}>
-            {t.exitBreakdown}
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {/* TP bar */}
+        <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
+          <div class="font-mono text-[0.625rem] text-[--color-text-muted] tracking-widest uppercase mb-4">{t.exitBreakdown}</div>
+          <div class="flex flex-col gap-3">
+            {/* TP */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#00ff88' }}>{t.tp} ({s.tp_count})</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#00ff88', fontWeight: 600 }}>{tpPct.toFixed(1)}%</span>
+              <div class="flex justify-between mb-1">
+                <span class="font-mono text-xs text-[#00ff88]">{t.tp} ({s.tp_count})</span>
+                <span class="font-mono text-xs text-[#00ff88] font-semibold">{tpPct.toFixed(1)}%</span>
               </div>
-              <div style={{ height: '6px', borderRadius: '3px', backgroundColor: 'var(--color-border)', overflow: 'hidden' }}>
-                <div style={{ width: `${tpPct}%`, height: '100%', backgroundColor: '#00ff88', borderRadius: '3px', transition: 'width 0.5s' }} />
+              <div class="h-1.5 rounded-full bg-[--color-border] overflow-hidden">
+                <div class="h-full bg-[#00ff88] rounded-full transition-[width] duration-500" style={{ width: `${tpPct}%` }} />
               </div>
             </div>
-            {/* SL bar */}
+            {/* SL */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#ff4444' }}>{t.sl} ({s.sl_count})</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#ff4444', fontWeight: 600 }}>{slPct.toFixed(1)}%</span>
+              <div class="flex justify-between mb-1">
+                <span class="font-mono text-xs text-[#ff4444]">{t.sl} ({s.sl_count})</span>
+                <span class="font-mono text-xs text-[#ff4444] font-semibold">{slPct.toFixed(1)}%</span>
               </div>
-              <div style={{ height: '6px', borderRadius: '3px', backgroundColor: 'var(--color-border)', overflow: 'hidden' }}>
-                <div style={{ width: `${slPct}%`, height: '100%', backgroundColor: '#ff4444', borderRadius: '3px', transition: 'width 0.5s' }} />
+              <div class="h-1.5 rounded-full bg-[--color-border] overflow-hidden">
+                <div class="h-full bg-[#ff4444] rounded-full transition-[width] duration-500" style={{ width: `${slPct}%` }} />
               </div>
             </div>
-            {/* TO bar */}
+            {/* TO */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t.to} ({s.timeout_count})</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>{toPct.toFixed(1)}%</span>
+              <div class="flex justify-between mb-1">
+                <span class="font-mono text-xs text-[--color-text-muted]">{t.to} ({s.timeout_count})</span>
+                <span class="font-mono text-xs text-[--color-text-muted] font-semibold">{toPct.toFixed(1)}%</span>
               </div>
-              <div style={{ height: '6px', borderRadius: '3px', backgroundColor: 'var(--color-border)', overflow: 'hidden' }}>
-                <div style={{ width: `${toPct}%`, height: '100%', backgroundColor: '#888888', borderRadius: '3px', transition: 'width 0.5s' }} />
+              <div class="h-1.5 rounded-full bg-[--color-border] overflow-hidden">
+                <div class="h-full bg-[#888] rounded-full transition-[width] duration-500" style={{ width: `${toPct}%` }} />
               </div>
             </div>
-            {/* Other bar */}
+            {/* Other */}
             {s.other_count > 0 && (
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-yellow)' }}>{t.other} ({s.other_count})</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-yellow)', fontWeight: 600 }}>{otherPct.toFixed(1)}%</span>
+                <div class="flex justify-between mb-1">
+                  <span class="font-mono text-xs text-[--color-yellow]">{t.other} ({s.other_count})</span>
+                  <span class="font-mono text-xs text-[--color-yellow] font-semibold">{otherPct.toFixed(1)}%</span>
                 </div>
-                <div style={{ height: '6px', borderRadius: '3px', backgroundColor: 'var(--color-border)', overflow: 'hidden' }}>
-                  <div style={{ width: `${otherPct}%`, height: '100%', backgroundColor: 'var(--color-yellow)', borderRadius: '3px', transition: 'width 0.5s' }} />
+                <div class="h-1.5 rounded-full bg-[--color-border] overflow-hidden">
+                  <div class="h-full bg-[--color-yellow] rounded-full transition-[width] duration-500" style={{ width: `${otherPct}%` }} />
                 </div>
               </div>
             )}
           </div>
           {/* Combined bar */}
-          <div style={{ display: 'flex', height: '4px', borderRadius: '2px', overflow: 'hidden', marginTop: '0.75rem' }}>
-            <div style={{ width: `${tpPct}%`, backgroundColor: '#00ff88' }} />
-            <div style={{ width: `${slPct}%`, backgroundColor: '#ff4444' }} />
-            <div style={{ width: `${toPct}%`, backgroundColor: '#888888' }} />
-            {s.other_count > 0 && <div style={{ width: `${otherPct}%`, backgroundColor: 'var(--color-yellow)' }} />}
+          <div class="flex h-1 rounded-sm overflow-hidden mt-3">
+            <div class="bg-[#00ff88]" style={{ width: `${tpPct}%` }} />
+            <div class="bg-[#ff4444]" style={{ width: `${slPct}%` }} />
+            <div class="bg-[#888]" style={{ width: `${toPct}%` }} />
+            {s.other_count > 0 && <div class="bg-[--color-yellow]" style={{ width: `${otherPct}%` }} />}
           </div>
         </div>
       </div>
 
       {/* Recent Trades */}
       {data.recent_trades && data.recent_trades.length > 0 && (
-        <div style={{
-          backgroundColor: 'var(--color-bg-card)',
-          border: '1px solid var(--color-border)',
-          borderRadius: '0.75rem',
-          overflow: 'hidden',
-          marginBottom: '1.5rem',
-        }}>
+        <div class="bg-[--color-bg-card] border border-[--color-border] rounded-xl overflow-hidden mb-6">
           <button
             onClick={() => setShowTrades(!showTrades)}
-            style={{
-              width: '100%',
-              padding: '0.75rem 1rem',
-              backgroundColor: 'transparent',
-              border: 'none',
-              borderBottom: showTrades ? '1px solid var(--color-border)' : 'none',
-              color: 'var(--color-text)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8125rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              textAlign: 'left',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            class={`w-full px-4 py-3 bg-transparent border-none text-[--color-text] font-mono text-[0.8125rem] font-semibold cursor-pointer text-left flex justify-between items-center hover:bg-[--color-bg-hover] transition-colors ${showTrades ? 'border-b border-[--color-border]' : ''}`}
           >
             <span>{showTrades ? '\u25BC' : '\u25B6'} {t.recentTrades} ({data.recent_trades.length})</span>
           </button>
           {showTrades && (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.75rem',
-              }}>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse font-mono text-xs">
                 <thead>
-                  <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: 'var(--color-text-muted)', fontSize: '0.625rem', fontWeight: 600 }}>{t.symbol}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.625rem', fontWeight: 600 }}>{t.exitPrice}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.625rem', fontWeight: 600 }}>{t.pnlPct}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.625rem', fontWeight: 600 }}>{t.pnlUsd}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.625rem', fontWeight: 600 }}>{t.result}</th>
-                    <th style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)', fontSize: '0.625rem', fontWeight: 600 }}>{t.date}</th>
+                  <tr class="border-b border-[--color-border]">
+                    <th class="px-3 py-2 text-left text-[--color-text-muted] text-[0.625rem] font-semibold">{t.symbol}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.exitPrice}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.pnlPct}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.pnlUsd}</th>
+                    <th class="px-3 py-2 text-center text-[--color-text-muted] text-[0.625rem] font-semibold">{t.result}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.date}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.recent_trades.map((trade, i) => {
-                    const resultColor = trade.reason === 'TP' ? '#00ff88'
-                      : trade.reason === 'SL' ? '#ff4444'
-                      : 'var(--color-text-muted)';
+                    const resultColor = trade.reason === 'TP' ? '#00ff88' : trade.reason === 'SL' ? '#ff4444' : 'var(--color-text-muted)';
                     const tradePnlColor = trade.pnl_pct >= 0 ? '#00ff88' : '#ff4444';
                     return (
-                      <tr
-                        key={i}
-                        style={{ borderBottom: '1px solid var(--color-border)' }}
-                        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(0,255,136,0.03)')}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = 'transparent')}
-                      >
-                        <td style={{ padding: '0.5rem 0.75rem', fontWeight: 600, color: 'var(--color-text)' }}>
-                          {trade.symbol.replace('USDT', '')}
-                        </td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)' }}>
-                          ${formatPrice(trade.exit_price)}
-                        </td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: tradePnlColor, fontWeight: 600 }}>
+                      <tr key={i} class="border-b border-[--color-border] row-hover">
+                        <td class="px-3 py-2 font-semibold text-[--color-text]">{trade.symbol.replace('USDT', '')}</td>
+                        <td class="px-3 py-2 text-right text-[--color-text-muted]">${formatPrice(trade.exit_price)}</td>
+                        <td class="px-3 py-2 text-right font-semibold" style={{ color: tradePnlColor }}>
                           {trade.pnl_pct > 0 ? '+' : ''}{trade.pnl_pct.toFixed(2)}%
                         </td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: tradePnlColor }}>
-                          {formatUsd(trade.pnl_usd)}
-                        </td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'center', color: resultColor, fontWeight: 600 }}>
-                          {formatReasonLabel(trade.reason)}
-                        </td>
-                        <td style={{ padding: '0.5rem 0.75rem', textAlign: 'right', color: 'var(--color-text-muted)' }}>
-                          {formatDate(trade.closed_at)}
-                        </td>
+                        <td class="px-3 py-2 text-right" style={{ color: tradePnlColor }}>{formatUsd(trade.pnl_usd)}</td>
+                        <td class="px-3 py-2 text-center font-semibold" style={{ color: resultColor }}>{formatReasonLabel(trade.reason)}</td>
+                        <td class="px-3 py-2 text-right text-[--color-text-muted]">{formatDate(trade.closed_at)}</td>
                       </tr>
                     );
                   })}
@@ -695,16 +483,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       )}
 
       {/* Disclaimer */}
-      <p style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.625rem',
-        color: '#555',
-        lineHeight: 1.6,
-        padding: '0.75rem 1rem',
-        backgroundColor: 'rgba(255,255,255,0.02)',
-        border: '1px solid var(--color-border)',
-        borderRadius: '0.5rem',
-      }}>
+      <p class="font-mono text-[0.625rem] text-[#555] leading-relaxed px-4 py-3 bg-[rgba(255,255,255,0.02)] border border-[--color-border] rounded-lg">
         * {t.disclaimer}
       </p>
     </div>
