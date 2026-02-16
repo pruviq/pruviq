@@ -51,6 +51,7 @@ const labels = {
     resim: 'Re-simulate',
     bbBands: 'BB Bands',
     ema: 'EMA 20/50',
+    volume: 'Volume',
     sl: 'STOP LOSS',
     tp: 'TAKE PROFIT',
     strategy: 'BB Squeeze SHORT',
@@ -70,12 +71,25 @@ const labels = {
     maxDD: 'Max Drawdown',
     tradesLabel: 'trades',
     live: 'CURRENT LIVE SETTINGS',
+    h24high: '24h High',
+    h24low: '24h Low',
+    h24vol: '24h Volume',
+    resetZoom: 'Reset',
+    open: 'O',
+    high: 'H',
+    low: 'L',
+    close: 'C',
+    vol: 'Vol',
+    change: 'Chg',
+    dataRange: 'Data Range',
+    disclaimer: 'Simulation includes 0.04% fees + 0.02% slippage. Past performance does not guarantee future results.',
   },
   ko: {
     apply: '전략 적용',
     resim: '재시뮬레이션',
     bbBands: 'BB 밴드',
     ema: 'EMA 20/50',
+    volume: '거래량',
     sl: '손절 (STOP LOSS)',
     tp: '익절 (TAKE PROFIT)',
     strategy: 'BB Squeeze SHORT',
@@ -95,12 +109,46 @@ const labels = {
     maxDD: '최대 드로다운',
     tradesLabel: '건',
     live: '현재 라이브 설정',
+    h24high: '24h 고가',
+    h24low: '24h 저가',
+    h24vol: '24h 거래량',
+    resetZoom: '초기화',
+    open: '시',
+    high: '고',
+    low: '저',
+    close: '종',
+    vol: '거래량',
+    change: '변동',
+    dataRange: '데이터 범위',
+    disclaimer: '시뮬레이션은 0.04% 수수료 + 0.02% 슬리피지를 포함합니다. 과거 성과는 미래 결과를 보장하지 않습니다.',
   },
 };
+
+function formatPrice(p: number): string {
+  if (p >= 10000) return p.toLocaleString(undefined, { maximumFractionDigits: 1 });
+  if (p >= 1000) return p.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  if (p >= 1) return p.toFixed(3);
+  if (p >= 0.01) return p.toFixed(5);
+  return p.toFixed(7);
+}
+
+function formatVol(v: number): string {
+  if (v >= 1e9) return `${(v / 1e9).toFixed(2)}B`;
+  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M`;
+  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K`;
+  return v.toFixed(1);
+}
 
 function formatTime(unix: number): string {
   const d = new Date(unix * 1000);
   return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:00`;
+}
+
+function formatDateRange(startUnix: number, endUnix: number): string {
+  const s = new Date(startUnix * 1000);
+  const e = new Date(endUnix * 1000);
+  const fmt = (d: Date) => `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+  return `${fmt(s)} ~ ${fmt(e)}`;
 }
 
 function MetricBox({ label, value, color }: { label: string; value: string; color: string }) {
@@ -117,6 +165,28 @@ function MetricBox({ label, value, color }: { label: string; value: string; colo
   );
 }
 
+// Toggle button component
+function ToggleBtn({ active, activeColor, label, onClick }: { active: boolean; activeColor: string; label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '0.3rem 0.625rem',
+        borderRadius: '0.25rem',
+        border: `1px solid ${active ? activeColor : 'var(--color-border)'}`,
+        backgroundColor: active ? `${activeColor}15` : 'transparent',
+        color: active ? activeColor : 'var(--color-text-muted)',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.6875rem',
+        cursor: 'pointer',
+        transition: 'all 0.15s',
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
 export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lang?: 'en' | 'ko' }) {
   const t = labels[lang] || labels.en;
   const SYMBOL = symbol.toUpperCase();
@@ -127,10 +197,12 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
   const [tp, setTp] = useState(DEFAULT_TP);
   const [showBB, setShowBB] = useState(true);
   const [showEMA, setShowEMA] = useState(false);
+  const [showVol, setShowVol] = useState(true);
   const [loading, setLoading] = useState(true);
   const [simLoading, setSimLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showTrades, setShowTrades] = useState(false);
+  const [crosshairData, setCrosshairData] = useState<OhlcvBar | null>(null);
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
@@ -141,6 +213,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
   const ema20Ref = useRef<any>(null);
   const ema50Ref = useRef<any>(null);
   const volumeSeriesRef = useRef<any>(null);
+  const ohlcvMapRef = useRef<Map<number, OhlcvBar>>(new Map());
+  const autoSimDoneRef = useRef(false);
 
   // Load OHLCV data
   useEffect(() => {
@@ -165,27 +239,48 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     if (!ohlcv || !chartContainerRef.current) return;
     let disposed = false;
 
+    // Build lookup map for crosshair
+    const map = new Map<number, OhlcvBar>();
+    for (const bar of ohlcv) map.set(bar.t, bar);
+    ohlcvMapRef.current = map;
+
     import('lightweight-charts').then(({ createChart, CandlestickSeries, LineSeries, HistogramSeries }) => {
       if (disposed || !chartContainerRef.current) return;
 
       const chart = createChart(chartContainerRef.current, {
         width: chartContainerRef.current.clientWidth,
-        height: 400,
+        height: 480,
         layout: {
           background: { color: '#0a0a0a' },
-          textColor: '#888888',
+          textColor: '#666666',
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: 11,
         },
         grid: {
-          vertLines: { color: '#151515' },
-          horzLines: { color: '#151515' },
+          vertLines: { color: '#131313' },
+          horzLines: { color: '#131313' },
         },
-        rightPriceScale: { borderColor: '#222' },
-        timeScale: { borderColor: '#222', timeVisible: true, secondsVisible: false },
+        rightPriceScale: {
+          borderColor: '#1a1a1a',
+          scaleMargins: { top: 0.05, bottom: 0.25 },
+        },
+        timeScale: {
+          borderColor: '#1a1a1a',
+          timeVisible: true,
+          secondsVisible: false,
+          rightOffset: 5,
+          barSpacing: 6,
+        },
         crosshair: {
-          vertLine: { color: '#00ff8833', width: 1, style: 2 },
-          horzLine: { color: '#00ff8833', width: 1, style: 2 },
+          mode: 0,
+          vertLine: { color: '#00ff8833', width: 1, style: 2, labelBackgroundColor: '#111' },
+          horzLine: { color: '#00ff8833', width: 1, style: 2, labelBackgroundColor: '#111' },
+        },
+        watermark: {
+          visible: true,
+          text: `${SYMBOL.replace('USDT', '')}/USDT`,
+          fontSize: 48,
+          color: 'rgba(255,255,255,0.03)',
         },
       });
 
@@ -196,14 +291,15 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         wickUpColor: '#00ff88',
         wickDownColor: '#ff4444',
         borderVisible: false,
+        priceFormat: { type: 'price', minMove: ohlcv[0]?.c < 0.01 ? 0.0000001 : ohlcv[0]?.c < 1 ? 0.00001 : 0.01 },
       });
       candleSeries.setData(ohlcv.map(b => ({ time: b.t as any, open: b.o, high: b.h, low: b.l, close: b.c })));
       candleSeriesRef.current = candleSeries;
 
       // BB Bands
-      const bbUpper = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.4)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-      const bbMid = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.2)', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false });
-      const bbLower = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.4)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      const bbUpper = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.5)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      const bbMid = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.25)', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      const bbLower = chart.addSeries(LineSeries, { color: 'rgba(100,150,255,0.5)', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
 
       const bbUpperData = ohlcv.filter(b => b.bb_upper != null).map(b => ({ time: b.t as any, value: b.bb_upper! }));
       const bbMidData = ohlcv.filter(b => b.bb_mid != null).map(b => ({ time: b.t as any, value: b.bb_mid! }));
@@ -216,8 +312,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       bbLowerRef.current = bbLower;
 
       // EMA
-      const ema20 = chart.addSeries(LineSeries, { color: '#ffaa00', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-      const ema50 = chart.addSeries(LineSeries, { color: '#aa66ff', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      const ema20 = chart.addSeries(LineSeries, { color: '#ffaa00', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, visible: false, crosshairMarkerVisible: false });
+      const ema50 = chart.addSeries(LineSeries, { color: '#aa66ff', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, visible: false, crosshairMarkerVisible: false });
       const ema20Data = ohlcv.filter(b => b.ema20 != null).map(b => ({ time: b.t as any, value: b.ema20! }));
       const ema50Data = ohlcv.filter(b => b.ema50 != null).map(b => ({ time: b.t as any, value: b.ema50! }));
       ema20.setData(ema20Data);
@@ -230,13 +326,25 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         priceFormat: { type: 'volume' },
         priceScaleId: 'volume',
       });
-      chart.priceScale('volume').applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
+      chart.priceScale('volume').applyOptions({
+        scaleMargins: { top: 0.82, bottom: 0 },
+      });
       volumeSeries.setData(ohlcv.map(b => ({
         time: b.t as any,
         value: b.v,
-        color: b.c >= b.o ? 'rgba(0,255,136,0.15)' : 'rgba(255,68,68,0.15)',
+        color: b.c >= b.o ? 'rgba(0,255,136,0.25)' : 'rgba(255,68,68,0.25)',
       })));
       volumeSeriesRef.current = volumeSeries;
+
+      // Crosshair move handler
+      chart.subscribeCrosshairMove((param: any) => {
+        if (!param || !param.time) {
+          setCrosshairData(null);
+          return;
+        }
+        const bar = ohlcvMapRef.current.get(param.time as number);
+        if (bar) setCrosshairData(bar);
+      });
 
       chartRef.current = chart;
       chart.timeScale().fitContent();
@@ -262,10 +370,9 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
   // Toggle BB bands visibility
   useEffect(() => {
     if (bbUpperRef.current) {
-      const vis = showBB ? true : false;
-      bbUpperRef.current.applyOptions({ visible: vis });
-      bbMidRef.current?.applyOptions({ visible: vis });
-      bbLowerRef.current?.applyOptions({ visible: vis });
+      bbUpperRef.current.applyOptions({ visible: showBB });
+      bbMidRef.current?.applyOptions({ visible: showBB });
+      bbLowerRef.current?.applyOptions({ visible: showBB });
     }
   }, [showBB]);
 
@@ -276,6 +383,13 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       ema50Ref.current?.applyOptions({ visible: showEMA });
     }
   }, [showEMA]);
+
+  // Toggle Volume visibility
+  useEffect(() => {
+    if (volumeSeriesRef.current) {
+      volumeSeriesRef.current.applyOptions({ visible: showVol });
+    }
+  }, [showVol]);
 
   // Apply strategy simulation
   const runSimulation = async () => {
@@ -299,7 +413,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
             time: trade.entry_time as any,
             position: 'aboveBar',
             shape: 'arrowDown',
-            color: '#ff4444',
+            color: '#ff6666',
             text: 'S',
           });
           const exitColor = trade.exit_reason === 'tp' ? '#00ff88' : trade.exit_reason === 'sl' ? '#ff4444' : '#888888';
@@ -322,6 +436,15 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     }
   };
 
+  // Auto-run simulation on first load
+  useEffect(() => {
+    if (ohlcv && !autoSimDoneRef.current && chartRef.current) {
+      autoSimDoneRef.current = true;
+      // Small delay to let chart render first
+      setTimeout(() => runSimulation(), 300);
+    }
+  }, [ohlcv, chartRef.current]);
+
   if (loading) {
     return <div style={{ padding: '3rem 0', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{t.loading}</div>;
   }
@@ -334,64 +457,160 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
   const change = prevBar.c ? ((lastBar.c - prevBar.c) / prevBar.c * 100) : 0;
   const isDefault = sl === DEFAULT_SL && tp === DEFAULT_TP;
 
+  // 24h stats (last 24 bars)
+  const last24 = ohlcv.slice(-24);
+  const high24 = Math.max(...last24.map(b => b.h));
+  const low24 = Math.min(...last24.map(b => b.l));
+  const vol24 = last24.reduce((s, b) => s + b.v, 0);
+
+  // Data for crosshair overlay
+  const displayBar = crosshairData || lastBar;
+  const displayChange = crosshairData && ohlcv.length > 1
+    ? ((crosshairData.c - crosshairData.o) / crosshairData.o * 100)
+    : change;
+
   return (
     <div>
-      {/* Header */}
-      <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'baseline', gap: '1rem', flexWrap: 'wrap' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{SYMBOL.replace('USDT', '')}/USDT</h1>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1.125rem' }}>${lastBar.c >= 1 ? lastBar.c.toLocaleString(undefined, { maximumFractionDigits: 2 }) : lastBar.c.toFixed(6)}</span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.875rem', color: change >= 0 ? 'var(--color-accent)' : 'var(--color-red)' }}>
-          {change > 0 ? '+' : ''}{change.toFixed(2)}%
+      {/* Header — Price + 24h Stats */}
+      <div style={{ marginBottom: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+          <h1 style={{ fontSize: '1.375rem', fontWeight: 700, fontFamily: 'var(--font-mono)', margin: 0 }}>
+            {SYMBOL.replace('USDT', '')}<span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>/USDT</span>
+          </h1>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', fontWeight: 600 }}>
+            ${formatPrice(lastBar.c)}
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', fontWeight: 600,
+            color: change >= 0 ? 'var(--color-accent)' : 'var(--color-red)',
+            backgroundColor: change >= 0 ? 'rgba(0,255,136,0.1)' : 'rgba(255,68,68,0.1)',
+            padding: '0.125rem 0.5rem', borderRadius: '0.25rem',
+          }}>
+            {change > 0 ? '+' : ''}{change.toFixed(2)}%
+          </span>
+        </div>
+        {/* 24h stats row */}
+        <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
+          <span>{t.h24high}: <span style={{ color: 'var(--color-accent)' }}>${formatPrice(high24)}</span></span>
+          <span>{t.h24low}: <span style={{ color: 'var(--color-red)' }}>${formatPrice(low24)}</span></span>
+          <span>{t.h24vol}: <span style={{ color: 'var(--color-text)' }}>{formatVol(vol24)}</span></span>
+          <span>{t.dataRange}: {formatDateRange(ohlcv[0].t, lastBar.t)}</span>
+        </div>
+      </div>
+
+      {/* Chart Container */}
+      <div style={{
+        backgroundColor: '#0a0a0a',
+        border: '1px solid var(--color-border)',
+        borderRadius: '0.75rem',
+        overflow: 'hidden',
+        marginBottom: '0.75rem',
+        position: 'relative',
+      }}>
+        {/* OHLCV Overlay — top left */}
+        <div style={{
+          position: 'absolute',
+          top: '0.5rem',
+          left: '0.75rem',
+          zIndex: 10,
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.6875rem',
+          display: 'flex',
+          gap: '0.625rem',
+          flexWrap: 'wrap',
+          pointerEvents: 'none',
+        }}>
+          <span style={{ color: '#666' }}>{t.open} <span style={{ color: 'var(--color-text)' }}>{formatPrice(displayBar.o)}</span></span>
+          <span style={{ color: '#666' }}>{t.high} <span style={{ color: 'var(--color-accent)' }}>{formatPrice(displayBar.h)}</span></span>
+          <span style={{ color: '#666' }}>{t.low} <span style={{ color: 'var(--color-red)' }}>{formatPrice(displayBar.l)}</span></span>
+          <span style={{ color: '#666' }}>{t.close} <span style={{ color: displayBar.c >= displayBar.o ? 'var(--color-accent)' : 'var(--color-red)' }}>{formatPrice(displayBar.c)}</span></span>
+          <span style={{ color: '#666' }}>{t.vol} <span style={{ color: 'var(--color-text-muted)' }}>{formatVol(displayBar.v)}</span></span>
+          <span style={{
+            color: displayChange >= 0 ? 'var(--color-accent)' : 'var(--color-red)',
+            fontWeight: 600,
+          }}>
+            {displayChange > 0 ? '+' : ''}{displayChange.toFixed(2)}%
+          </span>
+        </div>
+
+        {/* Indicator toggles + zoom reset — top right */}
+        <div style={{
+          position: 'absolute',
+          top: '0.5rem',
+          right: '0.75rem',
+          zIndex: 10,
+          display: 'flex',
+          gap: '0.375rem',
+        }}>
+          <ToggleBtn active={showBB} activeColor="rgba(100,150,255,0.8)" label={t.bbBands} onClick={() => setShowBB(!showBB)} />
+          <ToggleBtn active={showEMA} activeColor="#ffaa00" label={t.ema} onClick={() => setShowEMA(!showEMA)} />
+          <ToggleBtn active={showVol} activeColor="rgba(0,255,136,0.6)" label={t.volume} onClick={() => setShowVol(!showVol)} />
+          <button
+            onClick={() => chartRef.current?.timeScale().fitContent()}
+            style={{
+              padding: '0.3rem 0.5rem',
+              borderRadius: '0.25rem',
+              border: '1px solid var(--color-border)',
+              backgroundColor: 'rgba(17,17,17,0.8)',
+              color: 'var(--color-text-muted)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.6875rem',
+              cursor: 'pointer',
+            }}
+          >
+            {t.resetZoom}
+          </button>
+        </div>
+
+        {/* Chart */}
+        <div ref={chartContainerRef} style={{ width: '100%', height: '480px' }} />
+
+        {/* TradingView Attribution — bottom right */}
+        <div style={{
+          position: 'absolute',
+          bottom: '0.375rem',
+          right: '0.75rem',
+          zIndex: 10,
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.5625rem',
+          pointerEvents: 'auto',
+        }}>
+          <a
+            href="https://www.tradingview.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#444', textDecoration: 'none' }}
+          >
+            Powered by TradingView
+          </a>
+        </div>
+      </div>
+
+      {/* Strategy Controls */}
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '0.75rem',
+        alignItems: 'center',
+        marginBottom: '1rem',
+        padding: '0.75rem 1rem',
+        backgroundColor: 'var(--color-bg-card)',
+        border: '1px solid var(--color-border)',
+        borderRadius: '0.75rem',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--color-accent)',
+          letterSpacing: '0.1em', textTransform: 'uppercase' as const, fontWeight: 600,
+        }}>
+          {t.strategy}
         </span>
-      </div>
-
-      {/* Chart */}
-      <div style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '0.75rem', overflow: 'hidden', marginBottom: '1rem' }}>
-        <div ref={chartContainerRef} style={{ width: '100%', height: '400px' }} />
-      </div>
-
-      {/* Controls */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <button
-          onClick={() => setShowBB(!showBB)}
-          style={{
-            padding: '0.375rem 0.75rem',
-            borderRadius: '0.375rem',
-            border: `1px solid ${showBB ? 'rgba(100,150,255,0.5)' : 'var(--color-border)'}`,
-            backgroundColor: showBB ? 'rgba(100,150,255,0.1)' : 'transparent',
-            color: showBB ? 'rgba(100,150,255,0.8)' : 'var(--color-text-muted)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            cursor: 'pointer',
-          }}
-        >
-          {t.bbBands}
-        </button>
-        <button
-          onClick={() => setShowEMA(!showEMA)}
-          style={{
-            padding: '0.375rem 0.75rem',
-            borderRadius: '0.375rem',
-            border: `1px solid ${showEMA ? '#ffaa00' : 'var(--color-border)'}`,
-            backgroundColor: showEMA ? 'rgba(255,170,0,0.1)' : 'transparent',
-            color: showEMA ? '#ffaa00' : 'var(--color-text-muted)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            cursor: 'pointer',
-          }}
-        >
-          {t.ema}
-        </button>
-
         <div style={{ flex: 1 }} />
-
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' as const }}>{t.strategy}</span>
         <button
           onClick={runSimulation}
           disabled={simLoading}
           style={{
-            padding: '0.5rem 1.25rem',
-            borderRadius: '0.5rem',
+            padding: '0.5rem 1.5rem',
+            borderRadius: '0.375rem',
             border: 'none',
             backgroundColor: 'var(--color-accent)',
             color: 'var(--color-bg)',
@@ -400,6 +619,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
             fontWeight: 600,
             cursor: simLoading ? 'wait' : 'pointer',
             opacity: simLoading ? 0.7 : 1,
+            transition: 'opacity 0.15s',
           }}
         >
           {simLoading ? t.simLoading : (simResult ? t.resim : t.apply)}
@@ -407,7 +627,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       </div>
 
       {/* SL/TP Sliders + Results */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
         {/* Sliders */}
         <div style={{ padding: '1.25rem', backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '0.75rem' }}>
           <DiscreteSlider label={t.sl} values={SL_VALUES} value={sl} defaultValue={DEFAULT_SL} onChange={setSl} />
@@ -430,20 +650,31 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
                 {simResult.total_trades} {t.tradesLabel} &middot; TP:{simResult.tp_count} SL:{simResult.sl_count} TO:{simResult.timeout_count}
               </div>
-              {/* Exit bar */}
+              {/* Exit distribution bar */}
               <div style={{ display: 'flex', height: '4px', borderRadius: '2px', overflow: 'hidden', backgroundColor: 'var(--color-border)' }}>
                 {simResult.total_trades > 0 && (<>
-                  <div style={{ width: `${(simResult.tp_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-accent)' }} />
-                  <div style={{ width: `${(simResult.sl_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-red)' }} />
-                  <div style={{ width: `${(simResult.timeout_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-text-muted)' }} />
+                  <div style={{ width: `${(simResult.tp_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-accent)' }} title={`TP: ${simResult.tp_count}`} />
+                  <div style={{ width: `${(simResult.sl_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-red)' }} title={`SL: ${simResult.sl_count}`} />
+                  <div style={{ width: `${(simResult.timeout_count / simResult.total_trades) * 100}%`, backgroundColor: 'var(--color-text-muted)' }} title={`TO: ${simResult.timeout_count}`} />
                 </>)}
               </div>
             </div>
           ) : (
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.875rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>{t.noTrades}</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>{t.noTrades}</div>
           )}
         </div>
       </div>
+
+      {/* Disclaimer */}
+      <p style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.5625rem',
+        color: '#444',
+        marginBottom: '1rem',
+        lineHeight: 1.5,
+      }}>
+        * {t.disclaimer}
+      </p>
 
       {/* Trade History */}
       {simResult && simResult.trades.length > 0 && (
