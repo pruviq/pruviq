@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* Self-hosted fonts — eliminates Google Fonts external requests */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+}
+
 @theme {
   --color-bg: #0a0a0a;
   --color-bg-card: #111111;
