@@ -266,6 +266,42 @@ export const en = {
   'meta.changelog_desc': "Complete version history of PRUVIQ's trading system. Every change, every reason, every date.",
   'meta.performance_title': 'Live Performance - PRUVIQ',
   'meta.performance_desc': 'Real trading results from our live account. Every trade published, including losses. BB Squeeze SHORT strategy performance.',
+  'meta.about_title': 'About - PRUVIQ',
+  'meta.about_desc': 'Meet the team behind PRUVIQ. Our mission: make crypto strategy verification accessible to everyone. No hype. Just data.',
+
+  // About page
+  'about.tag': 'ABOUT PRUVIQ',
+  'about.title': 'Built by a Trader. For Traders.',
+  'about.mission': 'PRUVIQ exists because we got tired of backtests that lie, strategies that cherry-pick, and influencers who never show losses. We built a platform where every result is published — including failures — so you can verify before you risk real money.',
+  'about.founder_tag': 'FOUNDER',
+  'about.founder_name': 'JPLee',
+  'about.founder_role': 'Quant Developer & Trader',
+  'about.founder_bio': 'JPLee is an engineer who trades with code, not gut feeling. After losing money following influencer signals, he built PRUVIQ to prove strategies with data before trading them live. He runs every strategy on his own capital first.',
+  'about.founder_stat1_label': 'Strategies Tested',
+  'about.founder_stat1_val': '5+',
+  'about.founder_stat2_label': 'Coins Simulated',
+  'about.founder_stat2_val': '535',
+  'about.founder_stat3_label': 'Trades Analyzed',
+  'about.founder_stat3_val': '2,898+',
+  'about.philosophy_tag': 'OUR PHILOSOPHY',
+  'about.philosophy_title': 'Prove It or Kill It.',
+  'about.philosophy1_title': 'Publish Everything',
+  'about.philosophy1_desc': 'Every strategy result, every trade, every failure. If we can\'t show it, we don\'t claim it.',
+  'about.philosophy2_title': 'Data Over Intuition',
+  'about.philosophy2_desc': '6 experts recommended a BTC filter. Our backtest proved it wrong. We trust numbers, not opinions.',
+  'about.philosophy3_title': 'Eat Our Own Cooking',
+  'about.philosophy3_desc': 'Every verified strategy runs on our real account first. We risk our own money before suggesting you risk yours.',
+  'about.philosophy4_title': 'Free Forever',
+  'about.philosophy4_desc': 'Strategy verification should be accessible to everyone. Core features will always be free. We earn through exchange referrals only.',
+  'about.stack_tag': 'BUILT WITH',
+  'about.stack_desc': 'Open-source Python backtesting engine, Astro static site, Cloudflare edge delivery, Binance Futures API. No proprietary black boxes.',
+  'about.contact_tag': 'GET IN TOUCH',
+  'about.contact_desc': 'Questions, feedback, or partnership inquiries:',
+  'about.contact_email': 'pruviq@gmail.com',
+  'about.contact_telegram': 'Telegram Community',
+
+  // Footer
+  'footer.about': 'About',
 } as const;
 
 export type TranslationKey = keyof typeof en;
