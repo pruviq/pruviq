@@ -148,6 +148,15 @@ export const en = {
   'strategy.added': 'Added',
   'strategy.killed_date': 'Killed',
   'strategy.trades_analyzed': 'trades analyzed',
+  'strategy.leverage_warning_title': 'Leverage Risk',
+  'strategy.leverage_warning': 'All results are simulated with 5x leverage. A 26.7% max drawdown at 5x means your actual capital drawdown could reach ~5.3% per position. Higher leverage amplifies both gains and losses. Never use leverage you cannot afford to lose.',
+  'strategy.wr_desc': 'Percentage of trades that were profitable',
+  'strategy.pf_desc': 'Gross profit / gross loss ratio',
+  'strategy.pnl_desc': 'Net profit after all fees and losses',
+  'strategy.mdd_desc': 'Largest peak-to-trough decline',
+  'strategies.beginner_tag': 'NEW TO CRYPTO TRADING?',
+  'strategies.beginner_desc': 'Start with our educational guides before exploring strategies. Learn backtesting basics, risk management, and common pitfalls.',
+  'strategies.beginner_cta': 'Start Learning',
 
   // Blog
   'blog.tag': 'TRADING IQ',

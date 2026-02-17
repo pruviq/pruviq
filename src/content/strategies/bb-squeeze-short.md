@@ -67,6 +67,10 @@ In the current crypto market structure (2024-2026), short-side mean reversion ha
 3. **Volume is not optional** — Without the 2.0x filter, false signals dominate
 4. **48-hour timeout is optimal** — Tested 30+ early exit variations, all underperformed
 
+## Simulation Assumptions
+
+All results include realistic trading costs: **0.04% futures fee per side** (0.08% round-trip) and **0.02% estimated slippage** per trade. Position sizing: $60 per trade with 5x leverage. These costs are deducted from every simulated trade — no cherry-picking.
+
 ## Status: VERIFIED
 
 Simulation-verified across 535 coins, 2+ years of hourly data. Default configuration: $60 per trade, 5x leverage, hourly scans. You can adjust parameters and run your own simulation.

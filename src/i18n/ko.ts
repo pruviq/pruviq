@@ -150,6 +150,15 @@ export const ko: Record<TranslationKey, string> = {
   'strategy.added': '추가일',
   'strategy.killed_date': '중단일',
   'strategy.trades_analyzed': '건 분석됨',
+  'strategy.leverage_warning_title': '레버리지 위험',
+  'strategy.leverage_warning': '모든 결과는 5배 레버리지로 시뮬레이션되었습니다. 최대 드로다운 26.7%는 5배 기준으로 실제 자본 손실은 포지션당 ~5.3%입니다. 높은 레버리지는 수익과 손실 모두를 증폭시킵니다. 감당할 수 없는 레버리지를 사용하지 마세요.',
+  'strategy.wr_desc': '수익이 난 거래의 비율',
+  'strategy.pf_desc': '총 수익 / 총 손실 비율',
+  'strategy.pnl_desc': '모든 수수료와 손실 차감 후 순수익',
+  'strategy.mdd_desc': '최고점에서 최저점까지 최대 하락폭',
+  'strategies.beginner_tag': '암호화폐 트레이딩이 처음이신가요?',
+  'strategies.beginner_desc': '전략을 탐색하기 전에 교육 가이드부터 시작하세요. 백테스팅 기초, 리스크 관리, 흔한 실수를 배우세요.',
+  'strategies.beginner_cta': '학습 시작하기',
 
   // Blog
   'blog.tag': '트레이딩 IQ',

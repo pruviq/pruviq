@@ -52,6 +52,17 @@ const difficultyColors: Record<string, string> = {
         {strategies.filter(s => s.data.status === 'shelved').length} shelved.
       </p>
 
+      <div class="mb-8 border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card] flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="flex-1">
+          <p class="font-mono text-[--color-accent] text-xs font-bold mb-1">NEW TO CRYPTO TRADING?</p>
+          <p class="text-[--color-text-muted] text-sm">Start with our educational guides before exploring strategies. Learn backtesting basics, risk management, and common pitfalls.</p>
+        </div>
+        <a href="/blog"
+           class="shrink-0 border border-[--color-accent] text-[--color-accent] px-5 py-2 rounded text-sm font-semibold hover:bg-[--color-accent] hover:text-[--color-bg] transition-colors whitespace-nowrap">
+          Start Learning &rarr;
+        </a>
+      </div>
+
       <div class="space-y-4">
         {strategies.map((strategy) => (
           <a href={`/strategies/${strategy.id}`}

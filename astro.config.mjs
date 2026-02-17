@@ -15,14 +15,7 @@ export default defineConfig({
     }
   },
   integrations: [
-    sitemap({
-      serialize(item) {
-        // Add lastmod to all URLs
-        // Use build date for all pages (blog posts will get their date from frontmatter in future enhancement)
-        item.lastmod = new Date();
-        return item;
-      }
-    }),
+    sitemap(),
     preact()
   ],
   vite: {
