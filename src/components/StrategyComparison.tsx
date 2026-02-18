@@ -1,402 +1,439 @@
-import { useState, useEffect, useRef } from 'preact/hooks';
-import DiscreteSlider from './DiscreteSlider';
+import { useState, useEffect } from 'preact/hooks';
 import { winRateColor, profitFactorColor, signColor } from '../utils/format';
 
-function getCssVar(name: string): string {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const API_URL = import.meta.env.PUBLIC_PRUVIQ_API_URL || 'https://api.pruviq.com';
+
+interface PresetFull {
+  id: string;
+  name: string;
+  direction: string;
+  indicators: Record<string, Record<string, number>>;
+  entry: { type: string; conditions: any[] };
+  avoid_hours: number[];
+  sl_pct: number;
+  tp_pct: number;
+  max_bars: number;
 }
 
-interface EquityPoint {
-  time: string;
-  value: number;
-}
-
-interface ResultData {
+interface BacktestResult {
+  total_trades: number;
+  wins: number;
+  losses: number;
   win_rate: number;
   profit_factor: number;
   total_return_pct: number;
   max_drawdown_pct: number;
-  total_trades: number;
   tp_count: number;
   sl_count: number;
   timeout_count: number;
-  equity_curve: EquityPoint[];
-}
-
-interface StrategyInfo {
-  name: string;
-  direction: string;
-  status: string;
-  defaults: { sl: number; tp: number };
-  results: Record<string, ResultData>;
-}
-
-interface ComparisonData {
-  generated: string;
-  coins: number;
+  compute_time_ms: number;
+  coins_used: number;
   data_range: string;
-  grid: { sl_values: number[]; tp_values: number[] };
-  strategies: Record<string, StrategyInfo>;
 }
-
-interface Props {
-  lang?: 'en' | 'ko';
-}
-
-const API_URL = import.meta.env.PUBLIC_PRUVIQ_API_URL || '';
 
 const labels = {
   en: {
     tag: 'STRATEGY COMPARISON',
     title: 'Compare All Strategies',
-    desc: (coins: number, range: string) => `Adjust SL/TP to compare all strategies under identical conditions. ${coins} coins, ${range}, realistic fees.`,
-    sl: 'STOP LOSS',
-    tp: 'TAKE PROFIT',
-    loading: 'Loading comparison data...',
-    error: 'Failed to load comparison data.',
-    noData: 'No data',
-    disclaimer: '* All strategies simulated with identical fees (0.04% + 0.02% slippage). Past performance does not guarantee future results.',
-    name: 'Strategy',
+    desc: 'Same conditions, same data. Adjust SL/TP to see how each strategy responds.',
+    sl: 'Stop Loss %',
+    tp: 'Take Profit %',
+    run: 'Compare',
+    running: 'Running 5 backtests...',
+    loading: 'Loading strategies...',
+    strategy: 'Strategy',
     direction: 'Dir',
+    trades: 'Trades',
     winRate: 'Win Rate',
     pf: 'PF',
     totalReturn: 'Return',
-    maxDD: 'MDD',
-    trades: 'Trades',
-    view: 'View',
-    ctaTitle: 'Ready to Trade?',
-    ctaDesc: 'Save up to 20% on trading fees with PRUVIQ referral links.',
-    ctaFees: 'Compare Exchange Fees',
-    ctaCommunity: 'Join Community',
+    maxDD: 'Max DD',
+    noData: 'Run comparison to see results.',
+    error: 'Failed to load strategies.',
+    disclaimer: '* All strategies simulated on 50 coins with identical fees (0.04% + 0.02% slippage). Past performance does not guarantee future results.',
+    computeTime: 'Computed in',
+    useDefault: 'Use each strategy\'s default SL/TP',
+    view: 'Details',
   },
   ko: {
     tag: '전략 비교',
     title: '모든 전략 비교',
-    desc: (coins: number, range: string) => `SL/TP를 조정하여 동일한 조건에서 모든 전략을 비교하세요. ${coins}개 코인, ${range}, 수수료 포함.`,
-    sl: '손절 (STOP LOSS)',
-    tp: '익절 (TAKE PROFIT)',
-    loading: '비교 데이터 로딩 중...',
-    error: '비교 데이터 로딩 실패.',
-    noData: '데이터 없음',
-    disclaimer: '* 모든 전략은 동일한 수수료(0.04% + 0.02% 슬리피지)로 시뮬레이션됩니다. 과거 성과는 미래 결과를 보장하지 않습니다.',
-    name: '전략',
+    desc: '동일한 조건, 동일한 데이터. SL/TP를 조정하여 각 전략의 반응을 확인하세요.',
+    sl: '손절 %',
+    tp: '익절 %',
+    run: '비교 실행',
+    running: '5개 백테스트 실행 중...',
+    loading: '전략 로딩 중...',
+    strategy: '전략',
     direction: '방향',
+    trades: '거래 수',
     winRate: '승률',
-    pf: 'PF',
+    pf: '수익 팩터',
     totalReturn: '수익률',
-    maxDD: 'MDD',
-    trades: '거래',
-    view: '보기',
-    ctaTitle: '실제 거래를 시작하려면?',
-    ctaDesc: 'PRUVIQ 제휴 링크로 거래소 수수료 최대 20% 할인.',
-    ctaFees: '거래소 수수료 비교',
-    ctaCommunity: '커뮤니티 참여',
+    maxDD: '최대 DD',
+    noData: '비교를 실행하면 결과가 표시됩니다.',
+    error: '전략 데이터 로딩 실패.',
+    disclaimer: '* 모든 전략은 50개 코인, 동일한 수수료(0.04% + 0.02% 슬리피지)로 시뮬레이션됩니다. 과거 성과는 미래 결과를 보장하지 않습니다.',
+    computeTime: '계산 시간',
+    useDefault: '각 전략의 기본 SL/TP 사용',
+    view: '자세히',
   },
 };
 
-const statusColors: Record<string, string> = {
-  verified: 'var(--color-accent)',
-  testing: 'var(--color-yellow)',
-  killed: 'var(--color-red)',
-  shelved: 'var(--color-text-muted)',
+const STATUS_MAP: Record<string, { en: string; ko: string; color: string }> = {
+  'bb-squeeze-short': { en: 'VERIFIED', ko: '검증됨', color: 'var(--color-accent)' },
+  'bb-squeeze-long': { en: 'KILLED', ko: '중단됨', color: 'var(--color-red)' },
+  'momentum-long': { en: 'KILLED', ko: '중단됨', color: 'var(--color-red)' },
+  'atr-breakout': { en: 'SHELVED', ko: '보류', color: 'var(--color-text-muted)' },
+  'hv-squeeze': { en: 'SHELVED', ko: '보류', color: 'var(--color-text-muted)' },
 };
 
-const statusLabelsEN: Record<string, string> = {
-  verified: 'VERIFIED',
-  testing: 'TESTING',
-  killed: 'KILLED',
-  shelved: 'SHELVED',
-};
-
-const statusLabelsKO: Record<string, string> = {
-  verified: '검증됨',
-  testing: '테스트 중',
-  killed: '중단됨',
-  shelved: '보류',
-};
-
-const STRATEGY_ORDER = ['bb-squeeze-short', 'bb-squeeze-long', 'momentum-long', 'atr-breakout', 'hv-squeeze'];
-
-function ComparisonSkeleton() {
-  return (
-    <div class="fade-in">
-      <div class="mb-6">
-        <div class="skeleton h-3 w-40 mb-2" />
-        <div class="skeleton h-7 w-64 mb-2" />
-        <div class="skeleton h-4 w-96 max-w-full" />
-      </div>
-      <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl mb-6">
-        <div class="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
-          <div class="skeleton h-12 w-full rounded" />
-          <div class="skeleton h-12 w-full rounded" />
-        </div>
-      </div>
-      <div class="space-y-3">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} class="skeleton h-20 w-full rounded-lg" />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-interface SparklineProps {
-  data: EquityPoint[];
-  width?: number;
-  height?: number;
-}
-
-function Sparkline({ data, width = 120, height = 40 }: SparklineProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !data?.length) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
-    ctx.clearRect(0, 0, width, height);
-
-    const values = data.map((d) => d.value);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const range = max - min || 1;
-    const padding = 2;
-
-    const isPositive = values[values.length - 1] >= 0;
-    const color = isPositive ? getCssVar('--color-accent') : getCssVar('--color-red');
-
-    ctx.beginPath();
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
-    ctx.lineJoin = 'round';
-
-    for (let i = 0; i < values.length; i++) {
-      const x = (i / (values.length - 1)) * (width - padding * 2) + padding;
-      const y = height - padding - ((values[i] - min) / range) * (height - padding * 2);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-  }, [data, width, height]);
-
-  if (!data?.length) return <div class="w-[120px] h-[40px]" />;
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: `${width}px`, height: `${height}px` }}
-      class="block"
-    />
-  );
+interface Props {
+  lang?: 'en' | 'ko';
 }
 
 export default function StrategyComparison({ lang = 'en' }: Props) {
   const t = labels[lang] || labels.en;
-  const statusLabels = lang === 'ko' ? statusLabelsKO : statusLabelsEN;
-  const [data, setData] = useState<ComparisonData | null>(null);
-  const [sl, setSl] = useState(10);
-  const [tp, setTp] = useState(8);
-  const [loading, setLoading] = useState(true);
+  const [presets, setPresets] = useState<PresetFull[]>([]);
+  const [results, setResults] = useState<Record<string, BacktestResult>>({});
+  const [slPct, setSlPct] = useState(10);
+  const [tpPct, setTpPct] = useState(8);
+  const [useDefaults, setUseDefaults] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [totalTime, setTotalTime] = useState(0);
 
+  // Load presets on mount
   useEffect(() => {
-    fetch('/data/comparison-results.json')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load');
-        return res.json();
-      })
-      .then((json: ComparisonData) => {
-        setData(json);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    const loadPresets = async () => {
+      try {
+        const listRes = await fetch(`${API_URL}/builder/presets`);
+        const list = await listRes.json();
+        const fullPresets: PresetFull[] = [];
+        for (const item of list) {
+          const res = await fetch(`${API_URL}/builder/presets/${item.id}`);
+          fullPresets.push({ ...await res.json(), id: item.id });
+        }
+        setPresets(fullPresets);
+        setIsLoading(false);
+      } catch {
+        setError(t.error);
+        setIsLoading(false);
+      }
+    };
+    loadPresets();
   }, []);
 
-  if (loading) return <ComparisonSkeleton />;
-  if (error || !data) {
-    return <div class="py-8 text-center font-mono text-sm text-[--color-red]">{t.error}</div>;
+  // Auto-run once presets loaded
+  useEffect(() => {
+    if (presets.length > 0 && Object.keys(results).length === 0) {
+      runComparison();
+    }
+  }, [presets]);
+
+  const runComparison = async () => {
+    if (presets.length === 0) return;
+    setIsRunning(true);
+    setError(null);
+    const newResults: Record<string, BacktestResult> = {};
+    let totalMs = 0;
+
+    // Run all 5 backtests in parallel
+    const promises = presets.map(async (preset) => {
+      try {
+        const body = {
+          name: preset.name,
+          direction: preset.direction,
+          indicators: preset.indicators,
+          entry: preset.entry,
+          avoid_hours: preset.avoid_hours,
+          sl_pct: useDefaults ? preset.sl_pct : slPct,
+          tp_pct: useDefaults ? preset.tp_pct : tpPct,
+          max_bars: preset.max_bars,
+          top_n: 50,
+        };
+
+        const res = await fetch(`${API_URL}/backtest`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          newResults[preset.id] = data;
+          totalMs += data.compute_time_ms || 0;
+        }
+      } catch {
+        // skip failed
+      }
+    });
+
+    await Promise.all(promises);
+    setResults(newResults);
+    setTotalTime(totalMs);
+    setIsRunning(false);
+  };
+
+  // Sort by total_return_pct descending
+  const sortedPresets = [...presets].sort((a, b) => {
+    const ra = results[a.id];
+    const rb = results[b.id];
+    if (!ra && !rb) return 0;
+    if (!ra) return 1;
+    if (!rb) return -1;
+    return rb.total_return_pct - ra.total_return_pct;
+  });
+
+  const strategyBase = lang === 'ko' ? '/ko/strategies' : '/strategies';
+
+  if (isLoading) {
+    return (
+      <div class="space-y-6">
+        <div class="animate-pulse space-y-3">
+          <div class="h-3 w-40 bg-[--color-border] rounded" />
+          <div class="h-8 w-64 bg-[--color-border] rounded" />
+          <div class="h-4 w-96 max-w-full bg-[--color-border] rounded" />
+        </div>
+        <div class="space-y-3">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} class="h-16 bg-[--color-border] rounded-lg animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
-  const key = `sl${sl}_tp${tp}`;
-  const strategyPrefix = lang === 'ko' ? '/ko/strategies' : '/strategies';
-
   return (
-    <div class="fade-in">
+    <div class="space-y-8">
       {/* Header */}
-      <div class="mb-6">
+      <div>
         <div class="font-mono text-xs text-[--color-accent] tracking-widest mb-2 uppercase">{t.tag}</div>
-        <h2 class="text-2xl font-bold mb-2">{t.title}</h2>
-        <p class="text-[--color-text-muted] text-sm leading-relaxed">{t.desc(data.coins, data.data_range)}</p>
+        <h1 class="text-3xl md:text-4xl font-bold mb-3">{t.title}</h1>
+        <p class="text-[--color-text-muted] text-lg max-w-2xl">{t.desc}</p>
       </div>
 
-      {/* Shared Sliders */}
-      <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl mb-6">
-        <div class="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
-          <DiscreteSlider label={t.sl} values={data.grid.sl_values} value={sl} defaultValue={10} onChange={setSl} />
-          <DiscreteSlider label={t.tp} values={data.grid.tp_values} value={tp} defaultValue={8} onChange={setTp} />
+      {/* Controls */}
+      <div class="border border-[--color-border] rounded-xl p-5 bg-[--color-bg-card]">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={useDefaults}
+              onChange={() => setUseDefaults(!useDefaults)}
+              class="accent-[--color-accent] w-4 h-4"
+            />
+            <span class="font-mono text-sm text-[--color-text-muted]">{t.useDefault}</span>
+          </label>
+
+          {!useDefaults && (
+            <>
+              <div>
+                <label class="font-mono text-xs text-[--color-text-muted] block mb-1">{t.sl}</label>
+                <input
+                  type="number"
+                  value={slPct}
+                  min={1}
+                  max={50}
+                  step={0.5}
+                  onChange={(e) => setSlPct(parseFloat((e.target as HTMLInputElement).value) || 10)}
+                  class="w-20 bg-[--color-bg] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text]"
+                />
+              </div>
+              <div>
+                <label class="font-mono text-xs text-[--color-text-muted] block mb-1">{t.tp}</label>
+                <input
+                  type="number"
+                  value={tpPct}
+                  min={1}
+                  max={100}
+                  step={0.5}
+                  onChange={(e) => setTpPct(parseFloat((e.target as HTMLInputElement).value) || 8)}
+                  class="w-20 bg-[--color-bg] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text]"
+                />
+              </div>
+            </>
+          )}
+
+          <button
+            onClick={runComparison}
+            disabled={isRunning || presets.length === 0}
+            class={`px-6 py-2.5 rounded-lg font-mono font-bold text-sm cursor-pointer transition-all
+              ${isRunning
+                ? 'bg-[--color-border] text-[--color-text-muted] cursor-not-allowed'
+                : 'bg-[--color-accent] text-[--color-bg] hover:shadow-[0_0_15px_rgba(0,255,136,0.2)]'
+              }`}
+          >
+            {isRunning ? t.running : t.run}
+          </button>
         </div>
       </div>
 
-      {/* Strategy Cards (mobile) + Table (desktop) */}
-      {/* Desktop Table */}
-      <div class="hidden md:block overflow-x-auto border border-[--color-border] rounded-xl bg-[--color-bg-card]">
-        <table class="w-full font-mono text-sm">
-          <thead>
-            <tr class="border-b border-[--color-border] text-[--color-text-muted] text-xs uppercase tracking-wider">
-              <th class="px-4 py-3 text-left">{t.name}</th>
-              <th class="px-3 py-3 text-center">{t.direction}</th>
-              <th class="px-3 py-3 text-right">{t.winRate}</th>
-              <th class="px-3 py-3 text-right">{t.pf}</th>
-              <th class="px-3 py-3 text-right">{t.totalReturn}</th>
-              <th class="px-3 py-3 text-right">{t.maxDD}</th>
-              <th class="px-3 py-3 text-right">{t.trades}</th>
-              <th class="px-3 py-3 text-center">Equity</th>
-              <th class="px-3 py-3 text-center" />
-            </tr>
-          </thead>
-          <tbody>
-            {STRATEGY_ORDER.map((id) => {
-              const strat = data.strategies[id];
-              if (!strat) return null;
-              const result = strat.results[key];
-              const statusColor = statusColors[strat.status] || 'var(--color-text-muted)';
+      {error && (
+        <div class="border border-[--color-red]/40 rounded-xl p-4 bg-[--color-red]/5">
+          <p class="font-mono text-sm text-[--color-red]">{error}</p>
+        </div>
+      )}
 
-              return (
-                <tr key={id} class="border-b border-[--color-border] last:border-0 hover:bg-[--color-bg-hover] transition-colors">
-                  <td class="px-4 py-3">
-                    <div class="flex items-center gap-2">
-                      <span class="text-[0.625rem] px-1.5 py-0.5 rounded border" style={{ color: statusColor, borderColor: statusColor }}>
-                        {statusLabels[strat.status]}
-                      </span>
-                      <span class="font-semibold text-[--color-text]">{strat.name}</span>
-                    </div>
-                  </td>
-                  <td class="px-3 py-3 text-center text-xs text-[--color-text-muted]">{strat.direction.toUpperCase()}</td>
-                  {result ? (
-                    <>
-                      <td class="px-3 py-3 text-right font-bold" style={{ color: winRateColor(result.win_rate) }}>
-                        {result.win_rate}%
+      {/* Loading skeleton */}
+      {isRunning && Object.keys(results).length === 0 && (
+        <div class="border border-[--color-border] rounded-xl p-8 bg-[--color-bg-card] text-center">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 w-48 bg-[--color-border] rounded mx-auto" />
+            <div class="h-3 w-64 bg-[--color-border] rounded mx-auto" />
+          </div>
+        </div>
+      )}
+
+      {/* Results */}
+      {Object.keys(results).length > 0 && (
+        <>
+          {/* Desktop table */}
+          <div class="hidden md:block overflow-x-auto border border-[--color-border] rounded-xl bg-[--color-bg-card]">
+            <table class="w-full font-mono text-sm">
+              <thead>
+                <tr class="border-b border-[--color-border] text-[--color-text-muted] text-xs uppercase tracking-wider">
+                  <th class="px-4 py-3 text-left">{t.strategy}</th>
+                  <th class="px-3 py-3 text-center">{t.direction}</th>
+                  <th class="px-3 py-3 text-right">{t.trades}</th>
+                  <th class="px-3 py-3 text-right">{t.winRate}</th>
+                  <th class="px-3 py-3 text-right">{t.pf}</th>
+                  <th class="px-3 py-3 text-right">{t.totalReturn}</th>
+                  <th class="px-3 py-3 text-right">{t.maxDD}</th>
+                  <th class="px-3 py-3 text-right">TP/SL/TO</th>
+                  <th class="px-3 py-3" />
+                </tr>
+              </thead>
+              <tbody>
+                {sortedPresets.map((preset) => {
+                  const r = results[preset.id];
+                  const status = STATUS_MAP[preset.id];
+                  if (!r) return null;
+                  const total = r.tp_count + r.sl_count + r.timeout_count;
+                  return (
+                    <tr key={preset.id} class="border-b border-[--color-border] last:border-0 hover:bg-[--color-bg-hover] transition-colors">
+                      <td class="px-4 py-3">
+                        <div class="flex items-center gap-2">
+                          <span class="text-[10px] px-1.5 py-0.5 rounded border"
+                                style={{ color: status?.color, borderColor: status?.color }}>
+                            {status?.[lang] || ''}
+                          </span>
+                          <a href={`${strategyBase}/${preset.id}`}
+                             class="font-semibold text-[--color-text] hover:text-[--color-accent] transition-colors">
+                            {preset.name}
+                          </a>
+                        </div>
                       </td>
-                      <td class="px-3 py-3 text-right font-bold" style={{ color: profitFactorColor(result.profit_factor) }}>
-                        {result.profit_factor}
+                      <td class="px-3 py-3 text-center">
+                        <span class={`text-xs ${preset.direction === 'short' ? 'text-[--color-red]' : 'text-[--color-accent]'}`}>
+                          {preset.direction.toUpperCase()}
+                        </span>
                       </td>
-                      <td class="px-3 py-3 text-right font-bold" style={{ color: signColor(result.total_return_pct) }}>
-                        {result.total_return_pct > 0 ? '+' : ''}{result.total_return_pct}%
+                      <td class="px-3 py-3 text-right text-[--color-text-muted]">{r.total_trades}</td>
+                      <td class="px-3 py-3 text-right font-bold" style={{ color: winRateColor(r.win_rate) }}>
+                        {r.win_rate}%
+                      </td>
+                      <td class="px-3 py-3 text-right font-bold" style={{ color: profitFactorColor(r.profit_factor) }}>
+                        {r.profit_factor}
+                      </td>
+                      <td class="px-3 py-3 text-right font-bold" style={{ color: signColor(r.total_return_pct) }}>
+                        {r.total_return_pct > 0 ? '+' : ''}{r.total_return_pct}%
                       </td>
                       <td class="px-3 py-3 text-right text-[--color-red]">
-                        {result.max_drawdown_pct}%
+                        {r.max_drawdown_pct}%
                       </td>
-                      <td class="px-3 py-3 text-right text-[--color-text-muted]">
-                        {result.total_trades.toLocaleString()}
+                      <td class="px-3 py-3 text-right text-xs">
+                        <span class="text-[--color-accent]">{total > 0 ? Math.round(r.tp_count / total * 100) : 0}%</span>
+                        {'/'}
+                        <span class="text-[--color-red]">{total > 0 ? Math.round(r.sl_count / total * 100) : 0}%</span>
+                        {'/'}
+                        <span class="text-[--color-text-muted]">{total > 0 ? Math.round(r.timeout_count / total * 100) : 0}%</span>
                       </td>
-                      <td class="px-3 py-3 flex justify-center">
-                        <Sparkline data={result.equity_curve} />
+                      <td class="px-3 py-3 text-center">
+                        <a href={`${strategyBase}/${preset.id}`}
+                           class="text-[--color-accent] text-xs hover:underline">
+                          {t.view} &rarr;
+                        </a>
                       </td>
-                    </>
-                  ) : (
-                    <td colSpan={6} class="px-3 py-3 text-center text-[--color-text-muted] text-xs">{t.noData}</td>
-                  )}
-                  <td class="px-3 py-3 text-center">
-                    <a href={`${strategyPrefix}/${id}`}
-                       class="text-[--color-accent] text-xs hover:underline">
-                      {t.view} &rarr;
-                    </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
-      {/* Mobile Cards */}
-      <div class="md:hidden space-y-3">
-        {STRATEGY_ORDER.map((id) => {
-          const strat = data.strategies[id];
-          if (!strat) return null;
-          const result = strat.results[key];
-          const statusColor = statusColors[strat.status] || 'var(--color-text-muted)';
+          {/* Mobile cards */}
+          <div class="md:hidden space-y-4">
+            {sortedPresets.map((preset) => {
+              const r = results[preset.id];
+              const status = STATUS_MAP[preset.id];
+              if (!r) return null;
+              const total = r.tp_count + r.sl_count + r.timeout_count;
+              const tpPctVal = total > 0 ? Math.round(r.tp_count / total * 100) : 0;
+              const slPctVal = total > 0 ? Math.round(r.sl_count / total * 100) : 0;
+              const toPctVal = total > 0 ? Math.round(r.timeout_count / total * 100) : 0;
 
-          return (
-            <div key={id} class="border border-[--color-border] rounded-xl p-4 bg-[--color-bg-card]">
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                  <span class="font-mono text-[0.625rem] px-1.5 py-0.5 rounded border"
-                        style={{ color: statusColor, borderColor: statusColor }}>
-                    {statusLabels[strat.status]}
-                  </span>
-                  <span class="font-mono text-xs text-[--color-text-muted]">{strat.direction.toUpperCase()}</span>
-                </div>
-                <a href={`${strategyPrefix}/${id}`}
-                   class="text-[--color-accent] font-mono text-xs hover:underline">
-                  {t.view} &rarr;
-                </a>
-              </div>
+              return (
+                <a key={preset.id}
+                   href={`${strategyBase}/${preset.id}`}
+                   class="block border border-[--color-border] rounded-xl p-4 bg-[--color-bg-card] hover:border-[--color-accent] transition-colors">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span class="text-[10px] px-1.5 py-0.5 rounded border font-mono"
+                          style={{ color: status?.color, borderColor: status?.color }}>
+                      {status?.[lang] || ''}
+                    </span>
+                    <span class="font-mono font-bold text-sm">{preset.name}</span>
+                    <span class={`text-xs font-mono ml-auto ${preset.direction === 'short' ? 'text-[--color-red]' : 'text-[--color-accent]'}`}>
+                      {preset.direction.toUpperCase()}
+                    </span>
+                  </div>
 
-              <h3 class="font-bold text-sm mb-3">{strat.name}</h3>
-
-              {result ? (
-                <>
-                  <div class="grid grid-cols-2 gap-2 font-mono text-xs mb-3">
+                  <div class="grid grid-cols-2 gap-2 font-mono text-sm mb-3">
                     <div class="p-2 rounded bg-[rgba(17,17,17,0.8)] border border-[--color-border]">
-                      <div class="text-[0.625rem] text-[--color-text-muted] mb-0.5">{t.winRate}</div>
-                      <div class="font-bold" style={{ color: winRateColor(result.win_rate) }}>{result.win_rate}%</div>
+                      <div class="text-[10px] text-[--color-text-muted] uppercase">{t.winRate}</div>
+                      <div class="font-bold" style={{ color: winRateColor(r.win_rate) }}>{r.win_rate}%</div>
                     </div>
                     <div class="p-2 rounded bg-[rgba(17,17,17,0.8)] border border-[--color-border]">
-                      <div class="text-[0.625rem] text-[--color-text-muted] mb-0.5">{t.pf}</div>
-                      <div class="font-bold" style={{ color: profitFactorColor(result.profit_factor) }}>{result.profit_factor}</div>
+                      <div class="text-[10px] text-[--color-text-muted] uppercase">{t.pf}</div>
+                      <div class="font-bold" style={{ color: profitFactorColor(r.profit_factor) }}>{r.profit_factor}</div>
                     </div>
                     <div class="p-2 rounded bg-[rgba(17,17,17,0.8)] border border-[--color-border]">
-                      <div class="text-[0.625rem] text-[--color-text-muted] mb-0.5">{t.totalReturn}</div>
-                      <div class="font-bold" style={{ color: signColor(result.total_return_pct) }}>
-                        {result.total_return_pct > 0 ? '+' : ''}{result.total_return_pct}%
+                      <div class="text-[10px] text-[--color-text-muted] uppercase">{t.totalReturn}</div>
+                      <div class="font-bold" style={{ color: signColor(r.total_return_pct) }}>
+                        {r.total_return_pct > 0 ? '+' : ''}{r.total_return_pct}%
                       </div>
                     </div>
                     <div class="p-2 rounded bg-[rgba(17,17,17,0.8)] border border-[--color-border]">
-                      <div class="text-[0.625rem] text-[--color-text-muted] mb-0.5">{t.maxDD}</div>
-                      <div class="font-bold text-[--color-red]">{result.max_drawdown_pct}%</div>
+                      <div class="text-[10px] text-[--color-text-muted] uppercase">{t.maxDD}</div>
+                      <div class="font-bold text-[--color-red]">{r.max_drawdown_pct}%</div>
                     </div>
                   </div>
-                  <div class="flex items-center justify-between">
-                    <span class="font-mono text-[0.625rem] text-[--color-text-muted]">
-                      {result.total_trades.toLocaleString()} {t.trades}
-                    </span>
-                    <Sparkline data={result.equity_curve} width={80} height={28} />
+
+                  {/* Exit bar */}
+                  <div class="flex h-1.5 rounded-full overflow-hidden bg-[--color-border] mb-1">
+                    <div class="bg-[--color-accent]" style={{ width: `${tpPctVal}%` }} />
+                    <div class="bg-[--color-red]" style={{ width: `${slPctVal}%` }} />
+                    <div class="bg-[--color-text-muted]" style={{ width: `${toPctVal}%` }} />
                   </div>
-                </>
-              ) : (
-                <div class="font-mono text-xs text-[--color-text-muted]">{t.noData}</div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                  <div class="flex gap-3 font-mono text-[10px]">
+                    <span class="text-[--color-accent]">TP {tpPctVal}%</span>
+                    <span class="text-[--color-red]">SL {slPctVal}%</span>
+                    <span class="text-[--color-text-muted]">TO {toPctVal}%</span>
+                    <span class="text-[--color-text-muted] ml-auto">{r.total_trades} {t.trades}</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
 
-      {/* Disclaimer */}
-      <p class="font-mono text-[0.625rem] text-[--color-text-muted] mt-4 leading-relaxed">{t.disclaimer}</p>
+          <div class="font-mono text-[10px] text-[--color-text-muted]">
+            {t.computeTime} {(totalTime / 1000).toFixed(1)}s
+          </div>
+        </>
+      )}
 
-      {/* CTA */}
-      <div class="mt-8 p-6 bg-[--color-bg-card] border border-[--color-border] rounded-xl card-hover">
-        <h3 class="text-lg font-bold mb-2">{t.ctaTitle}</h3>
-        <p class="text-[--color-text-muted] text-sm mb-4">{t.ctaDesc}</p>
-        <div class="flex gap-3 flex-wrap">
-          <a href={lang === 'ko' ? '/ko/fees' : '/fees'} class="inline-block bg-[--color-accent] text-[--color-bg] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity">
-            {t.ctaFees} &rarr;
-          </a>
-          <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="inline-block border border-[--color-border] text-[--color-text] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:border-[--color-accent] transition-colors">
-            {t.ctaCommunity}
-          </a>
-        </div>
-      </div>
+      <p class="font-mono text-[0.625rem] text-[--color-text-muted] leading-relaxed">{t.disclaimer}</p>
     </div>
   );
 }
