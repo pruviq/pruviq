@@ -8,16 +8,16 @@ const t = useTranslations('en');
 
 const exchangeCards: Record<string, { tagLabel: string; description: string }> = {
   binance: {
-    tagLabel: '#1 VOLUME',
-    description: 'Deepest order books. Lowest slippage. PRUVIQ simulations use Binance data.',
+    tagLabel: t('fees.card_binance_tag'),
+    description: t('fees.card_binance_desc'),
   },
   bitget: {
-    tagLabel: 'COPY TRADING',
-    description: 'Leading copy trading platform. Follow successful traders automatically.',
+    tagLabel: t('fees.card_bitget_tag'),
+    description: t('fees.card_bitget_desc'),
   },
   okx: {
-    tagLabel: '120+ COUNTRIES',
-    description: 'Available in 120+ countries. Good alternative when Binance is restricted.',
+    tagLabel: t('fees.card_okx_tag'),
+    description: t('fees.card_okx_desc'),
   },
 };
 ---
@@ -50,8 +50,8 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
   <!-- 3 EXCHANGE CARDS -->
   <section class="pb-12 border-t border-[--color-border] pt-12">
     <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-2">Compare Exchanges</h2>
-      <p class="text-[--color-text-muted] text-sm mb-6">Base tier (VIP 0). Referral discounts stack on top of VIP tiers.</p>
+      <h2 class="text-2xl font-bold mb-2">{t('fees.compare_title')}</h2>
+      <p class="text-[--color-text-muted] text-sm mb-6">{t('fees.compare_desc')}</p>
 
       <div class="grid md:grid-cols-3 gap-6">
         {exchanges.map((ex) => {
@@ -62,27 +62,27 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
               <h3 class="text-xl font-bold mb-3">{ex.name}</h3>
               <div class="space-y-2 text-sm mb-4 flex-grow">
                 <div class="flex justify-between">
-                  <span class="text-[--color-text-muted]">Spot</span>
+                  <span class="text-[--color-text-muted]">{t('fees.label_spot')}</span>
                   <span class="font-mono">{formatFeeRange(ex.spot, 'spot')}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-[--color-text-muted]">Futures</span>
+                  <span class="text-[--color-text-muted]">{t('fees.label_futures')}</span>
                   <span class="font-mono">{formatFeeRange(ex.futures, 'futures')}</span>
                 </div>
                 <div class="flex justify-between border-t border-[--color-border] pt-2 mt-2">
-                  <span class="text-[--color-accent] font-medium">PRUVIQ Discount</span>
-                  <span class="font-mono font-bold text-[--color-accent]">{ex.discountLabel} off</span>
+                  <span class="text-[--color-accent] font-medium">{t('fees.pruviq_discount')}</span>
+                  <span class="font-mono font-bold text-[--color-accent]">{ex.discountLabel} {t('fees.discount_off')}</span>
                 </div>
               </div>
               <p class="text-[--color-text-muted] text-xs mb-4">{card.description}</p>
               {ex.available ? (
                 <a href={ex.referralUrl} target="_blank" rel="noopener"
-                   class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity">
-                  Sign Up &rarr;
+                   class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 min-h-[44px] flex items-center justify-center rounded text-sm font-semibold hover:opacity-90 transition-opacity">
+                  {t('fees.signup')} &rarr;
                 </a>
               ) : (
-                <span class="block text-center bg-[--color-border] text-[--color-text-muted] px-4 py-2 rounded text-sm font-semibold cursor-default">
-                  Coming Soon
+                <span class="block text-center bg-[--color-border] text-[--color-text-muted] px-4 py-2 min-h-[44px] flex items-center justify-center rounded text-sm font-semibold cursor-default">
+                  {t('fees.coming_soon')}
                 </span>
               )}
             </div>
@@ -91,7 +91,7 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
       </div>
 
       <p class="text-[--color-text-muted] text-xs mt-4">
-        Maker / Taker rates shown. Higher-volume traders unlock lower tiers automatically. Last updated: Feb 2026.
+        {t('fees.footnote')}
       </p>
     </div>
   </section>
@@ -99,44 +99,42 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
   <!-- FAQ (compact) -->
   <section class="pb-16 border-t border-[--color-border] pt-12">
     <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-6">FAQ</h2>
+      <h2 class="text-2xl font-bold mb-6">{t('fees.faq_title')}</h2>
 
       <div class="space-y-4 max-w-3xl">
         <details class="border border-[--color-border] rounded-lg bg-[--color-bg-card] group">
-          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
-            Does PRUVIQ earn from this?
+          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center min-h-[44px]">
+            {t('fees.faq1_q')}
             <span class="text-[--color-text-muted] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
           </summary>
           <p class="px-4 pb-4 text-[--color-text-muted] text-sm">
-            Yes. Exchanges pay PRUVIQ a commission from their revenue.
-            This does NOT come from your pocket — your fees are always lower with a referral than without one.
+            {t('fees.faq1_a')}
           </p>
         </details>
 
         <details class="border border-[--color-border] rounded-lg bg-[--color-bg-card] group">
-          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
-            What's the difference between Spot and Futures?
+          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center min-h-[44px]">
+            {t('fees.faq2_q')}
             <span class="text-[--color-text-muted] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
           </summary>
           <p class="px-4 pb-4 text-[--color-text-muted] text-sm">
-            Spot = buy/sell crypto directly. Futures = trade contracts with leverage (higher risk, lower fees per dollar traded).
+            {t('fees.faq2_a')}
           </p>
         </details>
 
         <details class="border border-[--color-border] rounded-lg bg-[--color-bg-card] group">
-          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
-            I already have an account. Can I still get a discount?
+          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center min-h-[44px]">
+            {t('fees.faq3_q')}
             <span class="text-[--color-text-muted] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
           </summary>
           <p class="px-4 pb-4 text-[--color-text-muted] text-sm">
-            Referral discounts must be applied at account creation. Existing accounts may not qualify retroactively.
+            {t('fees.faq3_a')}
           </p>
         </details>
       </div>
 
       <p class="text-[--color-text-muted] text-xs mt-8 max-w-lg">
-        Affiliate disclosure: PRUVIQ earns a commission from exchanges when you sign up through our referral links.
-        Your fee discounts are not affected. Not financial advice. Crypto trading involves substantial risk of loss.
+        {t('fees.affiliate_disclosure')}
       </p>
     </div>
   </section>

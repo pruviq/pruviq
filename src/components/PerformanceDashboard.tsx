@@ -208,12 +208,6 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
           vertLine: { color: getCssVar('--color-accent') + '33', width: 1, style: 2, labelBackgroundColor: getCssVar('--color-bg-card') },
           horzLine: { color: getCssVar('--color-accent') + '33', width: 1, style: 2, labelBackgroundColor: getCssVar('--color-bg-card') },
         },
-        watermark: {
-          visible: true,
-          text: 'PRUVIQ',
-          fontSize: 48,
-          color: 'rgba(255,255,255,0.02)',
-        },
       });
 
       const finalValue = cumulativeData.length > 0 ? cumulativeData[cumulativeData.length - 1].value : 0;

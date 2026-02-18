@@ -8,16 +8,16 @@ const t = useTranslations('ko');
 
 const exchangeCards: Record<string, { tagLabel: string; description: string }> = {
   binance: {
-    tagLabel: '거래량 1위',
-    description: '최대 유동성, 최저 슬리피지. PRUVIQ 시뮬레이션은 바이낸스 데이터 사용.',
+    tagLabel: t('fees.card_binance_tag'),
+    description: t('fees.card_binance_desc'),
   },
   bitget: {
-    tagLabel: '카피 트레이딩',
-    description: '카피 트레이딩 선두 플랫폼. 성공한 트레이더를 자동으로 따라하기.',
+    tagLabel: t('fees.card_bitget_tag'),
+    description: t('fees.card_bitget_desc'),
   },
   okx: {
-    tagLabel: '120개국 이상',
-    description: '120개국 이상 이용 가능. 바이낸스 제한 지역에서 좋은 대안.',
+    tagLabel: t('fees.card_okx_tag'),
+    description: t('fees.card_okx_desc'),
   },
 };
 ---
@@ -50,8 +50,8 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
   <!-- 3개 거래소 카드 -->
   <section class="pb-12 border-t border-[--color-border] pt-12">
     <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-2">거래소 비교</h2>
-      <p class="text-[--color-text-muted] text-sm mb-6">기본 등급 (VIP 0). 추천 할인은 VIP 등급 할인 위에 추가 적용됩니다.</p>
+      <h2 class="text-2xl font-bold mb-2">{t('fees.compare_title')}</h2>
+      <p class="text-[--color-text-muted] text-sm mb-6">{t('fees.compare_desc')}</p>
 
       <div class="grid md:grid-cols-3 gap-6">
         {exchanges.map((ex) => {
@@ -62,27 +62,27 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
               <h3 class="text-xl font-bold mb-3">{ex.name}</h3>
               <div class="space-y-2 text-sm mb-4 flex-grow">
                 <div class="flex justify-between">
-                  <span class="text-[--color-text-muted]">현물</span>
+                  <span class="text-[--color-text-muted]">{t('fees.label_spot')}</span>
                   <span class="font-mono">{formatFeeRange(ex.spot, 'spot')}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-[--color-text-muted]">선물</span>
+                  <span class="text-[--color-text-muted]">{t('fees.label_futures')}</span>
                   <span class="font-mono">{formatFeeRange(ex.futures, 'futures')}</span>
                 </div>
                 <div class="flex justify-between border-t border-[--color-border] pt-2 mt-2">
-                  <span class="text-[--color-accent] font-medium">PRUVIQ 할인</span>
-                  <span class="font-mono font-bold text-[--color-accent]">{ex.discountLabel} 할인</span>
+                  <span class="text-[--color-accent] font-medium">{t('fees.pruviq_discount')}</span>
+                  <span class="font-mono font-bold text-[--color-accent]">{ex.discountLabel} {t('fees.discount_off')}</span>
                 </div>
               </div>
               <p class="text-[--color-text-muted] text-xs mb-4">{card.description}</p>
               {ex.available ? (
                 <a href={ex.referralUrl} target="_blank" rel="noopener"
-                   class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity">
-                  가입하기 &rarr;
+                   class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 min-h-[44px] flex items-center justify-center rounded text-sm font-semibold hover:opacity-90 transition-opacity">
+                  {t('fees.signup')} &rarr;
                 </a>
               ) : (
-                <span class="block text-center bg-[--color-border] text-[--color-text-muted] px-4 py-2 rounded text-sm font-semibold cursor-default">
-                  준비 중
+                <span class="block text-center bg-[--color-border] text-[--color-text-muted] px-4 py-2 min-h-[44px] flex items-center justify-center rounded text-sm font-semibold cursor-default">
+                  {t('fees.coming_soon')}
                 </span>
               )}
             </div>
@@ -91,7 +91,7 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
       </div>
 
       <p class="text-[--color-text-muted] text-xs mt-4">
-        메이커 / 테이커 수수료 기준. 거래량이 높으면 자동으로 낮은 등급이 적용됩니다. 최종 업데이트: 2026년 2월.
+        {t('fees.footnote')}
       </p>
     </div>
   </section>
@@ -99,45 +99,42 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
   <!-- FAQ (compact) -->
   <section class="pb-16 border-t border-[--color-border] pt-12">
     <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-6">자주 묻는 질문</h2>
+      <h2 class="text-2xl font-bold mb-6">{t('fees.faq_title')}</h2>
 
       <div class="space-y-4 max-w-3xl">
         <details class="border border-[--color-border] rounded-lg bg-[--color-bg-card] group">
-          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
-            PRUVIQ가 수익을 얻나요?
+          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center min-h-[44px]">
+            {t('fees.faq1_q')}
             <span class="text-[--color-text-muted] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
           </summary>
           <p class="px-4 pb-4 text-[--color-text-muted] text-sm">
-            네. 거래소가 PRUVIQ에 수익의 일부를 지급합니다.
-            이것은 회원님의 주머니에서 나오지 않습니다 — 추천을 통한 수수료는 항상 더 낮습니다.
+            {t('fees.faq1_a')}
           </p>
         </details>
 
         <details class="border border-[--color-border] rounded-lg bg-[--color-bg-card] group">
-          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
-            현물과 선물의 차이는?
+          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center min-h-[44px]">
+            {t('fees.faq2_q')}
             <span class="text-[--color-text-muted] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
           </summary>
           <p class="px-4 pb-4 text-[--color-text-muted] text-sm">
-            현물 = 암호화폐를 직접 매매. 선물 = 레버리지를 이용한 계약 거래 (높은 위험, 거래 금액당 낮은 수수료).
+            {t('fees.faq2_a')}
           </p>
         </details>
 
         <details class="border border-[--color-border] rounded-lg bg-[--color-bg-card] group">
-          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
-            이미 계정이 있어도 할인 받을 수 있나요?
+          <summary class="p-4 cursor-pointer font-medium flex justify-between items-center min-h-[44px]">
+            {t('fees.faq3_q')}
             <span class="text-[--color-text-muted] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
           </summary>
           <p class="px-4 pb-4 text-[--color-text-muted] text-sm">
-            추천 할인은 계정 생성 시 적용됩니다. 기존 계정은 소급 적용이 안 될 수 있습니다.
+            {t('fees.faq3_a')}
           </p>
         </details>
       </div>
 
       <p class="text-[--color-text-muted] text-xs mt-8 max-w-lg">
-        제휴 공개: PRUVIQ는 추천 링크를 통해 가입 시 거래소로부터 수수료를 받습니다.
-        회원의 수수료 할인에는 영향이 없습니다. 투자 조언이 아닙니다.
-        암호화폐 거래는 상당한 손실 위험을 수반합니다.
+        {t('fees.affiliate_disclosure')}
       </p>
     </div>
   </section>

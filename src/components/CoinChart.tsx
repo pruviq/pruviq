@@ -292,12 +292,6 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
           vertLine: { color: `${getCssVar('--color-accent')}33`, width: 1, style: 2, labelBackgroundColor: getCssVar('--color-bg-card') },
           horzLine: { color: `${getCssVar('--color-accent')}33`, width: 1, style: 2, labelBackgroundColor: getCssVar('--color-bg-card') },
         },
-        watermark: {
-          visible: true,
-          text: `${SYMBOL.replace('USDT', '')}/USDT`,
-          fontSize: 48,
-          color: 'rgba(255,255,255,0.03)',
-        },
       });
 
       const candleSeries = chart.addSeries(CandlestickSeries, {
@@ -403,7 +397,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
           const exitText = trade.exit_reason === 'tp' ? 'TP' : trade.exit_reason === 'sl' ? 'SL' : 'TO';
           markers.push({ time: trade.exit_time as any, position: 'belowBar', shape: 'arrowUp', color: exitColor, text: exitText });
         }
-        markers.sort((a, b) => a.time - b.time);
+        markers.sort((a, b) => (a.time as number) - (b.time as number));
         candleSeriesRef.current.setMarkers(markers);
       }
     } catch (err) {

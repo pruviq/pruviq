@@ -84,7 +84,7 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
           <div class="flex rounded-lg overflow-hidden border border-[--color-border]">
             <button
               onClick={() => setMarket('spot')}
-              class={`px-4 py-2 text-sm font-semibold transition-colors ${
+              class={`px-4 py-2 min-h-[44px] text-sm font-semibold transition-colors ${
                 market === 'spot'
                   ? 'bg-[--color-accent] text-[--color-bg]'
                   : 'bg-[--color-bg-card] text-[--color-text-muted] hover:text-[--color-text]'
@@ -94,7 +94,7 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
             </button>
             <button
               onClick={() => setMarket('futures')}
-              class={`px-4 py-2 text-sm font-semibold transition-colors ${
+              class={`px-4 py-2 min-h-[44px] text-sm font-semibold transition-colors ${
                 market === 'futures'
                   ? 'bg-[--color-accent] text-[--color-bg]'
                   : 'bg-[--color-bg-card] text-[--color-text-muted] hover:text-[--color-text]'
@@ -155,12 +155,12 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
                   href={ex.referralUrl}
                   target="_blank"
                   rel="noopener"
-                  class="inline-block w-full bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-xs font-semibold hover:opacity-90 transition-opacity"
+                  class="inline-block w-full bg-[--color-accent] text-[--color-bg] px-4 py-2 min-h-[44px] flex items-center justify-center rounded text-xs font-semibold hover:opacity-90 transition-opacity"
                 >
                   {t.signup} &rarr;
                 </a>
               ) : (
-                <span class="inline-block w-full bg-[--color-border] text-[--color-text-muted] px-4 py-2 rounded text-xs font-semibold cursor-default">
+                <span class="inline-block w-full bg-[--color-border] text-[--color-text-muted] px-4 py-2 min-h-[44px] flex items-center justify-center rounded text-xs font-semibold cursor-default">
                   {t.coming}
                 </span>
               )}
