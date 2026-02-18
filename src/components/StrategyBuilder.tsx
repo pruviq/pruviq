@@ -116,6 +116,8 @@ const labels = {
     yearReturn: 'Return',
     yearWR: 'Win Rate',
     yearPF: 'PF',
+    tuneParams: 'Tune',
+    resetParams: 'Reset to default',
   },
   ko: {
     tag: '전략 빌더',
@@ -165,6 +167,8 @@ const labels = {
     yearReturn: '수익률',
     yearWR: '승률',
     yearPF: 'PF',
+    tuneParams: '조정',
+    resetParams: '기본값 복원',
   },
 };
 
@@ -204,6 +208,8 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
   const [availableIndicators, setAvailableIndicators] = useState<IndicatorInfo[]>([]);
   const [presets, setPresets] = useState<PresetItem[]>([]);
   const [selectedIndicators, setSelectedIndicators] = useState<Set<string>>(new Set(['bb', 'ema', 'volume', 'candle']));
+  const [indicatorParams, setIndicatorParams] = useState<Record<string, Record<string, number>>>({});
+  const [showParams, setShowParams] = useState<string | null>(null);
   const [conditions, setConditions] = useState<Condition[]>([
     { id: nextCondId(), field: 'is_squeeze', op: '==', value: true, shift: 1 },
     { id: nextCondId(), field: 'bb_width_change', op: '>=', value: 10, shift: 1 },
@@ -327,7 +333,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
 
     const indicatorConfigs: Record<string, Record<string, number>> = {};
     for (const id of selectedIndicators) {
-      indicatorConfigs[id] = {};
+      indicatorConfigs[id] = indicatorParams[id] || {};
     }
 
     const entryConditions = conditions.map((c) => {
@@ -479,21 +485,83 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
           {availableIndicators.map((ind) => {
             const active = selectedIndicators.has(ind.id);
             return (
-              <button
-                key={ind.id}
-                onClick={() => toggleIndicator(ind.id)}
-                class={`px-3 py-1.5 rounded-lg border text-sm font-mono cursor-pointer transition-colors
-                  ${active
-                    ? 'border-[--color-accent] text-[--color-accent] bg-[--color-accent]/10'
-                    : 'border-[--color-border] text-[--color-text-muted] hover:border-[--color-text-muted]'
-                  }`}
-              >
-                {ind.name}
-                <span class="text-xs ml-1 opacity-60">({ind.fields.length})</span>
-              </button>
+              <div key={ind.id} class="inline-flex items-center gap-0">
+                <button
+                  onClick={() => toggleIndicator(ind.id)}
+                  class={`px-3 py-1.5 rounded-l-lg border text-sm font-mono cursor-pointer transition-colors
+                    ${active
+                      ? 'border-[--color-accent] text-[--color-accent] bg-[--color-accent]/10'
+                      : 'border-[--color-border] text-[--color-text-muted] hover:border-[--color-text-muted]'
+                    }`}
+                >
+                  {ind.name}
+                  <span class="text-xs ml-1 opacity-60">({ind.fields.length})</span>
+                </button>
+                {active && Object.keys(ind.default_params).length > 0 && (
+                  <button
+                    onClick={() => setShowParams(showParams === ind.id ? null : ind.id)}
+                    class={`px-2 py-1.5 rounded-r-lg border border-l-0 text-[10px] font-mono cursor-pointer transition-colors
+                      ${showParams === ind.id
+                        ? 'border-[--color-accent] text-[--color-accent] bg-[--color-accent]/20'
+                        : 'border-[--color-accent] text-[--color-text-muted] hover:text-[--color-accent]'}`}
+                    title={t.tuneParams}
+                  >
+                    &#9881;
+                  </button>
+                )}
+                {active && Object.keys(ind.default_params).length === 0 && (
+                  <span class="px-1 py-1.5 rounded-r-lg border border-l-0 border-[--color-accent] bg-[--color-accent]/10" />
+                )}
+              </div>
             );
           })}
         </div>
+
+        {/* Parameter Tuning Panel */}
+        {showParams && (() => {
+          const ind = availableIndicators.find((i) => i.id === showParams);
+          if (!ind) return null;
+          const customParams = indicatorParams[ind.id] || {};
+          return (
+            <div class="mt-4 p-4 rounded-lg border border-[--color-accent]/30 bg-[--color-bg]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-mono text-xs text-[--color-accent] font-bold">{ind.name} Parameters</span>
+                <button
+                  onClick={() => {
+                    const next = { ...indicatorParams };
+                    delete next[ind.id];
+                    setIndicatorParams(next);
+                  }}
+                  class="font-mono text-[10px] text-[--color-text-muted] hover:text-[--color-accent] cursor-pointer transition-colors"
+                >
+                  {t.resetParams}
+                </button>
+              </div>
+              <div class="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))' }}>
+                {Object.entries(ind.default_params).map(([key, defaultVal]) => (
+                  <div key={key}>
+                    <label class="font-mono text-[10px] text-[--color-text-muted] block mb-1">{key}</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={customParams[key] ?? defaultVal}
+                      onChange={(e) => {
+                        const val = parseFloat((e.target as HTMLInputElement).value);
+                        if (isNaN(val)) return;
+                        setIndicatorParams((prev) => ({
+                          ...prev,
+                          [ind.id]: { ...(prev[ind.id] || {}), [key]: val },
+                        }));
+                      }}
+                      class="w-full bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1 text-xs font-mono text-[--color-text]"
+                    />
+                    <span class="font-mono text-[8px] text-[--color-text-muted]">default: {defaultVal}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Conditions */}
