@@ -289,13 +289,13 @@ async def simulate(req: SimulationRequest):
     # Support both "bb-squeeze" (legacy) and "bb-squeeze-short" (new) formats
     strategy_id = req.strategy
     if strategy_id == "bb-squeeze":
-        strategy_id = f"bb-squeeze-{req.direction}"
+        strategy_id = f"bb-squeeze-{req.direction or 'short'}"
 
     if strategy_id not in STRATEGY_REGISTRY:
         raise HTTPException(400, f"Unknown strategy: {req.strategy}")
 
     strategy, default_direction, defaults = get_strategy(strategy_id)
-    direction = req.direction or default_direction
+    direction = req.direction if req.direction is not None else default_direction
 
     # Check cache
     ckey = cache_key(req)
@@ -345,7 +345,7 @@ async def simulate(req: SimulationRequest):
 
     if not all_trades:
         resp = SimulationResponse(
-            strategy=req.strategy, direction=req.direction,
+            strategy=req.strategy, direction=direction,
             params=strategy.get_params(), market_type=req.market_type,
             total_trades=0, wins=0, losses=0, win_rate=0,
             total_return_pct=0, profit_factor=0,
@@ -397,7 +397,7 @@ async def simulate(req: SimulationRequest):
 
     resp_data = {
         "strategy": req.strategy,
-        "direction": req.direction,
+        "direction": direction,
         "params": strategy.get_params(),
         "market_type": req.market_type,
         "total_trades": len(all_trades),

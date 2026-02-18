@@ -9,7 +9,7 @@ from typing import Optional, List
 class SimulationRequest(BaseModel):
     """시뮬레이션 요청"""
     strategy: str = Field(default="bb-squeeze", description="Strategy ID")
-    direction: str = Field(default="short", description="long | short | both")
+    direction: Optional[str] = Field(default=None, description="long | short | both (null = use strategy default)")
     sl_pct: float = Field(default=10.0, ge=1.0, le=30.0, description="Stop Loss %")
     tp_pct: float = Field(default=8.0, ge=1.0, le=30.0, description="Take Profit %")
     max_bars: int = Field(default=48, ge=6, le=168, description="Max holding period (bars)")
