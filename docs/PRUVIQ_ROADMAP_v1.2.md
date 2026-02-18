@@ -85,67 +85,76 @@
 
 ---
 
-## Phase 5: n8n 자동화 파이프라인 (2026-03)
+## Phase 5: n8n 자동화 파이프라인 (2026-02-18 구축)
 
 ### 목표
 Mac Mini에서 24/7 자동 운영: 데이터 갱신, 콘텐츠 생성, 모니터링
 
-### 5-1. 데이터 동기화 (매일 02:30 UTC)
+### 5-1. 데이터 동기화 (매일 02:30 UTC) ✅
 
 ```
-[cron 02:30] → rsync DO서버 → Mac Mini
-  → 새 데이터 감지
-  → performance.json 재생성
+[cron 02:30] → Binance OHLCV 업데이트
   → demo-*.json 재생성 (5개 전략)
+  → API 데이터 리로드
   → git commit + push → Cloudflare 자동 배포
 ```
 
-- [ ] n8n 워크플로우: data-sync
-- [ ] rsync 스크립트 (이미 crontab 존재, n8n으로 이관)
-- [ ] performance.json 재생성 스크립트
-- [ ] demo data 재생성 (generate_demo_data.py 자동 실행)
-- [ ] Git auto-commit + push
+- [x] `full_pipeline.sh`: OHLCV 업데이트 + demo 재생성 + API reload + git auto-push
+- [x] n8n 워크플로우: `data-sync-workflow.json` (임포트 대기)
+- [x] Crontab: `30 2 * * *` 설정 완료
+- [x] Git auto-commit + push (Cloudflare 자동 배포 트리거)
 
-### 5-2. 콘텐츠 생성 (매일 06:00 UTC)
+### 5-2. 콘텐츠 생성 (매일 06:00 UTC) ✅
 
 ```
 [cron 06:00] → Ollama qwen2.5:32b
-  → 시장 데이터 수집 (BTC 가격, 주요 이벤트)
+  → 시장 데이터 수집 (BTC/ETH 가격, Fear & Greed)
+  → PRUVIQ 시뮬레이션 데이터 수집
   → 시장 리포트 초안 생성
-  → Telegram 채널 자동 게시
-  → 블로그 포스트 초안 → 검토 큐
+  → ~/pruviq-reports/YYYY-MM-DD.md 저장
+  → Telegram 알림 (검토 요청)
 ```
 
-- [ ] n8n 워크플로우: content-gen
-- [ ] Ollama API 연동 (localhost:11434)
-- [ ] 프롬프트 템플릿: 시장 리포트, 전략 분석, 교육 콘텐츠
-- [ ] Telegram Bot 연동 (@PRUVIQ 채널)
-- [ ] 초안 검토 큐 (n8n + 수동 승인)
+- [x] `daily_report.sh`: Ollama qwen2.5:32b 마켓 리포트 생성
+  - 데이터: Binance API (BTC/ETH), Fear & Greed Index, PRUVIQ Simulation
+  - 할루시네이션 방지: 제공 데이터만 사용 규칙
+  - 면책조항 자동 포함
+- [x] n8n 워크플로우: `daily-report-workflow.json` (팩트체크 게이트 포함)
+- [x] `weekly-review-workflow.json` (월요 03:00 UTC, 주간 리뷰)
+- [x] Crontab: `0 6 * * *` 설정 완료
+- [x] 테스트 성공: BTC $67,365 (-0.70%), ETH $1,984 (+0.84%), F&G 8
+- [ ] Telegram Bot 연동 (@PRUVIQ 채널) — `backend/.env` 설정 필요
 
-### 5-3. 모니터링 (실시간)
+### 5-3. 모니터링 (실시간) ✅
 
 ```
-[5분 간격] → API 헬스 체크
-  → 응답시간 > 5초 → Telegram 알림
-  → 에러율 > 1% → Telegram 알림
+[5분 간격] → API 헬스 체크 (localhost:8080)
+  → 실패 시 → Telegram 알림 (30분 쿨다운)
 
-[1시간 간격] → 사이트 가용성 체크
-  → pruviq.com 접속 불가 → 즉시 알림
-  → api.pruviq.com 접속 불가 → 즉시 알림
+[1시간 간격] → 풀 체크
+  → pruviq.com 접속 확인
+  → api.pruviq.com 접속 확인
+  → Cloudflare Tunnel 프로세스 확인
+  → 디스크 사용량 확인 (>90% 경고)
 ```
 
-- [ ] n8n 워크플로우: monitoring
-- [ ] API health check (api.pruviq.com/health)
-- [ ] Cloudflare Pages 상태 체크
-- [ ] Telegram 알림 연동
-- [ ] 에러 로그 수집 (Mac Mini uvicorn 로그)
+- [x] `monitor.sh`: API 헬스 + 사이트 가용성 + 터널 + 디스크
+- [x] n8n 워크플로우: `monitoring-workflow.json` (임포트 대기)
+- [x] Crontab: `*/5 * * * *` (quick) + `0 * * * *` (full) 설정 완료
+- [x] Telegram 알림 (30분 중복 방지 쿨다운)
+- [x] 테스트 성공: API=200, Site=200, Tunnel=OK, Disk=3%
+- [ ] Telegram Bot 토큰 설정 필요 (`backend/.env`)
 
-### 5-4. 분산 게시 (매일 12:00 UTC)
+### 5-4. 분산 게시 (향후)
 
-- [ ] n8n 워크플로우: distribute
 - [ ] Medium API 연동 (초안 → 발행)
 - [ ] dev.to API 연동
 - [ ] Twitter/X API 연동 (선택)
+
+### Phase 5 미완료 작업
+1. **Telegram Bot 설정** (수동): BotFather → 토큰 → `.env` 파일
+2. **n8n 워크플로우 임포트** (수동): localhost:5678 → Import JSON
+3. **분산 게시 자동화** (Phase 6+로 연기)
 
 ---
 
