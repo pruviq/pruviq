@@ -1,53 +1,5 @@
 import { useState } from 'preact/hooks';
-
-interface FeeRate {
-  maker: number;
-  taker: number;
-}
-
-interface Exchange {
-  name: string;
-  spot: FeeRate;
-  futures: FeeRate;
-  discount: number;
-  discountLabel: string;
-  link: string;
-  available: boolean;
-  tag: string;
-}
-
-const exchanges: Exchange[] = [
-  {
-    name: 'Binance',
-    spot: { maker: 0.001, taker: 0.001 },
-    futures: { maker: 0.0002, taker: 0.0005 },
-    discount: 0.10,
-    discountLabel: '10%',
-    link: 'https://accounts.binance.com/register?ref=PRUVIQ',
-    available: true,
-    tag: '#1 Volume',
-  },
-  {
-    name: 'Bitget',
-    spot: { maker: 0.001, taker: 0.001 },
-    futures: { maker: 0.0002, taker: 0.0006 },
-    discount: 0.20,
-    discountLabel: '20%',
-    link: 'https://partner.bitget.com/bg/71KRCS',
-    available: true,
-    tag: 'Copy Trading',
-  },
-  {
-    name: 'OKX',
-    spot: { maker: 0.0008, taker: 0.001 },
-    futures: { maker: 0.0002, taker: 0.0005 },
-    discount: 0.20,
-    discountLabel: '20%',
-    link: '#',
-    available: false,
-    tag: '120+ Countries',
-  },
-];
+import { exchanges, type Exchange } from '../data/exchanges';
 
 const labels = {
   en: {
@@ -200,7 +152,7 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
             <div class="sm:w-28 flex-shrink-0 text-center">
               {ex.available ? (
                 <a
-                  href={ex.link}
+                  href={ex.referralUrl}
                   target="_blank"
                   rel="noopener"
                   class="inline-block w-full bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-xs font-semibold hover:opacity-90 transition-opacity"

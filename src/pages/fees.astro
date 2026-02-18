@@ -2,8 +2,24 @@
 import Layout from '../layouts/Layout.astro';
 import FeeCalculator from '../components/FeeCalculator';
 import { useTranslations } from '../i18n/index';
+import { exchanges, formatFeeRange } from '../data/exchanges';
 
 const t = useTranslations('en');
+
+const exchangeCards: Record<string, { tagLabel: string; description: string }> = {
+  binance: {
+    tagLabel: '#1 VOLUME',
+    description: 'Deepest order books. Lowest slippage. PRUVIQ simulations use Binance data.',
+  },
+  bitget: {
+    tagLabel: 'COPY TRADING',
+    description: 'Leading copy trading platform. Follow successful traders automatically.',
+  },
+  okx: {
+    tagLabel: '120+ COUNTRIES',
+    description: 'Available in 120+ countries. Good alternative when Binance is restricted.',
+  },
+};
 ---
 
 <Layout title={t('meta.fees_title')} description={t('meta.fees_desc')}>
@@ -38,79 +54,40 @@ const t = useTranslations('en');
       <p class="text-[--color-text-muted] text-sm mb-6">Base tier (VIP 0). Referral discounts stack on top of VIP tiers.</p>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <!-- Binance -->
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex flex-col">
-          <div class="font-mono text-[--color-accent] text-xs font-bold mb-1">#1 VOLUME</div>
-          <h3 class="text-xl font-bold mb-3">Binance</h3>
-          <div class="space-y-2 text-sm mb-4 flex-grow">
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Spot</span>
-              <span class="font-mono">0.10% / 0.10%</span>
+        {exchanges.map((ex) => {
+          const card = exchangeCards[ex.id];
+          return (
+            <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex flex-col">
+              <div class="font-mono text-[--color-accent] text-xs font-bold mb-1">{card.tagLabel}</div>
+              <h3 class="text-xl font-bold mb-3">{ex.name}</h3>
+              <div class="space-y-2 text-sm mb-4 flex-grow">
+                <div class="flex justify-between">
+                  <span class="text-[--color-text-muted]">Spot</span>
+                  <span class="font-mono">{formatFeeRange(ex.spot, 'spot')}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-[--color-text-muted]">Futures</span>
+                  <span class="font-mono">{formatFeeRange(ex.futures, 'futures')}</span>
+                </div>
+                <div class="flex justify-between border-t border-[--color-border] pt-2 mt-2">
+                  <span class="text-[--color-accent] font-medium">PRUVIQ Discount</span>
+                  <span class="font-mono font-bold text-[--color-accent]">{ex.discountLabel} off</span>
+                </div>
+              </div>
+              <p class="text-[--color-text-muted] text-xs mb-4">{card.description}</p>
+              {ex.available ? (
+                <a href={ex.referralUrl} target="_blank" rel="noopener"
+                   class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity">
+                  Sign Up &rarr;
+                </a>
+              ) : (
+                <span class="block text-center bg-[--color-border] text-[--color-text-muted] px-4 py-2 rounded text-sm font-semibold cursor-default">
+                  Coming Soon
+                </span>
+              )}
             </div>
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Futures</span>
-              <span class="font-mono">0.020% / 0.050%</span>
-            </div>
-            <div class="flex justify-between border-t border-[--color-border] pt-2 mt-2">
-              <span class="text-[--color-accent] font-medium">PRUVIQ Discount</span>
-              <span class="font-mono font-bold text-[--color-accent]">10% off</span>
-            </div>
-          </div>
-          <p class="text-[--color-text-muted] text-xs mb-4">Deepest order books. Lowest slippage. PRUVIQ simulations use Binance data.</p>
-          <a href="https://accounts.binance.com/register?ref=PRUVIQ" target="_blank" rel="noopener"
-             class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity">
-            Sign Up &rarr;
-          </a>
-        </div>
-
-        <!-- Bitget -->
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex flex-col">
-          <div class="font-mono text-[--color-accent] text-xs font-bold mb-1">COPY TRADING</div>
-          <h3 class="text-xl font-bold mb-3">Bitget</h3>
-          <div class="space-y-2 text-sm mb-4 flex-grow">
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Spot</span>
-              <span class="font-mono">0.10% / 0.10%</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Futures</span>
-              <span class="font-mono">0.020% / 0.060%</span>
-            </div>
-            <div class="flex justify-between border-t border-[--color-border] pt-2 mt-2">
-              <span class="text-[--color-accent] font-medium">PRUVIQ Discount</span>
-              <span class="font-mono font-bold text-[--color-accent]">20% off</span>
-            </div>
-          </div>
-          <p class="text-[--color-text-muted] text-xs mb-4">Leading copy trading platform. Follow successful traders automatically.</p>
-          <a href="https://partner.bitget.com/bg/71KRCS" target="_blank" rel="noopener"
-             class="block text-center bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity">
-            Sign Up &rarr;
-          </a>
-        </div>
-
-        <!-- OKX -->
-        <div class="border border-[--color-border] rounded-lg p-6 bg-[--color-bg-card] flex flex-col">
-          <div class="font-mono text-[--color-accent] text-xs font-bold mb-1">120+ COUNTRIES</div>
-          <h3 class="text-xl font-bold mb-3">OKX</h3>
-          <div class="space-y-2 text-sm mb-4 flex-grow">
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Spot</span>
-              <span class="font-mono">0.08% / 0.10%</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[--color-text-muted]">Futures</span>
-              <span class="font-mono">0.020% / 0.050%</span>
-            </div>
-            <div class="flex justify-between border-t border-[--color-border] pt-2 mt-2">
-              <span class="text-[--color-accent] font-medium">PRUVIQ Discount</span>
-              <span class="font-mono font-bold text-[--color-accent]">20% off</span>
-            </div>
-          </div>
-          <p class="text-[--color-text-muted] text-xs mb-4">Available in 120+ countries. Good alternative when Binance is restricted.</p>
-          <span class="block text-center bg-[--color-border] text-[--color-text-muted] px-4 py-2 rounded text-sm font-semibold cursor-default">
-            Coming Soon
-          </span>
-        </div>
+          );
+        })}
       </div>
 
       <p class="text-[--color-text-muted] text-xs mt-4">

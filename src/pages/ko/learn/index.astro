@@ -38,24 +38,23 @@ const advanced = allPosts.filter(p =>
 );
 
 const levelConfig = [
-  { level: 'beginner', label: '초급', title: '여기서 시작하세요', desc: '크립토 트레이딩이 처음이신가요? 기본 개념부터 배워보세요.', color: 'green', posts: beginner },
-  { level: 'intermediate', label: '중급', title: '지표 & 전술', desc: '트레이딩 도구의 원리와 실전 활용법을 익히세요.', color: 'yellow', posts: intermediate },
-  { level: 'advanced', label: '고급', title: '퀀트 & 전략', desc: '백테스팅, 포지션 사이징, 실제 의사결정 과정.', color: 'red', posts: advanced },
+  { level: 'beginner', label: t('learn.level_beginner'), title: t('learn.level_beginner_title'), desc: t('learn.level_beginner_desc'), color: 'green', posts: beginner },
+  { level: 'intermediate', label: t('learn.level_intermediate'), title: t('learn.level_intermediate_title'), desc: t('learn.level_intermediate_desc'), color: 'yellow', posts: intermediate },
+  { level: 'advanced', label: t('learn.level_advanced'), title: t('learn.level_advanced_title'), desc: t('learn.level_advanced_desc'), color: 'red', posts: advanced },
 ];
 ---
 
-<Layout title="학습 — 크립토 트레이딩 교육 | PRUVIQ" description="초급부터 고급까지 무료 크립토 트레이딩 교육. 지표, 백테스팅, 리스크 관리, 퀀트 트레이딩을 실제 데이터로 배우세요.">
+<Layout title={t('meta.learn_title')} description={t('meta.learn_desc')}>
 
   <!-- HERO -->
   <section class="py-16">
     <div class="max-w-5xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">교육</p>
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">{t('learn.tag')}</p>
       <h1 class="text-3xl md:text-5xl font-bold mb-4">
-        트레이딩을 배우세요.<br/>과대광고 없이. 실제 데이터로.
+        {t('learn.title')}<br/>{t('learn.title2')}
       </h1>
       <p class="text-[--color-text-muted] text-lg mb-4 max-w-2xl">
-        레벨별로 정리된 {allPosts.length}개 가이드. 모든 주장은 데이터로 뒷받침됩니다.
-        유료 강의도, 업셀링도 없습니다 — 명확한 설명만 있습니다.
+        {t('learn.desc').replace('{count}', String(allPosts.length))}
       </p>
     </div>
   </section>
@@ -104,10 +103,10 @@ const levelConfig = [
   <!-- CTA -->
   <section class="pb-16 border-t border-[--color-border] pt-12">
     <div class="max-w-5xl mx-auto px-4 text-center">
-      <h2 class="text-xl font-bold mb-3">배운 것을 테스트할 준비가 되셨나요?</h2>
-      <p class="text-[--color-text-muted] text-sm mb-6">전략을 만들고 535개 이상의 코인에서 실행하세요 — 무료, 계정 불필요.</p>
+      <h2 class="text-xl font-bold mb-3">{t('learn.cta_title')}</h2>
+      <p class="text-[--color-text-muted] text-sm mb-6">{t('learn.cta_desc')}</p>
       <a href="/ko/simulate" class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2.5 rounded font-semibold text-sm hover:opacity-90 transition-opacity">
-        시뮬레이터 사용하기 &rarr;
+        {t('learn.cta_button')} &rarr;
       </a>
     </div>
   </section>

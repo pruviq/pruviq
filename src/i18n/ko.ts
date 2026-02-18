@@ -372,4 +372,46 @@ export const ko: Record<TranslationKey, string> = {
   // Builder
   'meta.builder_title': '전략 빌더 - PRUVIQ',
   'meta.builder_desc': '코드 없이 나만의 트레이딩 전략을 설계하세요. 지표 선택, 조건 설정, 535+ 코인 2년+ 실제 데이터로 백테스트.',
+
+  // Learn page
+  'meta.learn_title': '학습 — 크립토 트레이딩 교육 | PRUVIQ',
+  'meta.learn_desc': '초급부터 고급까지 무료 크립토 트레이딩 교육. 지표, 백테스팅, 리스크 관리, 퀀트 트레이딩을 실제 데이터로 배우세요.',
+  'learn.tag': '교육',
+  'learn.title': '트레이딩을 배우세요.',
+  'learn.title2': '과대광고 없이. 실제 데이터로.',
+  'learn.desc': '레벨별로 정리된 {count}개 가이드. 모든 주장은 데이터로 뒷받침됩니다. 유료 강의도, 업셀링도 없습니다 — 명확한 설명만 있습니다.',
+  'learn.level_beginner': '초급',
+  'learn.level_beginner_title': '여기서 시작하세요',
+  'learn.level_beginner_desc': '크립토 트레이딩이 처음이신가요? 기본 개념부터 배워보세요.',
+  'learn.level_intermediate': '중급',
+  'learn.level_intermediate_title': '지표 & 전술',
+  'learn.level_intermediate_desc': '트레이딩 도구의 원리와 실전 활용법을 익히세요.',
+  'learn.level_advanced': '고급',
+  'learn.level_advanced_title': '퀀트 & 전략',
+  'learn.level_advanced_desc': '백테스팅, 포지션 사이징, 실제 의사결정 과정.',
+  'learn.cta_title': '배운 것을 테스트할 준비가 되셨나요?',
+  'learn.cta_desc': '전략을 만들고 535개 이상의 코인에서 실행하세요 — 무료, 계정 불필요.',
+  'learn.cta_button': '시뮬레이터 사용하기',
+
+  // Simulate page
+  'simulate.tag': '전략 시뮬레이터',
+  'simulate.title1': '전략을 만들고,',
+  'simulate.title2': '535개 코인에서 테스트하세요.',
+  'simulate.desc': '지표를 선택하고, 진입 조건을 설정하고, 리스크 파라미터를 조정하세요. 2년 이상의 실제 데이터로 백테스트를 실행하거나, 프리셋으로 시작하세요.',
+  'simulate.note': '코드 불필요. 계정 불필요. 비용 없음. 결과에는 현실적인 수수료와 슬리피지가 포함됩니다.',
+  'simulate.loading': '전략 빌더 로딩중...',
+  'simulate.strategies_title': '검증된 전략',
+  'simulate.strategies_desc': '5개 전략 테스트. 4개 탈락. 1개 검증 완료. 전체 결과 공개.',
+  'simulate.strategy_desc_bb_short': '볼린저 밴드 변동성 확장 — 숏 방향',
+  'simulate.strategy_desc_bb_long': '동일 전략, 롱 방향 — 검증 실패',
+  'simulate.strategy_desc_momentum': '20캔들 최고가 돌파 — 대규모 손실',
+  'simulate.view_all': '전체 5개 전략 보기',
+  'simulate.disclaimer': '시뮬레이션에는 거래당 0.04% 선물 수수료 + 0.02% 슬리피지가 포함됩니다. 과거 성과가 미래 수익을 보장하지 않습니다. 투자 조언이 아닙니다.',
+
+  // Blog category short labels
+  'blog.cat_short.market': '시장',
+  'blog.cat_short.quant': '퀀트',
+  'blog.cat_short.strategy': '전략',
+  'blog.cat_short.weekly': '주간',
+  'blog.cat_short.education': '교육',
 };

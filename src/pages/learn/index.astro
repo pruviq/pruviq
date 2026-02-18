@@ -31,24 +31,23 @@ const advanced = posts.filter(p =>
 );
 
 const levelConfig = [
-  { level: 'beginner', label: 'BEGINNER', title: 'Start Here', desc: 'New to crypto trading? These guides cover the fundamentals.', color: 'green', posts: beginner },
-  { level: 'intermediate', label: 'INTERMEDIATE', title: 'Indicators & Tactics', desc: 'Understand the tools and how to use them in real strategies.', color: 'yellow', posts: intermediate },
-  { level: 'advanced', label: 'ADVANCED', title: 'Quant & Strategy', desc: 'Backtesting, position sizing, and real decision-making.', color: 'red', posts: advanced },
+  { level: 'beginner', label: t('learn.level_beginner'), title: t('learn.level_beginner_title'), desc: t('learn.level_beginner_desc'), color: 'green', posts: beginner },
+  { level: 'intermediate', label: t('learn.level_intermediate'), title: t('learn.level_intermediate_title'), desc: t('learn.level_intermediate_desc'), color: 'yellow', posts: intermediate },
+  { level: 'advanced', label: t('learn.level_advanced'), title: t('learn.level_advanced_title'), desc: t('learn.level_advanced_desc'), color: 'red', posts: advanced },
 ];
 ---
 
-<Layout title="Learn — Crypto Trading Education | PRUVIQ" description="Free crypto trading education from beginner to advanced. Learn indicators, backtesting, risk management, and quantitative trading — all with real data, no hype.">
+<Layout title={t('meta.learn_title')} description={t('meta.learn_desc')}>
 
   <!-- HERO -->
   <section class="py-16">
     <div class="max-w-5xl mx-auto px-4">
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">EDUCATION</p>
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">{t('learn.tag')}</p>
       <h1 class="text-3xl md:text-5xl font-bold mb-4">
-        Learn Trading.<br/>No Hype. Real Data.
+        {t('learn.title')}<br/>{t('learn.title2')}
       </h1>
       <p class="text-[--color-text-muted] text-lg mb-4 max-w-2xl">
-        {posts.length} guides organized by level. Every claim backed by data.
-        No paid courses, no upsells — just clear explanations.
+        {t('learn.desc').replace('{count}', String(posts.length))}
       </p>
     </div>
   </section>
@@ -92,10 +91,10 @@ const levelConfig = [
   <!-- CTA -->
   <section class="pb-16 border-t border-[--color-border] pt-12">
     <div class="max-w-5xl mx-auto px-4 text-center">
-      <h2 class="text-xl font-bold mb-3">Ready to test what you've learned?</h2>
-      <p class="text-[--color-text-muted] text-sm mb-6">Build a strategy and run it on 535+ coins — free, no account needed.</p>
+      <h2 class="text-xl font-bold mb-3">{t('learn.cta_title')}</h2>
+      <p class="text-[--color-text-muted] text-sm mb-6">{t('learn.cta_desc')}</p>
       <a href="/simulate" class="inline-block bg-[--color-accent] text-[--color-bg] px-6 py-2.5 rounded font-semibold text-sm hover:opacity-90 transition-opacity">
-        Try the Simulator &rarr;
+        {t('learn.cta_button')} &rarr;
       </a>
     </div>
   </section>

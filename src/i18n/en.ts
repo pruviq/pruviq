@@ -370,6 +370,48 @@ export const en = {
   // Builder
   'meta.builder_title': 'Strategy Builder - PRUVIQ',
   'meta.builder_desc': 'Build your own trading strategy with no code. Select indicators, set conditions, and backtest on 535+ coins with 2+ years of real data.',
+
+  // Learn page
+  'meta.learn_title': 'Learn — Crypto Trading Education | PRUVIQ',
+  'meta.learn_desc': 'Free crypto trading education from beginner to advanced. Learn indicators, backtesting, risk management, and quantitative trading — all with real data, no hype.',
+  'learn.tag': 'EDUCATION',
+  'learn.title': 'Learn Trading.',
+  'learn.title2': 'No Hype. Real Data.',
+  'learn.desc': '{count} guides organized by level. Every claim backed by data. No paid courses, no upsells — just clear explanations.',
+  'learn.level_beginner': 'BEGINNER',
+  'learn.level_beginner_title': 'Start Here',
+  'learn.level_beginner_desc': 'New to crypto trading? These guides cover the fundamentals.',
+  'learn.level_intermediate': 'INTERMEDIATE',
+  'learn.level_intermediate_title': 'Indicators & Tactics',
+  'learn.level_intermediate_desc': 'Understand the tools and how to use them in real strategies.',
+  'learn.level_advanced': 'ADVANCED',
+  'learn.level_advanced_title': 'Quant & Strategy',
+  'learn.level_advanced_desc': 'Backtesting, position sizing, and real decision-making.',
+  'learn.cta_title': 'Ready to test what you\'ve learned?',
+  'learn.cta_desc': 'Build a strategy and run it on 535+ coins — free, no account needed.',
+  'learn.cta_button': 'Try the Simulator',
+
+  // Simulate page
+  'simulate.tag': 'STRATEGY SIMULATOR',
+  'simulate.title1': 'Build a Strategy.',
+  'simulate.title2': 'Test It on 535+ Coins.',
+  'simulate.desc': 'Pick indicators, set entry conditions, adjust risk parameters. Run a backtest on 2+ years of real data — or start from a preset.',
+  'simulate.note': 'No code. No account. No cost. Results include realistic fees and slippage.',
+  'simulate.loading': 'Loading strategy builder...',
+  'simulate.strategies_title': 'Tested Strategies',
+  'simulate.strategies_desc': '5 strategies tested. 4 killed. 1 verified. Full results published.',
+  'simulate.strategy_desc_bb_short': 'Bollinger Band volatility expansion — short side',
+  'simulate.strategy_desc_bb_long': 'Same strategy, long side — failed validation',
+  'simulate.strategy_desc_momentum': '20-candle high breakout — catastrophic loss',
+  'simulate.view_all': 'View all 5 strategies',
+  'simulate.disclaimer': 'Simulations include 0.04% futures fees + 0.02% slippage per trade. Past performance does not guarantee future results. Not financial advice.',
+
+  // Blog category short labels
+  'blog.cat_short.market': 'MARKET',
+  'blog.cat_short.quant': 'QUANT',
+  'blog.cat_short.strategy': 'STRATEGY',
+  'blog.cat_short.weekly': 'WEEKLY',
+  'blog.cat_short.education': 'EDU',
 } as const;
 
 export type TranslationKey = keyof typeof en;

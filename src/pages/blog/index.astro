@@ -10,11 +10,11 @@ const posts = (await getCollection('blog')).sort(
 );
 
 const categoryLabels: Record<string, string> = {
-  market: 'MARKET',
-  quant: 'QUANT',
-  strategy: 'STRATEGY',
-  weekly: 'WEEKLY',
-  education: 'EDU',
+  market: t('blog.cat_short.market'),
+  quant: t('blog.cat_short.quant'),
+  strategy: t('blog.cat_short.strategy'),
+  weekly: t('blog.cat_short.weekly'),
+  education: t('blog.cat_short.education'),
 };
 
 const categoryColors: Record<string, string> = {
