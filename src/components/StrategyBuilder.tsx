@@ -105,6 +105,7 @@ const labels = {
     noTrades: 'No signals found with these conditions. Try relaxing the criteria.',
     presetError: 'Failed to load preset.',
     serverError: 'Server error. Please try again.',
+    apiLoadError: 'Failed to load indicators. Check your connection and reload.',
     crossAbove: 'Cross Above',
     crossBelow: 'Cross Below',
     disclaimer: '* Simulation includes 0.04% futures fees + 0.02% slippage. Past performance does not guarantee future results.',
@@ -117,6 +118,13 @@ const labels = {
     yearPF: 'PF',
     tuneParams: 'Tune',
     resetParams: 'Reset to default',
+    backtestFailed: 'Backtest failed',
+    paramTitle: 'Parameters',
+    prevShift: 'prev',
+    currShift: 'curr',
+    toggleVal: '[val]',
+    toggleField: '[field]',
+    coinsUnit: 'coins',
   },
   ko: {
     tag: '전략 빌더',
@@ -156,6 +164,7 @@ const labels = {
     noTrades: '이 조건으로 시그널이 발견되지 않았습니다. 조건을 완화해 보세요.',
     presetError: '프리셋 로딩 실패.',
     serverError: '서버 오류. 다시 시도해 주세요.',
+    apiLoadError: '지표 로딩에 실패했습니다. 연결을 확인하고 새로고침하세요.',
     crossAbove: '상향 돌파',
     crossBelow: '하향 돌파',
     disclaimer: '* 시뮬레이션은 0.04% 선물 수수료 + 0.02% 슬리피지를 포함합니다. 과거 성과는 미래 결과를 보장하지 않습니다.',
@@ -168,6 +177,13 @@ const labels = {
     yearPF: 'PF',
     tuneParams: '조정',
     resetParams: '기본값 복원',
+    backtestFailed: '백테스트 실패',
+    paramTitle: '파라미터',
+    prevShift: '이전',
+    currShift: '현재',
+    toggleVal: '[값]',
+    toggleField: '[필드]',
+    coinsUnit: '코인',
   },
 };
 
@@ -225,6 +241,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
   const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<BacktestResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [apiLoadError, setApiLoadError] = useState(false);
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
@@ -251,8 +268,8 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
   useEffect(() => {
     fetch(`${API_URL}/builder/indicators`)
       .then((r) => r.json())
-      .then(setAvailableIndicators)
-      .catch(() => {});
+      .then((data) => { setAvailableIndicators(data); setApiLoadError(false); })
+      .catch(() => setApiLoadError(true));
     fetch(`${API_URL}/builder/presets`)
       .then((r) => r.json())
       .then(setPresets)
@@ -265,10 +282,13 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       const res = await fetch(`${API_URL}/builder/presets/${presetId}`);
       const preset = await res.json();
       setSelectedIndicators(new Set(Object.keys(preset.indicators)));
+      setIndicatorParams({});
+      setShowParams(null);
       setDirection(preset.direction);
       setSlPct(preset.sl_pct);
       setTpPct(preset.tp_pct);
       setMaxBars(preset.max_bars);
+      setTopN(50);
       setAvoidHours(new Set(preset.avoid_hours));
 
       const newConds: Condition[] = preset.entry.conditions.map((c: Omit<Condition, 'id'>) => ({
@@ -291,8 +311,21 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
   const toggleIndicator = (id: string) => {
     setSelectedIndicators((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+        // Clean up conditions referencing fields from this indicator
+        const removedFields = new Set(
+          availableIndicators.find((ind) => ind.id === id)?.fields || []
+        );
+        if (removedFields.size > 0) {
+          setConditions((prevConds) =>
+            prevConds.filter((c) => !removedFields.has(c.field) && (!c.field2 || !removedFields.has(c.field2)))
+          );
+        }
+        if (showParams === id) setShowParams(null);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
@@ -372,7 +405,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       // Scroll to results
       setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Backtest failed');
+      setError(e instanceof Error ? e.message : t.backtestFailed);
     } finally {
       setIsRunning(false);
     }
@@ -382,6 +415,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
   useEffect(() => {
     if (!result?.equity_curve?.length || !chartContainerRef.current) return;
     let disposed = false;
+    let ro: ResizeObserver | null = null;
 
     import('lightweight-charts').then(({ createChart, AreaSeries }) => {
       if (disposed || !chartContainerRef.current) return;
@@ -427,16 +461,15 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       chartRef.current = chart;
       seriesRef.current = series;
 
-      const ro = new ResizeObserver((entries) => {
+      ro = new ResizeObserver((entries) => {
         for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
       });
       ro.observe(chartContainerRef.current);
-
-      return () => ro.disconnect();
     });
 
     return () => {
       disposed = true;
+      ro?.disconnect();
       if (chartRef.current) {
         chartRef.current.remove();
         chartRef.current = null;
@@ -480,6 +513,11 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       <div class="border border-[--color-border] rounded-xl p-5 bg-[--color-bg-card]">
         <h3 class="font-mono text-xs text-[--color-accent] tracking-widest mb-1 uppercase">{t.indicators}</h3>
         <p class="text-[--color-text-muted] text-sm mb-4">{t.indicatorsDesc}</p>
+        {apiLoadError && (
+          <div class="mb-4 p-3 rounded-lg border border-[--color-red]/40 bg-[--color-red]/5">
+            <p class="font-mono text-xs text-[--color-red]">{t.apiLoadError}</p>
+          </div>
+        )}
         <div class="flex flex-wrap gap-2">
           {availableIndicators.map((ind) => {
             const active = selectedIndicators.has(ind.id);
@@ -524,7 +562,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
           return (
             <div class="mt-4 p-4 rounded-lg border border-[--color-accent]/30 bg-[--color-bg]">
               <div class="flex items-center justify-between mb-3">
-                <span class="font-mono text-xs text-[--color-accent] font-bold">{ind.name} Parameters</span>
+                <span class="font-mono text-xs text-[--color-accent] font-bold">{ind.name} {t.paramTitle}</span>
                 <button
                   onClick={() => {
                     const next = { ...indicatorParams };
@@ -655,13 +693,13 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
                   class="text-[10px] font-mono text-[--color-text-muted] hover:text-[--color-accent] cursor-pointer transition-colors"
                   title={cond.field2 !== undefined ? t.literalValue : t.anotherField}
                 >
-                  {cond.field2 !== undefined ? '[val]' : '[field]'}
+                  {cond.field2 !== undefined ? t.toggleVal : t.toggleField}
                 </button>
               )}
 
               {/* Shift */}
               <span class="text-[10px] font-mono text-[--color-text-muted] ml-auto">
-                {cond.shift === 1 ? 'prev' : 'curr'}
+                {cond.shift === 1 ? t.prevShift : t.currShift}
               </span>
 
               {/* Remove */}
@@ -856,7 +894,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
                   lang={lang}
                 />
                 <div class="mt-3 font-mono text-[10px] text-[--color-text-muted]">
-                  {result.coins_used} coins &middot; {result.data_range} &middot; {t.computeTime} {result.compute_time_ms}ms
+                  {result.coins_used} {t.coinsUnit} &middot; {result.data_range} &middot; {t.computeTime} {result.compute_time_ms}ms
                 </div>
               </div>
 
