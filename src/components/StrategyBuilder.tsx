@@ -271,7 +271,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       setMaxBars(preset.max_bars);
       setAvoidHours(new Set(preset.avoid_hours));
 
-      const newConds: Condition[] = preset.entry.conditions.map((c: any) => ({
+      const newConds: Condition[] = preset.entry.conditions.map((c: Omit<Condition, 'id'>) => ({
         id: nextCondId(),
         field: c.field,
         op: c.op,
@@ -336,7 +336,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
     }
 
     const entryConditions = conditions.map((c) => {
-      const cond: any = { field: c.field, op: c.op, shift: c.shift };
+      const cond: { field: string; op: string; shift: number; field2?: string; value?: number | boolean } = { field: c.field, op: c.op, shift: c.shift };
       if (c.field2) cond.field2 = c.field2;
       else cond.value = c.value;
       return cond;
@@ -371,8 +371,8 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
 
       // Scroll to results
       setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-    } catch (e: any) {
-      setError(e.message || 'Backtest failed');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Backtest failed');
     } finally {
       setIsRunning(false);
     }

@@ -7,7 +7,7 @@ interface PresetFull {
   name: string;
   direction: string;
   indicators: Record<string, Record<string, number>>;
-  entry: { type: string; conditions: any[] };
+  entry: { type: string; conditions: { field: string; op: string; value?: number | boolean; field2?: string; shift?: number }[] };
   avoid_hours: number[];
   sl_pct: number;
   tp_pct: number;

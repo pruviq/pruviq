@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'preact/hooks';
 import { formatPrice, formatVolume, formatVolumeRaw } from '../utils/format';
 import DiscreteSlider from './DiscreteSlider';
 import { API_BASE_URL as API_URL } from '../config/api';
+import type { MouseEventParams, Time, SeriesMarker } from 'lightweight-charts';
 
 // Helper function to get CSS variable values at runtime
 function getCssVar(name: string): string {
@@ -288,8 +289,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         },
         crosshair: {
           mode: 0,
-          vertLine: { color: `${getCssVar('--color-accent')}33`, width: 1, style: 2, labelBackgroundColor: '#111' },
-          horzLine: { color: `${getCssVar('--color-accent')}33`, width: 1, style: 2, labelBackgroundColor: '#111' },
+          vertLine: { color: `${getCssVar('--color-accent')}33`, width: 1, style: 2, labelBackgroundColor: getCssVar('--color-bg-card') },
+          horzLine: { color: `${getCssVar('--color-accent')}33`, width: 1, style: 2, labelBackgroundColor: getCssVar('--color-bg-card') },
         },
         watermark: {
           visible: true,
@@ -340,7 +341,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       })));
       volumeSeriesRef.current = volumeSeries;
 
-      chart.subscribeCrosshairMove((param: any) => {
+      chart.subscribeCrosshairMove((param: MouseEventParams<Time>) => {
         if (!param || !param.time) { setCrosshairData(null); return; }
         const bar = ohlcvMapRef.current.get(param.time as number);
         if (bar) setCrosshairData(bar);
@@ -395,7 +396,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       setSimResult(result);
 
       if (candleSeriesRef.current && result.trades.length > 0) {
-        const markers: any[] = [];
+        const markers: SeriesMarker<Time>[] = [];
         for (const trade of result.trades) {
           markers.push({ time: trade.entry_time as any, position: 'aboveBar', shape: 'arrowDown', color: getCssVar('--color-down'), text: 'S' });
           const exitColor = trade.exit_reason === 'tp' ? getCssVar('--color-up') : trade.exit_reason === 'sl' ? getCssVar('--color-down') : getCssVar('--color-text-muted');

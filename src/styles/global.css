@@ -135,6 +135,16 @@ body {
   animation: spin 0.6s linear infinite;
 }
 
+/* Active press feedback */
+button,
+a[href] {
+  transition: transform 0.1s ease;
+}
+button:active:not(:disabled),
+a[href]:active {
+  transform: scale(0.98);
+}
+
 /* Focus visible (keyboard navigation) */
 button:focus-visible,
 a:focus-visible,
