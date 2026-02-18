@@ -1,5 +1,5 @@
 ---
-title: "How We Changed Take-Profit from 6% to 8% — The Full Decision Process"
+title: "Take-Profit 6% to 8%: The Full Decision Process"
 description: "10 expert agents analyzed our TP change. 7 said GO, 1 said WAIT, 2 had invalid methodology. Here's exactly how we made the call — with all the data."
 date: "2026-02-15"
 category: "strategy"

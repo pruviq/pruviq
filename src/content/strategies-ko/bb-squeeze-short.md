@@ -54,7 +54,7 @@ BB Squeeze SHORT는 볼린저 밴드가 켈트너 채널 안으로 수축(스퀴
 
 LONG과 SHORT 변형을 모두 테스트했습니다. 결과는 결정적이었습니다:
 
-- **BB Squeeze SHORT**: +$794, 승률 59.3%
+- **BB Squeeze SHORT**: +$794, 승률 68.6%
 - **BB Squeeze LONG**: -$26, 승률 51.0%
 - **Momentum LONG**: -$14,115, 승률 37.5%
 

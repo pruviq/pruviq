@@ -1,5 +1,5 @@
 ---
-title: "February 2026 Market Review: What Our System Did During the Crash"
+title: "Feb 2026 Crash: What Our SHORT System Did"
 description: "BTC dropped 48% from ATH. 311K traders got liquidated in one day. Our SHORT-only system ran through it all. Here's what actually happened."
 date: "2026-02-15"
 category: "market"

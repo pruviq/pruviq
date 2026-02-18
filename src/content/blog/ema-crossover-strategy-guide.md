@@ -1,5 +1,5 @@
 ---
-title: "EMA Crossover: The Most Popular Strategy (And Why It Often Fails)"
+title: "EMA Crossover Strategy: Why It Often Fails in Crypto"
 description: "Everything you need to know about EMA crossovers in crypto. Why everyone uses them, why most lose money with them, and how to actually make them work."
 date: "2026-02-18"
 category: "education"

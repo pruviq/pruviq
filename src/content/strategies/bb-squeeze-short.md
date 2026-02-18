@@ -54,7 +54,7 @@ BB Squeeze SHORT is a volatility expansion strategy that detects when Bollinger 
 
 We tested both LONG and SHORT variants. The results were definitive:
 
-- **BB Squeeze SHORT**: +$794, 59.3% win rate
+- **BB Squeeze SHORT**: +$794, 68.6% win rate
 - **BB Squeeze LONG**: -$26, 51.0% win rate
 - **Momentum LONG**: -$14,115, 37.5% win rate
 

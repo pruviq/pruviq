@@ -1,5 +1,5 @@
 ---
-title: "SL/TP Optimization: How We Found the Right Stop-Loss and Take-Profit"
+title: "SL/TP Optimization: Finding the Right Stop-Loss Ratio"
 description: "The data-driven process behind choosing SL 10% and TP 8%. Why most traders set their stops wrong, and how backtesting 2,898 trades revealed the optimal ratio."
 date: "2026-02-18"
 category: "education"

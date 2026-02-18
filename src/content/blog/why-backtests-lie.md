@@ -38,7 +38,7 @@ But markets change. What worked in 2024 Q1 might fail in 2024 Q3.
 **How to detect it:**
 - Does it work across multiple time periods? (2023, 2024, 2025)
 - Does it work on out-of-sample data?
-- Is the win rate suspiciously high? (>70% in crypto = suspicious)
+- Is the win rate suspiciously high? (>75% on a single signal = suspicious)
 
 ### 3. Ignoring Real Trading Costs
 

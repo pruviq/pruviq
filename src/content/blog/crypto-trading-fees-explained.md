@@ -1,5 +1,5 @@
 ---
-title: "Crypto Trading Fees Explained: The Hidden Cost Killing Your Returns"
+title: "Crypto Trading Fees: The Hidden Cost Killing Returns"
 description: "A complete breakdown of crypto trading fees. Maker vs taker, funding rates, withdrawal fees, and how to cut your costs by 40% or more."
 date: "2026-02-15"
 category: "education"
