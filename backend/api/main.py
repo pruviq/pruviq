@@ -184,7 +184,7 @@ def check_rate_limit(client_ip: str) -> bool:
 
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
-    if request.url.path in ("/simulate", "/simulate/coin", "/simulate/compare"):
+    if request.url.path in ("/simulate", "/simulate/coin", "/simulate/compare", "/backtest"):
         client_ip = request.client.host if request.client else "unknown"
         if not check_rate_limit(client_ip):
             return JSONResponse(
@@ -926,3 +926,261 @@ async def get_news():
     _news_cache = data
     _news_cache_time = now
     return NewsResponse(**data)
+
+
+# --- Strategy Builder Endpoints (v1.1) ---
+
+from src.engine.condition_engine import (
+    ConditionEngine, validate_strategy_json,
+    get_preset_strategies, PRESET_STRATEGIES,
+)
+from src.engine.indicator_pipeline import get_available_indicators, INDICATOR_REGISTRY
+from api.schemas import (
+    BacktestRequest, BacktestResponse, PresetListItem, IndicatorInfo, YearlyStat,
+)
+
+
+@app.get("/builder/indicators", response_model=List[IndicatorInfo])
+async def list_indicators():
+    """List all available indicators for Strategy Builder."""
+    return [
+        IndicatorInfo(
+            id=ind_id,
+            name=info["name"],
+            fields=info["fields"],
+            default_params=info["default_params"],
+        )
+        for ind_id, info in INDICATOR_REGISTRY.items()
+    ]
+
+
+@app.get("/builder/presets", response_model=List[PresetListItem])
+async def list_presets():
+    """List all preset strategy templates."""
+    result = []
+    for pid, pdef in PRESET_STRATEGIES.items():
+        engine = ConditionEngine(pdef)
+        params = engine.get_params()
+        result.append(PresetListItem(
+            id=pid,
+            name=pdef["name"],
+            direction=pdef["direction"],
+            indicators=params["indicators"],
+            conditions_count=params["conditions_count"],
+            sl_pct=pdef["sl_pct"],
+            tp_pct=pdef["tp_pct"],
+        ))
+    return result
+
+
+@app.get("/builder/presets/{preset_id}")
+async def get_preset(preset_id: str):
+    """Get full preset strategy JSON for editing."""
+    if preset_id not in PRESET_STRATEGIES:
+        raise HTTPException(404, f"Preset not found: {preset_id}")
+    return PRESET_STRATEGIES[preset_id]
+
+
+@app.post("/backtest", response_model=BacktestResponse)
+async def run_backtest(req: BacktestRequest):
+    """
+    Run a custom strategy backtest using the ConditionEngine.
+    This is the core Strategy Builder endpoint.
+    """
+    if data_manager.coin_count == 0:
+        raise HTTPException(503, "Data not loaded yet. Try again shortly.")
+
+    t_start = time.time()
+
+    # Build strategy JSON from request
+    strategy_json = {
+        "name": req.name,
+        "direction": req.direction,
+        "indicators": req.indicators,
+        "entry": req.entry,
+        "avoid_hours": req.avoid_hours,
+        "sl_pct": req.sl_pct,
+        "tp_pct": req.tp_pct,
+        "max_bars": req.max_bars,
+    }
+
+    # Validate
+    is_valid, errors = validate_strategy_json(strategy_json)
+    if not is_valid:
+        return BacktestResponse(
+            name=req.name, direction=req.direction,
+            sl_pct=req.sl_pct, tp_pct=req.tp_pct, max_bars=req.max_bars,
+            indicators_used=list(req.indicators.keys()),
+            conditions_count=0,
+            total_trades=0, wins=0, losses=0, win_rate=0,
+            total_return_pct=0, profit_factor=0,
+            avg_win_pct=0, avg_loss_pct=0,
+            max_drawdown_pct=0, max_consecutive_losses=0,
+            tp_count=0, sl_count=0, timeout_count=0,
+            coins_used=0, data_range="", equity_curve=[],
+            is_valid=False, validation_errors=errors,
+            compute_time_ms=0,
+        )
+
+    # Create engine
+    engine = ConditionEngine(strategy_json)
+    params = engine.get_params()
+
+    # Get coins
+    if req.symbols:
+        coin_list = data_manager.get_symbols(req.symbols)
+    else:
+        coin_list = data_manager.get_top_n(req.top_n)
+
+    if not coin_list:
+        raise HTTPException(404, "No coins found.")
+
+    # Run simulation
+    cost_model = CostModel.futures()
+    all_trades = []
+
+    for sym, df_raw in coin_list:
+        # Compute indicators via ConditionEngine
+        df = engine.prepare_dataframe(df_raw.copy())
+
+        # Find signals using vectorized evaluation
+        signal_indices = engine.find_signals_vectorized(df)
+
+        if len(signal_indices) == 0:
+            continue
+
+        # Simulate trades from signals
+        from src.simulation.engine_fast import simulate_vectorized
+        trades = simulate_vectorized(
+            df=df,
+            signal_indices=signal_indices,
+            sl_pct=req.sl_pct / 100,
+            tp_pct=req.tp_pct / 100,
+            max_bars=req.max_bars,
+            fee_pct=cost_model.fee_pct,
+            slippage_pct=cost_model.slippage_pct,
+            direction=req.direction,
+            symbol=sym,
+        )
+
+        for trade in trades:
+            all_trades.append({
+                "time": trade.entry_time,
+                "pnl_pct": trade.pnl_pct,
+                "exit_reason": trade.exit_reason,
+            })
+
+    all_trades.sort(key=lambda t: t["time"])
+
+    # Aggregate results
+    if not all_trades:
+        return BacktestResponse(
+            name=req.name, direction=req.direction,
+            sl_pct=req.sl_pct, tp_pct=req.tp_pct, max_bars=req.max_bars,
+            indicators_used=params["indicators"],
+            conditions_count=params["conditions_count"],
+            total_trades=0, wins=0, losses=0, win_rate=0,
+            total_return_pct=0, profit_factor=0,
+            avg_win_pct=0, avg_loss_pct=0,
+            max_drawdown_pct=0, max_consecutive_losses=0,
+            tp_count=0, sl_count=0, timeout_count=0,
+            coins_used=len(coin_list), data_range=data_manager.data_range(),
+            equity_curve=[],
+            is_valid=True, validation_errors=[],
+            compute_time_ms=int((time.time() - t_start) * 1000),
+        )
+
+    wins = [t for t in all_trades if t["pnl_pct"] > 0]
+    losses = [t for t in all_trades if t["pnl_pct"] <= 0]
+    gross_profit = sum(t["pnl_pct"] for t in wins) if wins else 0
+    gross_loss = abs(sum(t["pnl_pct"] for t in losses)) if losses else 0.001
+    total_return = sum(t["pnl_pct"] for t in all_trades)
+
+    avg_win = (sum(t["pnl_pct"] for t in wins) / len(wins)) if wins else 0
+    avg_loss = (sum(t["pnl_pct"] for t in losses) / len(losses)) if losses else 0
+
+    # Equity + MDD
+    equity = 0.0
+    peak = 0.0
+    max_dd = 0.0
+    eq_times = []
+    eq_values = []
+    max_consec = 0
+    cur_consec = 0
+
+    for t in all_trades:
+        equity += t["pnl_pct"]
+        peak = max(peak, equity)
+        dd = peak - equity
+        max_dd = max(max_dd, dd)
+        eq_times.append(t["time"][:10])
+        eq_values.append(equity)
+        if t["pnl_pct"] <= 0:
+            cur_consec += 1
+            max_consec = max(max_consec, cur_consec)
+        else:
+            cur_consec = 0
+
+    tp_count = sum(1 for t in all_trades if t["exit_reason"] == "tp")
+    sl_count = sum(1 for t in all_trades if t["exit_reason"] == "sl")
+    timeout_count = sum(1 for t in all_trades if t["exit_reason"] == "timeout")
+
+
+    # Yearly breakdown
+    from collections import defaultdict
+    yearly = defaultdict(lambda: {"wins": 0, "losses": 0, "gross_profit": 0.0, "gross_loss": 0.0, "total_pnl": 0.0})
+    for tr in all_trades:
+        year = int(tr["time"][:4])
+        y = yearly[year]
+        y["total_pnl"] += tr["pnl_pct"]
+        if tr["pnl_pct"] > 0:
+            y["wins"] += 1
+            y["gross_profit"] += tr["pnl_pct"]
+        else:
+            y["losses"] += 1
+            y["gross_loss"] += abs(tr["pnl_pct"])
+
+    yearly_stats = []
+    for year in sorted(yearly.keys()):
+        y = yearly[year]
+        ytotal = y["wins"] + y["losses"]
+        yearly_stats.append(YearlyStat(
+            year=year,
+            trades=ytotal,
+            wins=y["wins"],
+            win_rate=round(y["wins"] / ytotal * 100, 1) if ytotal > 0 else 0,
+            total_return_pct=round(y["total_pnl"], 2),
+            profit_factor=round(y["gross_profit"] / max(y["gross_loss"], 0.001), 2),
+        ))
+
+    compute_ms = int((time.time() - t_start) * 1000)
+
+    return BacktestResponse(
+        name=req.name,
+        direction=req.direction,
+        sl_pct=req.sl_pct,
+        tp_pct=req.tp_pct,
+        max_bars=req.max_bars,
+        indicators_used=params["indicators"],
+        conditions_count=params["conditions_count"],
+        total_trades=len(all_trades),
+        wins=len(wins),
+        losses=len(losses),
+        win_rate=round(len(wins) / len(all_trades) * 100, 2),
+        total_return_pct=round(total_return, 2),
+        profit_factor=round(gross_profit / gross_loss, 2),
+        avg_win_pct=round(avg_win, 4),
+        avg_loss_pct=round(avg_loss, 4),
+        max_drawdown_pct=round(max_dd, 2),
+        max_consecutive_losses=max_consec,
+        tp_count=tp_count,
+        sl_count=sl_count,
+        timeout_count=timeout_count,
+        coins_used=len(coin_list),
+        data_range=data_manager.data_range(),
+        equity_curve=downsample_equity(eq_times, eq_values),
+        is_valid=True,
+        validation_errors=[],
+        yearly_stats=yearly_stats,
+        compute_time_ms=compute_ms,
+    )

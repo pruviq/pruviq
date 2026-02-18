@@ -237,3 +237,101 @@ class CompareResponse(BaseModel):
     coins_used: int
     data_range: str
     strategies: List[StrategyResult]
+# --- Strategy Builder (v1.1) ---
+
+class ConditionItem(BaseModel):
+    """A single condition or nested group."""
+    field: Optional[str] = None
+    op: Optional[str] = None
+    value: Optional[float] = None  # For literal comparisons
+    value_bool: Optional[bool] = None  # For boolean comparisons
+    field2: Optional[str] = None  # For field-to-field comparisons
+    shift: int = Field(default=1, ge=0, le=10, description="Candle shift (1=prev candle)")
+    # Nested group
+    type: Optional[str] = None  # "AND" or "OR"
+    conditions: Optional[List["ConditionItem"]] = None
+
+
+class BacktestRequest(BaseModel):
+    """Custom strategy backtest request from Strategy Builder."""
+    name: str = Field(default="Custom Strategy", max_length=100)
+    direction: str = Field(default="short", description="short | long")
+    indicators: dict = Field(
+        default={"bb": {}, "ema": {}, "volume": {}, "candle": {}},
+        description="Indicator configs: {'bb': {'period': 20}, 'ema': {}, ...}"
+    )
+    entry: dict = Field(
+        description="Entry conditions tree: {'type': 'AND', 'conditions': [...]}"
+    )
+    avoid_hours: List[int] = Field(default=[], description="UTC hours to avoid (0-23)")
+    sl_pct: float = Field(default=10.0, ge=0.5, le=50.0, description="Stop Loss %")
+    tp_pct: float = Field(default=8.0, ge=0.5, le=100.0, description="Take Profit %")
+    max_bars: int = Field(default=48, ge=1, le=168, description="Max holding period (bars)")
+    top_n: int = Field(default=50, ge=1, le=535, description="Number of coins")
+    symbols: Optional[List[str]] = Field(default=None, description="Specific symbols")
+
+
+
+class YearlyStat(BaseModel):
+    """Per-year performance breakdown."""
+    year: int
+    trades: int
+    wins: int
+    win_rate: float
+    total_return_pct: float
+    profit_factor: float
+
+
+class BacktestResponse(BaseModel):
+    """Custom strategy backtest result."""
+    name: str
+    direction: str
+    sl_pct: float
+    tp_pct: float
+    max_bars: int
+    indicators_used: List[str]
+    conditions_count: int
+
+    total_trades: int
+    wins: int
+    losses: int
+    win_rate: float
+    total_return_pct: float
+    profit_factor: float
+    avg_win_pct: float
+    avg_loss_pct: float
+    max_drawdown_pct: float
+    max_consecutive_losses: int
+
+    tp_count: int
+    sl_count: int
+    timeout_count: int
+
+    coins_used: int
+    data_range: str
+    equity_curve: List[EquityPoint]
+
+    # Validation info
+    is_valid: bool
+    validation_errors: List[str] = []
+    yearly_stats: List["YearlyStat"] = []
+    compute_time_ms: int = 0
+
+
+class PresetListItem(BaseModel):
+    """Preset strategy summary for listing."""
+    id: str
+    name: str
+    direction: str
+    indicators: List[str]
+    conditions_count: int
+    sl_pct: float
+    tp_pct: float
+
+
+class IndicatorInfo(BaseModel):
+    """Available indicator for Strategy Builder."""
+    id: str
+    name: str
+    fields: List[str]
+    default_params: dict
