@@ -1,40 +1,54 @@
-# PRUVIQ - Transparent Algorithmic Crypto Trading
+# PRUVIQ - Free Crypto Strategy Backtesting Platform
 
-> PRUVIQ is a crypto trading transparency project that publishes every trade, every loss, and every strategy change with full data. Built by one developer, verified by evidence. The system trades 500+ coins on Binance Futures using a BB Squeeze SHORT strategy with a 70.4% win rate and 2.55 profit factor, validated across 2+ years of data.
+> Don't Believe. Verify.
 
-PRUVIQ provides educational content on algorithmic crypto trading, backtesting methodology, risk management, and exchange fee optimization. All strategies are tested on 536 coins across 2+ years before live deployment.
+## What is PRUVIQ?
+PRUVIQ (pruviq.com) is a free, no-code crypto strategy backtesting platform. Users build custom trading strategies by combining 11+ technical indicators, then backtest on 535+ coins with 2+ years of real market data. Results include realistic fees (0.04%) and slippage (0.02%).
 
-## Core Content
+## Key Features
+- **No-Code Strategy Builder**: Combine Bollinger Bands, RSI, MACD, EMA, Stochastic, ADX, ATR, Historical Volatility, Volume, Candle Patterns, and Price Action with AND/OR logic
+- **535+ Coin Backtesting**: All Binance USDT perpetual futures, 1-hour OHLCV candles
+- **Full Backtest in <3 Seconds**: Vectorized execution across all coins
+- **Live Trading Verification**: One strategy (BB Squeeze SHORT) runs on a real Binance Futures account. Every trade published, including losses
+- **Yearly Breakdown**: Performance split by year to detect overfitting
+- **Interactive SL/TP Simulation**: 5x5 grid with equity curves for any strategy
+- **Bilingual**: Full English + Korean support
 
-- [Home](https://pruviq.com/): Overview of the PRUVIQ trading transparency approach
-- [Strategy Library](https://pruviq.com/strategies): Every strategy tested with full backtest results, live or killed
-- [Strategy Graveyard](https://pruviq.com/graveyard): Autopsy reports of killed strategies with full P&L data
-- [Changelog](https://pruviq.com/changelog): Complete version history with reasoning for every change
-- [Exchange Fee Comparison](https://pruviq.com/fees): 9 exchanges compared with referral discounts
+## Strategy Library (with transparency)
+| Strategy | Direction | Status | Win Rate | Profit Factor |
+|----------|-----------|--------|----------|---------------|
+| BB Squeeze SHORT | Short | Verified (live) | 70.4% | 2.55 |
+| BB Squeeze LONG | Long | Killed | 51.0% | 0.98 |
+| Momentum LONG | Long | Killed (-$14,115) | 37.5% | 0.71 |
+| ATR Breakout | Long | Shelved | - | - |
+| HV Squeeze | Short | Shelved | - | - |
 
-## Educational Articles
+## Education Content
+- What is BB Squeeze? (/blog/what-is-bb-squeeze)
+- RSI Oversold/Overbought Guide (/blog/rsi-oversold-overbought-guide)
+- EMA Crossover Strategy (/blog/ema-crossover-strategy-guide)
+- MACD Divergence Trading (/blog/macd-divergence-trading-guide)
+- Volume Analysis for Crypto (/blog/volume-analysis-crypto-trading)
+- SL/TP Optimization Guide (/blog/sl-tp-optimization-guide)
+- Why Backtests Lie (/blog/why-backtests-lie)
+- Position Sizing with Kelly Criterion (/blog/position-sizing-kelly-criterion)
+- Risk Management 101 (/blog/risk-management-101)
 
-- [What is Bollinger Band Squeeze?](https://pruviq.com/blog/what-is-bb-squeeze): How volatility compression creates trading opportunities
-- [Why Most Backtests Are Lies](https://pruviq.com/blog/why-backtests-lie): Look-ahead bias, overfitting, and the $14K lesson
-- [Risk Management: The Only Edge That Lasts](https://pruviq.com/blog/risk-management-101): Position sizing, Kelly Criterion, daily loss limits
-- [How to Save 20% on Binance Futures Fees](https://pruviq.com/blog/save-on-binance-futures-fees): Fee breakdown and optimization guide
-- [Why PRUVIQ?](https://pruviq.com/blog/why-pruviq): Origin story and philosophy
+## Important URLs
+- Homepage: https://pruviq.com
+- Strategy Builder: https://pruviq.com/builder
+- Strategy Library: https://pruviq.com/strategies
+- Live Performance: https://pruviq.com/performance
+- Fee Calculator: https://pruviq.com/fees
+- Blog / Education: https://pruviq.com/blog
+- Telegram: https://t.me/PRUVIQ
 
-## Key Statistics
+## Tech Stack
+- Frontend: Astro 5.x + Preact + Tailwind 4.x on Cloudflare Pages
+- Backend: Python 3.12 + FastAPI on Mac Mini M4 Pro
+- Data: 613 CSV files (1H OHLCV), 2+ years
+- Charts: lightweight-charts (TradingView)
 
-- Strategy: BB Squeeze SHORT (Bollinger Band Squeeze)
-- Win Rate: 70.4% (backtested), 54.69% (live, 7 days)
-- Profit Factor: 2.55 (backtested)
-- Coins Monitored: 535
-- Backtest Period: 2+ years, 2,898 trades
-- Position Size: $60 x 5x leverage
-- Stop Loss: 10% | Take Profit: 8%
-- Failed Strategies Killed: 4 (Momentum LONG -$14,115, BB Squeeze LONG -$26, HV Squeeze, ATR Breakout)
-
-## Community
-
-- [Telegram](https://t.me/PRUVIQ): Live trade feed with every entry and exit
-
-## Optional
-
-- [Blog Archive](https://pruviq.com/blog): All educational articles and updates
+## Contact
+- Email: pruviq@gmail.com
+- Telegram: https://t.me/PRUVIQ

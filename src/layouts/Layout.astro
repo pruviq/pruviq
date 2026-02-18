@@ -56,6 +56,8 @@ const isActive = (match: string) => basePath.startsWith(match);
     <link rel="alternate" hreflang="x-default" href={enURL.href} />
     <meta name="naver-site-verification" content="ece19c45b3e33ec86f4fc79060c3283cea1493ee" />
     <meta name="yandex-verification" content="a20aa9b1eacf8e51" />
+    <meta name="keywords" content="crypto backtesting, trading strategy builder, no-code backtester, cryptocurrency strategy simulator, free backtesting tool, Bollinger Bands strategy, RSI strategy, crypto futures backtest" />
+    <meta name="application-name" content="PRUVIQ" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://api.pruviq.com" crossorigin />
     <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
@@ -104,6 +106,55 @@ const isActive = (match: string) => basePath.startsWith(match);
         },
         "description": "Build and test crypto trading strategies on 535+ coins. No-code strategy builder with interactive charts and entry/exit markers.",
         "featureList": ["No-code strategy builder", "535+ coin backtesting", "11+ technical indicators", "Interactive charts", "Real trading verification"]
+      })} />
+    )}
+    <!-- JSON-LD FAQPage (homepage only) -->
+    {type === 'website' && basePath === '/' && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is PRUVIQ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PRUVIQ is a free crypto strategy backtesting platform. You can build custom trading strategies using 11+ technical indicators, backtest them on 535+ coins with 2+ years of real market data, and see realistic results including fees and slippage. No coding required."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does PRUVIQ's strategy builder work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The no-code strategy builder lets you combine indicators (Bollinger Bands, RSI, MACD, EMA, Stochastic, ADX, ATR, Volume, etc.) with AND/OR logic and comparison operators. You set entry conditions, stop-loss, take-profit, and time filters, then run a full backtest across all coins in under 3 seconds."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is PRUVIQ free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, PRUVIQ's core backtesting features are completely free. You can build strategies, run backtests on 535+ coins, and access all education content without any payment or account creation."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What makes PRUVIQ different from TradingView or other backtesting tools?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PRUVIQ is specifically built for crypto futures with no coding required. Unlike TradingView (requires Pine Script) or QuantConnect (requires Python/C#), PRUVIQ offers a visual strategy builder. It also publishes real trading results including failures, tests on 535+ coins simultaneously, and includes realistic fees and slippage in all simulations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does PRUVIQ have real trading verification?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. One strategy (BB Squeeze SHORT) runs on a real Binance Futures account with $3,000 capital. Every trade is published publicly, including losses. The live performance page shows 38+ days of verified trading data with full version history."
+            }
+          }
+        ]
       })} />
     )}
     <!-- JSON-LD Article (for blog posts) -->
