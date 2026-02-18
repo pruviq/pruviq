@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import DiscreteSlider from './DiscreteSlider';
 import ResultsCard from './ResultsCard';
+import { API_BASE_URL as API_URL } from '../config/api';
 
 function getCssVar(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -39,8 +40,6 @@ interface Props {
   defaultSl?: number;
   defaultTp?: number;
 }
-
-const API_URL = import.meta.env.PUBLIC_PRUVIQ_API_URL || '';
 
 const labels = {
   en: {
@@ -225,7 +224,6 @@ export default function StrategyDemo({
   }, [data]);
 
   const fetchFromApi = async (slVal: number, tpVal: number): Promise<ResultData | null> => {
-    if (!API_URL) return null;
     try {
       // Extract base strategy name for API (e.g., "bb-squeeze-short" -> "bb-squeeze")
       const apiStrategy = strategy.replace(/-short$|-long$/, '');

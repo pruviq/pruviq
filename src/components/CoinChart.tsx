@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { formatPrice, formatVolume, formatVolumeRaw } from '../utils/format';
 import DiscreteSlider from './DiscreteSlider';
+import { API_BASE_URL as API_URL } from '../config/api';
 
 // Helper function to get CSS variable values at runtime
 function getCssVar(name: string): string {
@@ -49,8 +50,6 @@ const SL_VALUES = [5, 7, 8, 10, 12];
 const TP_VALUES = [4, 6, 8, 10, 12];
 const DEFAULT_SL = 10;
 const DEFAULT_TP = 8;
-const API_URL = import.meta.env.PUBLIC_PRUVIQ_API_URL || '';
-
 const labels = {
   en: {
     apply: 'Apply Strategy',
@@ -235,7 +234,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
 
   // Load OHLCV data
   useEffect(() => {
-    const url = API_URL ? `${API_URL}/ohlcv/${SYMBOL}?limit=3000` : `/ohlcv/${SYMBOL}?limit=3000`;
+    const url = `${API_URL}/ohlcv/${SYMBOL}?limit=3000`;
     fetch(url)
       .then(res => {
         if (!res.ok) throw new Error('Failed');
@@ -385,7 +384,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
   const runSimulation = async () => {
     setSimLoading(true);
     try {
-      const url = API_URL ? `${API_URL}/simulate/coin` : '/simulate/coin';
+      const url = `${API_URL}/simulate/coin`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

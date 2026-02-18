@@ -154,16 +154,16 @@ pruviq/
 | 법적 준수 | 7/10 | P2 |
 | 데이터 정확도 | 9.5/10 | OK |
 
-### P0 CRITICAL (3건 남음, 4건 해결)
+### P0 CRITICAL (2건 남음, 5건 해결)
 1. Google 미인덱싱 (site:pruviq.com = 0) — GSC 등록 + sitemap 제출 필요
-2. 홈에 실거래 증명 없음 (최대 차별점이 About에 묻힘)
-3. API URL fallback 불일치 (5개 컴포넌트 각기 다른 fallback) — 중앙화 필요
+2. API URL fallback 불일치 (5개 컴포넌트 각기 다른 fallback) — 중앙화 필요
 
-### ✅ 해결 확인 (2026-02-18 검증)
+### ✅ 해결 확인 (2026-02-19 검증)
 - ~~COMING SOON 키 잔존~~ → EN/KO 양쪽 의도적 UI 라벨로 확인
 - ~~CTA 버튼 피드백~~ → hover:opacity-90 + transition 존재 (active 피드백은 P1)
 - ~~Privacy/Terms 한국어~~ → ko/privacy.astro, ko/terms.astro 존재 확인
 - ~~API URL localhost:8400~~ → import.meta.env.PUBLIC_PRUVIQ_API_URL 전환 완료
+- ~~홈 실거래 증명~~ → 컨셉 변경: 백테스트 환경 제공이 핵심 (실거래 노출 불필요)
 
 ### 상세 보고서
 - `docs/UNIFIED_AUDIT_v1.3.0.md` (통합 감사)

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { formatPrice, formatVolume } from '../utils/format';
+import { API_BASE_URL } from '../config/api';
 
 interface CoinRow {
   symbol: string;
@@ -74,7 +75,7 @@ function SkeletonRow({ i }: { i: number }) {
   );
 }
 
-export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en' | 'ko'; apiUrl?: string }) {
+export default function CoinListTable({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const t = labels[lang] || labels.en;
   const [data, setData] = useState<CoinRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,8 +86,7 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    const url = apiUrl ? `${apiUrl}/coins/stats` : '/coins/stats';
-    fetch(url)
+    fetch(`${API_BASE_URL}/coins/stats`)
       .then(res => {
         if (!res.ok) throw new Error('Failed');
         return res.json();
@@ -99,7 +99,7 @@ export default function CoinListTable({ lang = 'en', apiUrl = '' }: { lang?: 'en
         setError(err.message);
         setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   if (loading) {
     return (

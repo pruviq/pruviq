@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import ResultsCard from './ResultsCard';
-
-const API_URL = import.meta.env.PUBLIC_PRUVIQ_API_URL || 'https://api.pruviq.com';
+import { API_BASE_URL as API_URL } from '../config/api';
 
 // --- Types ---
 interface IndicatorInfo {
