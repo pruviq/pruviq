@@ -57,7 +57,10 @@ const isActive = (match: string) => basePath.startsWith(match);
     <meta name="yandex-verification" content="a20aa9b1eacf8e51" />
     <!-- Bing Webmaster Tools: replace PLACEHOLDER with actual code after registration -->
     <meta name="msvalidate.01" content="PLACEHOLDER" />
-    <meta name="keywords" content="crypto backtesting, trading strategy builder, no-code backtester, cryptocurrency strategy simulator, free backtesting tool, Bollinger Bands strategy, RSI strategy, crypto futures backtest" />
+    <meta name="keywords" content={lang === 'ko'
+      ? '크립토 백테스팅, 트레이딩 전략 빌더, 노코드 백테스터, 암호화폐 전략 시뮬레이터, 무료 백테스팅 도구, 볼린저 밴드 전략, RSI 전략, 크립토 선물 백테스트, 가상화폐 자동매매, 퀀트 트레이딩'
+      : 'crypto backtesting, trading strategy builder, no-code backtester, cryptocurrency strategy simulator, free backtesting tool, Bollinger Bands strategy, RSI strategy, crypto futures backtest'
+    } />
     <meta name="application-name" content="PRUVIQ" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://api.pruviq.com" crossorigin />
@@ -69,6 +72,7 @@ const isActive = (match: string) => basePath.startsWith(match);
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:site_name" content="PRUVIQ" />
+    <meta property="og:locale" content={lang === 'ko' ? 'ko_KR' : 'en_US'} />
     <meta property="og:image" content={new URL('/og-image.png', Astro.site || 'https://pruviq.com').href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -84,12 +88,16 @@ const isActive = (match: string) => basePath.startsWith(match);
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "PRUVIQ",
-        "alternateName": "Crypto Strategy Lab",
+        "alternateName": lang === 'ko' ? '크립토 전략 검증 플랫폼' : 'Crypto Strategy Lab',
         "url": "https://pruviq.com",
-        "description": "Free crypto strategy backtesting platform. Build and test trading strategies on 535+ coins with 2+ years of real market data.",
+        "description": lang === 'ko'
+          ? '무료 크립토 전략 백테스팅 플랫폼. 535개 이상 코인에서 2년 이상의 실제 시장 데이터로 트레이딩 전략을 만들고 테스트하세요.'
+          : 'Free crypto strategy backtesting platform. Build and test trading strategies on 535+ coins with 2+ years of real market data.',
         "founder": { "@type": "Organization", "name": "PRUVIQ Team" },
         "sameAs": ["https://t.me/PRUVIQ"],
-        "knowsAbout": ["cryptocurrency trading", "backtesting", "algorithmic trading", "quantitative finance"]
+        "knowsAbout": lang === 'ko'
+          ? ['암호화폐 트레이딩', '백테스팅', '알고리즘 트레이딩', '퀀트 금융']
+          : ['cryptocurrency trading', 'backtesting', 'algorithmic trading', 'quantitative finance']
       })} />
     )}
     <!-- JSON-LD WebApplication (homepage only) -->
@@ -97,7 +105,7 @@ const isActive = (match: string) => basePath.startsWith(match);
       <script type="application/ld+json" set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "PRUVIQ Strategy Simulator",
+        "name": lang === 'ko' ? 'PRUVIQ 전략 시뮬레이터' : 'PRUVIQ Strategy Simulator',
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Web",
         "offers": {
@@ -105,8 +113,12 @@ const isActive = (match: string) => basePath.startsWith(match);
           "price": "0",
           "priceCurrency": "USD"
         },
-        "description": "Build and test crypto trading strategies on 535+ coins. No-code strategy builder with interactive charts and entry/exit markers.",
-        "featureList": ["No-code strategy builder", "535+ coin backtesting", "11+ technical indicators", "Interactive charts", "Real trading verification"]
+        "description": lang === 'ko'
+          ? '535개 이상 코인에서 크립토 트레이딩 전략을 만들고 테스트하세요. 노코드 전략 빌더, 인터랙티브 차트, 진입/청산 마커 제공.'
+          : 'Build and test crypto trading strategies on 535+ coins. No-code strategy builder with interactive charts and entry/exit markers.',
+        "featureList": lang === 'ko'
+          ? ['노코드 전략 빌더', '535+ 코인 백테스팅', '11개 이상 기술 지표', '인터랙티브 차트', '실거래 검증']
+          : ['No-code strategy builder', '535+ coin backtesting', '11+ technical indicators', 'Interactive charts', 'Real trading verification']
       })} />
     )}
     <!-- JSON-LD FAQPage (homepage only) -->
@@ -114,7 +126,48 @@ const isActive = (match: string) => basePath.startsWith(match);
       <script type="application/ld+json" set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        "mainEntity": [
+        "mainEntity": lang === 'ko' ? [
+          {
+            "@type": "Question",
+            "name": "PRUVIQ란 무엇인가요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PRUVIQ는 무료 크립토 전략 백테스팅 플랫폼입니다. 11개 이상의 기술 지표를 사용하여 맞춤 트레이딩 전략을 만들고, 535개 이상의 코인에서 2년 이상의 실제 시장 데이터로 백테스트하며, 수수료와 슬리피지를 포함한 현실적인 결과를 확인할 수 있습니다. 코딩 불필요."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "PRUVIQ 전략 빌더는 어떻게 작동하나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "노코드 전략 빌더에서 지표(볼린저 밴드, RSI, MACD, EMA, 스토캐스틱, ADX, ATR, 거래량 등)를 AND/OR 논리와 비교 연산자로 조합할 수 있습니다. 진입 조건, 손절, 익절, 시간 필터를 설정한 후 3초 이내에 전체 코인 백테스트를 실행합니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "PRUVIQ는 무료인가요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "네, PRUVIQ의 핵심 백테스팅 기능은 완전 무료입니다. 전략 만들기, 535개 이상 코인 백테스트, 모든 교육 콘텐츠 이용이 결제나 계정 생성 없이 가능합니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "PRUVIQ가 트레이딩뷰나 다른 백테스팅 도구와 다른 점은?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PRUVIQ는 코딩 없이 크립토 선물 전용으로 설계되었습니다. TradingView(Pine Script 필요)나 QuantConnect(Python/C# 필요)와 달리 비주얼 전략 빌더를 제공합니다. 또한 실패를 포함한 실거래 결과를 공개하고, 535개 이상 코인을 동시 테스트하며, 모든 시뮬레이션에 현실적인 수수료와 슬리피지를 포함합니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "PRUVIQ에 실거래 검증이 있나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "네. BB Squeeze SHORT 전략이 $3,000 자본의 실제 바이낸스 선물 계좌에서 운영되고 있습니다. 손실을 포함한 모든 거래가 공개됩니다. 실거래 성과 페이지에서 38일 이상의 검증된 트레이딩 데이터와 전체 버전 히스토리를 확인할 수 있습니다."
+            }
+          }
+        ] : [
           {
             "@type": "Question",
             "name": "What is PRUVIQ?",

@@ -166,7 +166,7 @@ export default function CoinListTable({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
           type="text"
           placeholder={t.search}
           value={search}
-          onInput={(e) => { setSearch((e.target as HTMLInputElement).value); setPage(0); }}
+          onInput={(e: Event) => { setSearch((e.target as HTMLInputElement).value); setPage(0); }}
           class="w-full max-w-xs px-4 py-2.5 bg-[--color-bg-card] border border-[--color-border] rounded-lg text-[--color-text] font-mono text-sm outline-none focus:border-[--color-accent] transition-colors"
         />
       </div>

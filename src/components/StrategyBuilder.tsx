@@ -544,7 +544,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
                       type="number"
                       step="any"
                       value={customParams[key] ?? defaultVal}
-                      onChange={(e) => {
+                      onChange={(e: Event) => {
                         const val = parseFloat((e.target as HTMLInputElement).value);
                         if (isNaN(val)) return;
                         setIndicatorParams((prev) => ({
@@ -579,7 +579,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               {/* Field */}
               <select
                 value={cond.field}
-                onChange={(e) => {
+                onChange={(e: Event) => {
                   const f = (e.target as HTMLSelectElement).value;
                   const isBool = booleanFields.has(f);
                   updateCondition(cond.id, {
@@ -603,7 +603,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               {/* Op */}
               <select
                 value={cond.op}
-                onChange={(e) => updateCondition(cond.id, { op: (e.target as HTMLSelectElement).value })}
+                onChange={(e: Event) => updateCondition(cond.id, { op: (e.target as HTMLSelectElement).value })}
                 class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-accent] w-[100px]"
               >
                 {getOps(t).map((op) => (
@@ -615,7 +615,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               {cond.field2 !== undefined ? (
                 <select
                   value={cond.field2}
-                  onChange={(e) => updateCondition(cond.id, { field2: (e.target as HTMLSelectElement).value })}
+                  onChange={(e: Event) => updateCondition(cond.id, { field2: (e.target as HTMLSelectElement).value })}
                   class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] min-w-[140px]"
                 >
                   {availableFields.filter((f) => f !== cond.field).map((f) => (
@@ -625,7 +625,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               ) : booleanFields.has(cond.field) ? (
                 <select
                   value={String(cond.value)}
-                  onChange={(e) => updateCondition(cond.id, { value: (e.target as HTMLSelectElement).value === 'true' })}
+                  onChange={(e: Event) => updateCondition(cond.id, { value: (e.target as HTMLSelectElement).value === 'true' })}
                   class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] w-[80px]"
                 >
                   <option value="true">true</option>
@@ -636,7 +636,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
                   type="number"
                   step="any"
                   value={cond.value as number}
-                  onChange={(e) => updateCondition(cond.id, { value: parseFloat((e.target as HTMLInputElement).value) || 0 })}
+                  onChange={(e: Event) => updateCondition(cond.id, { value: parseFloat((e.target as HTMLInputElement).value) || 0 })}
                   class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] w-[80px]"
                 />
               )}
@@ -725,7 +725,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               min={0.5}
               max={50}
               step={0.5}
-              onChange={(e) => setSlPct(parseFloat((e.target as HTMLInputElement).value) || 10)}
+              onChange={(e: Event) => setSlPct(parseFloat((e.target as HTMLInputElement).value) || 10)}
               class="w-full bg-[--color-bg] border border-[--color-border] rounded-lg px-3 py-2 text-sm font-mono text-[--color-text]"
             />
           </div>
@@ -739,7 +739,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               min={0.5}
               max={100}
               step={0.5}
-              onChange={(e) => setTpPct(parseFloat((e.target as HTMLInputElement).value) || 8)}
+              onChange={(e: Event) => setTpPct(parseFloat((e.target as HTMLInputElement).value) || 8)}
               class="w-full bg-[--color-bg] border border-[--color-border] rounded-lg px-3 py-2 text-sm font-mono text-[--color-text]"
             />
           </div>
@@ -752,7 +752,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               value={maxBars}
               min={1}
               max={168}
-              onChange={(e) => setMaxBars(parseInt((e.target as HTMLInputElement).value) || 48)}
+              onChange={(e: Event) => setMaxBars(parseInt((e.target as HTMLInputElement).value) || 48)}
               class="w-full bg-[--color-bg] border border-[--color-border] rounded-lg px-3 py-2 text-sm font-mono text-[--color-text]"
             />
           </div>
@@ -765,7 +765,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               value={topN}
               min={1}
               max={535}
-              onChange={(e) => setTopN(parseInt((e.target as HTMLInputElement).value) || 50)}
+              onChange={(e: Event) => setTopN(parseInt((e.target as HTMLInputElement).value) || 50)}
               class="w-full bg-[--color-bg] border border-[--color-border] rounded-lg px-3 py-2 text-sm font-mono text-[--color-text]"
             />
           </div>

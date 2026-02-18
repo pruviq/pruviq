@@ -113,7 +113,7 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
             min={0}
             max={volumeSteps.length - 1}
             value={volumeSteps.indexOf(volume) >= 0 ? volumeSteps.indexOf(volume) : 3}
-            onInput={(e) => setVolume(volumeSteps[Number((e.target as HTMLInputElement).value)])}
+            onInput={(e: Event) => setVolume(volumeSteps[Number((e.target as HTMLInputElement).value)])}
             class="w-full accent-[--color-accent]"
           />
           <div class="font-mono text-lg font-bold mt-1">{fmtFull(volume)}</div>

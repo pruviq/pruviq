@@ -236,7 +236,7 @@ export default function StrategyComparison({ lang = 'en' }: Props) {
                   min={1}
                   max={50}
                   step={0.5}
-                  onChange={(e) => setSlPct(parseFloat((e.target as HTMLInputElement).value) || 10)}
+                  onChange={(e: Event) => setSlPct(parseFloat((e.target as HTMLInputElement).value) || 10)}
                   class="w-20 bg-[--color-bg] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text]"
                 />
               </div>
@@ -248,7 +248,7 @@ export default function StrategyComparison({ lang = 'en' }: Props) {
                   min={1}
                   max={100}
                   step={0.5}
-                  onChange={(e) => setTpPct(parseFloat((e.target as HTMLInputElement).value) || 8)}
+                  onChange={(e: Event) => setTpPct(parseFloat((e.target as HTMLInputElement).value) || 8)}
                   class="w-20 bg-[--color-bg] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text]"
                 />
               </div>

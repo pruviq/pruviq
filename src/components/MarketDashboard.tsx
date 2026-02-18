@@ -373,7 +373,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
             type="text"
             placeholder={l.searchNews}
             value={searchQuery}
-            onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value)}
+            onInput={(e: Event) => setSearchQuery((e.target as HTMLInputElement).value)}
             className="bg-[--color-bg-hover] border border-[--color-border] rounded-md px-2.5 py-1 text-xs text-[--color-text] outline-none w-44 font-sans focus:border-[--color-accent] transition-colors"
           />
           <div className="flex gap-1">
