@@ -33,16 +33,15 @@
 ### 목표
 월 방문자 0 → 1,000, 첫 레퍼럴 전환 달성
 
-### 4-1. GitHub 공개 + 커뮤니티 시드
+### 4-1. GitHub + 커뮤니티
 
-- [ ] **GitHub repo PUBLIC 전환** (⚠️ P0, AI SEO 블로커)
-  - 현재 poong92/pruviq = PRIVATE
-  - 백엔드 코드 분리 필요 (API 키, 서버 정보 제거)
-  - 공개 범위: 프론트엔드 전체 + 백엔드 엔진 (API 키 제외)
+- [x] **GitHub PRIVATE 유지** (2026-02-18 결정)
+  - 이유: pruviq.com 자체가 이미 퍼블릭, AI 크롤러 접근 가능
+  - robots.txt + llms.txt + FAQPage JSON-LD로 AI SEO 충분
+  - 오픈소스 전환은 트래픽 증가 후 재검토
 - [ ] GitHub repo topics 추가 (crypto, backtesting, trading-strategy, no-code)
-- [ ] GitHub Releases 생성 (v1.0.0)
-- [ ] CONTRIBUTING.md + Issue templates
-- [ ] GitHub Discussions 활성화
+- [ ] GitHub Releases 생성 (v1.1.0)
+- [ ] CONTRIBUTING.md (향후 오픈소스 전환 대비)
 
 ### 4-2. Product Hunt 런칭
 
@@ -59,18 +58,21 @@
 
 #### Reddit (자연스러운 참여)
 - [ ] r/algotrading: "Free tool I built for crypto backtesting" (Show & Tell)
-- [ ] r/CryptoCurrency: 교육 포스트 + PRUVIQ 링크
+  - 초안: `docs/marketing/reddit-algotrading-post.md` ✅
+- [ ] r/CryptoCurrency: 교육 포스트 + PRUVIQ 링크 (~500 karma + ~60일 필요)
 - [ ] r/quantfinance: BB Squeeze 전략 분석 공유
 - [ ] 규칙: 자기 홍보 비율 10% 이하, 커뮤니티 기여 우선
 
 #### Medium / dev.to
 - [ ] "I Built a Free Crypto Backtester - Here's What I Learned"
+  - 초안: `docs/marketing/medium-article-draft.md` ✅
 - [ ] "Why 4 Out of 5 Trading Strategies Fail (Data from 535 Coins)"
 - [ ] "BB Squeeze: A Data-Driven Short Strategy That Actually Works"
 - [ ] dev.to: 기술 스택 시리즈 (Astro + Preact + FastAPI)
 
 #### Hacker News
 - [ ] Show HN: "PRUVIQ - Free no-code crypto strategy backtester"
+  - 초안: `docs/marketing/show-hn-post.md` ✅
 - [ ] 타이밍: Product Hunt 런칭 후 1주
 
 ### 4-4. 크립토 디렉토리 등록
