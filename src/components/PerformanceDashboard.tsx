@@ -123,18 +123,18 @@ const labels = {
 
 function MetricCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div class="p-4 rounded-lg bg-[--color-bg-card] border border-[--color-border] text-center min-w-0">
-      <div class="font-mono text-[0.625rem] text-[--color-text-muted] uppercase tracking-wider mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{label}</div>
-      <div class="font-mono text-lg font-bold" style={{ color }}>{value}</div>
+    <div class="p-3 md:p-4 rounded-lg bg-[--color-bg-card] border border-[--color-border] text-center min-w-0">
+      <div class="font-mono text-[0.6875rem] text-[--color-text-muted] uppercase tracking-wider mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{label}</div>
+      <div class="font-mono text-base md:text-lg font-bold" style={{ color }}>{value}</div>
     </div>
   );
 }
 
 function SkeletonMetrics() {
   return (
-    <div class="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))' }}>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
       {Array.from({ length: 5 }, (_, i) => (
-        <div key={i} class="p-4 rounded-lg bg-[--color-bg-card] border border-[--color-border] text-center">
+        <div key={i} class="p-3 md:p-4 rounded-lg bg-[--color-bg-card] border border-[--color-border] text-center">
           <div class="skeleton h-2.5 w-16 mx-auto mb-3" />
           <div class="skeleton h-5 w-20 mx-auto" />
         </div>
@@ -181,9 +181,10 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
     import('lightweight-charts').then(({ createChart, AreaSeries }) => {
       if (disposed || !chartContainerRef.current) return;
 
+      const chartHeight = chartContainerRef.current.clientHeight || (window.innerWidth < 768 ? 250 : 350);
       const chart = createChart(chartContainerRef.current, {
         width: chartContainerRef.current.clientWidth,
-        height: 320,
+        height: chartHeight,
         layout: {
           background: { color: getCssVar('--color-bg') },
           textColor: getCssVar('--color-text-muted'),
@@ -264,7 +265,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
             <div class="skeleton h-3 w-28" />
             <div class="skeleton h-4 w-16" />
           </div>
-          <div class="skeleton w-full h-[320px]" />
+          <div class="skeleton w-full h-[250px] md:h-[320px]" />
         </div>
       </div>
     );
@@ -304,7 +305,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       </div>
 
       {/* KPI Cards */}
-      <div class="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))' }}>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
         <MetricCard label={t.trades} value={s.total_trades.toLocaleString()} color="var(--color-text)" />
         <MetricCard label={t.winRate} value={`${s.win_rate}%`} color={wrColor} />
         <MetricCard label={t.pnl} value={formatUsd(s.total_pnl)} color={pnlColor} />
@@ -318,17 +319,17 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
           <span class="font-mono text-[0.6875rem] text-[--color-accent] tracking-widest uppercase font-semibold">{t.dailyChart}</span>
           <span class="font-mono text-xs font-semibold" style={{ color: pnlColor }}>{formatUsd(s.total_pnl)}</span>
         </div>
-        <div ref={chartContainerRef} class="w-full h-[320px]" />
+        <div ref={chartContainerRef} class="w-full h-[250px] md:h-[350px]" />
         <div class="px-3 py-1.5 text-right font-mono text-[0.5625rem]">
           <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] no-underline hover:text-[--color-text] transition-colors">Powered by TradingView</a>
         </div>
       </div>
 
       {/* Daily Stats + Exit Breakdown */}
-      <div class="grid gap-4 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {/* Daily Stats */}
         <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
-          <div class="font-mono text-[0.625rem] text-[--color-text-muted] tracking-widest uppercase mb-4">DAILY STATS</div>
+          <div class="font-mono text-[0.6875rem] text-[--color-text-muted] tracking-widest uppercase mb-4">DAILY STATS</div>
           <div class="flex flex-col gap-3">
             <div class="flex justify-between items-center">
               <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">{t.bestDay}</span>
@@ -344,7 +345,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
               <span class="font-mono text-base font-bold" style={{ color: s.avg_trade_pnl >= 0 ? 'var(--color-accent)' : 'var(--color-red)' }}>{formatUsd(s.avg_trade_pnl)}</span>
             </div>
             <div class="h-px bg-[--color-border]" />
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0">
               <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">{t.balance}</span>
               <span class="font-mono text-[0.8125rem] text-[--color-text-muted]">
                 ${s.starting_balance.toLocaleString()} &rarr; <span class="font-semibold" style={{ color: s.current_balance >= s.starting_balance ? 'var(--color-accent)' : 'var(--color-red)' }}>${s.current_balance.toLocaleString()}</span>
@@ -355,7 +356,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
 
         {/* Exit Breakdown */}
         <div class="p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
-          <div class="font-mono text-[0.625rem] text-[--color-text-muted] tracking-widest uppercase mb-4">{t.exitBreakdown}</div>
+          <div class="font-mono text-[0.6875rem] text-[--color-text-muted] tracking-widest uppercase mb-4">{t.exitBreakdown}</div>
           <div class="flex flex-col gap-3">
             {/* TP */}
             <div>
@@ -401,7 +402,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
             )}
           </div>
           {/* Combined bar */}
-          <div class="flex h-1 rounded-sm overflow-hidden mt-3">
+          <div class="flex flex-wrap h-1 rounded-sm overflow-hidden mt-3">
             <div class="bg-[--color-accent]" style={{ width: `${tpPct}%` }} />
             <div class="bg-[--color-red]" style={{ width: `${slPct}%` }} />
             <div class="bg-[--color-text-muted]" style={{ width: `${toPct}%` }} />
@@ -415,7 +416,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
         <div class="bg-[--color-bg-card] border border-[--color-border] rounded-xl overflow-hidden mb-6">
           <button
             onClick={() => setShowTrades(!showTrades)}
-            class={`w-full px-4 py-3 bg-transparent border-none text-[--color-text] font-mono text-[0.8125rem] font-semibold cursor-pointer text-left flex justify-between items-center hover:bg-[--color-bg-hover] transition-colors ${showTrades ? 'border-b border-[--color-border]' : ''}`}
+            class={`w-full px-4 py-3 min-h-[44px] bg-transparent border-none text-[--color-text] font-mono text-[0.8125rem] font-semibold cursor-pointer text-left flex justify-between items-center hover:bg-[--color-bg-hover] transition-colors ${showTrades ? 'border-b border-[--color-border]' : ''}`}
           >
             <span>{showTrades ? '\u25BC' : '\u25B6'} {t.recentTrades} ({data.recent_trades.length})</span>
           </button>
@@ -424,12 +425,12 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
               <table class="w-full border-collapse font-mono text-xs">
                 <thead>
                   <tr class="border-b border-[--color-border]">
-                    <th class="px-3 py-2 text-left text-[--color-text-muted] text-[0.625rem] font-semibold">{t.symbol}</th>
-                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.exitPrice}</th>
-                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.pnlPct}</th>
-                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.pnlUsd}</th>
-                    <th class="px-3 py-2 text-center text-[--color-text-muted] text-[0.625rem] font-semibold">{t.result}</th>
-                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.625rem] font-semibold">{t.date}</th>
+                    <th class="px-3 py-2 text-left text-[--color-text-muted] text-[0.6875rem] font-semibold">{t.symbol}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.6875rem] font-semibold hidden md:table-cell">{t.exitPrice}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.6875rem] font-semibold">{t.pnlPct}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.6875rem] font-semibold hidden sm:table-cell">{t.pnlUsd}</th>
+                    <th class="px-3 py-2 text-center text-[--color-text-muted] text-[0.6875rem] font-semibold">{t.result}</th>
+                    <th class="px-3 py-2 text-right text-[--color-text-muted] text-[0.6875rem] font-semibold hidden md:table-cell">{t.date}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -439,13 +440,13 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
                     return (
                       <tr key={i} class="border-b border-[--color-border] row-hover">
                         <td class="px-3 py-2 font-semibold text-[--color-text]">{trade.symbol.replace('USDT', '')}</td>
-                        <td class="px-3 py-2 text-right text-[--color-text-muted]">${formatPrice(trade.exit_price)}</td>
+                        <td class="px-3 py-2 text-right text-[--color-text-muted] hidden md:table-cell">${formatPrice(trade.exit_price)}</td>
                         <td class="px-3 py-2 text-right font-semibold" style={{ color: tradePnlColor }}>
                           {trade.pnl_pct > 0 ? '+' : ''}{trade.pnl_pct.toFixed(2)}%
                         </td>
-                        <td class="px-3 py-2 text-right" style={{ color: tradePnlColor }}>{formatUsd(trade.pnl_usd)}</td>
+                        <td class="px-3 py-2 text-right hidden sm:table-cell" style={{ color: tradePnlColor }}>{formatUsd(trade.pnl_usd)}</td>
                         <td class="px-3 py-2 text-center font-semibold" style={{ color: resultColor }}>{formatReasonLabel(trade.reason)}</td>
-                        <td class="px-3 py-2 text-right text-[--color-text-muted]">{formatDate(trade.closed_at)}</td>
+                        <td class="px-3 py-2 text-right text-[--color-text-muted] hidden md:table-cell">{formatDate(trade.closed_at)}</td>
                       </tr>
                     );
                   })}
@@ -457,7 +458,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       )}
 
       {/* Disclaimer */}
-      <p class="font-mono text-[0.625rem] text-[--color-text-muted] leading-relaxed px-4 py-3 bg-[--color-bg-subtle] border border-[--color-border] rounded-lg">
+      <p class="font-mono text-[0.6875rem] text-[--color-text-muted] leading-relaxed px-4 py-3 bg-[--color-bg-subtle] border border-[--color-border] rounded-lg">
         * {t.disclaimer}
       </p>
     </div>

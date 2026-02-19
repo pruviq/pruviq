@@ -184,7 +184,7 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
 
 function MoverTable({ title, movers, l }: { title: string; movers: MarketMover[]; l: typeof labels.en }) {
   return (
-    <div className="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden">
+    <div className="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden overflow-x-auto">
       <div className="px-4 py-3 border-b border-[--color-border] text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider">
         {title}
       </div>
@@ -375,7 +375,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
               <div className="px-4 py-3 border-b border-[--color-border] text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider">
                 {l.fundingRates}
               </div>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] overflow-x-auto">
                 {market.extreme_funding.map(f => (
                   <div key={f.symbol} className="flex justify-between items-center px-4 py-2.5 border-b border-[--color-border] last:border-0">
                     <span className="font-mono text-[13px] font-medium text-[--color-text-muted]">
@@ -457,7 +457,7 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
               </span>
               <span className="text-[10px] text-[--color-text-muted] opacity-60">{l.calendarNote}</span>
             </div>
-            <div className="w-full" style={{ height: '400px' }}>
+            <div className="w-full h-[300px] md:h-[400px]">
               <iframe
                 src={`https://s.tradingview.com/embed-widget/events/?locale=${lang === 'ko' ? 'kr' : 'en'}#%7B%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22importanceFilter%22%3A%220%2C1%22%7D`}
                 title="Economic Calendar"

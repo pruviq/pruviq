@@ -55,8 +55,6 @@ const isActive = (match: string) => basePath.startsWith(match);
     <link rel="alternate" hreflang="x-default" href={enURL.href} />
     <meta name="naver-site-verification" content="ece19c45b3e33ec86f4fc79060c3283cea1493ee" />
     <meta name="yandex-verification" content="a20aa9b1eacf8e51" />
-    <!-- Bing Webmaster Tools: replace PLACEHOLDER with actual code after registration -->
-    <meta name="msvalidate.01" content="PLACEHOLDER" />
     <meta name="keywords" content={lang === 'ko'
       ? '크립토 백테스팅, 트레이딩 전략 빌더, 노코드 백테스터, 암호화폐 전략 시뮬레이터, 무료 백테스팅 도구, 볼린저 밴드 전략, RSI 전략, 크립토 선물 백테스트, 가상화폐 자동매매, 퀀트 트레이딩'
       : 'crypto backtesting, trading strategy builder, no-code backtester, cryptocurrency strategy simulator, free backtesting tool, Bollinger Bands strategy, RSI strategy, crypto futures backtest'
@@ -274,7 +272,7 @@ const isActive = (match: string) => basePath.startsWith(match);
             <span class="text-[--color-accent] font-mono font-bold text-lg">PRUVIQ</span>
             <p class="text-[--color-text-muted] text-sm mt-2">{t('footer.tagline')}</p>
           </div>
-          <div class="grid grid-cols-3 gap-8 md:w-2/3 text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 md:w-2/3 text-sm">
             <div>
               <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">{t('footer.col_product')}</p>
               <div class="flex flex-col gap-2">
