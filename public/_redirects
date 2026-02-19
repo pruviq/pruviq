@@ -1,11 +1,10 @@
-# PRUVIQ v1.3 redirects — legacy pages only
+# PRUVIQ v1.4 redirects — legacy pages only
+# 규칙: dist/에 콘텐츠 페이지가 존재하면 여기에 넣지 말 것
+# 검증: bash scripts/qa-redirects.sh
+
 /builder /simulate 301
 /builder/* /simulate 301
-/performance /simulate 301
-/performance/* /simulate 301
 
 # KO equivalents
 /ko/builder /ko/simulate 301
 /ko/builder/* /ko/simulate 301
-/ko/performance /ko/simulate 301
-/ko/performance/* /ko/simulate 301

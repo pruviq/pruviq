@@ -69,6 +69,52 @@ GitHub: poong92/pruviq
 5. **투명성** — 비용 모델링 명시, 실패 전략도 공개
 6. **무료 우선** — 유료 벽 없음, 레퍼럴만
 
+## 커밋 전 필수 QA (CRITICAL)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  git push → Cloudflare 자동 배포이므로, 커밋 = 프로덕션!    │
+│                                                             │
+│  1. npm run build                                           │
+│     - 0 errors 확인                                         │
+│     - 페이지 수 확인 (현재 ~1257)                           │
+│                                                             │
+│  2. bash scripts/qa-redirects.sh                            │
+│     - _redirects vs dist/ 충돌 0건 확인                     │
+│     - CONFLICT 있으면 절대 커밋 금지                        │
+│                                                             │
+│  3. 네비게이션 6개 메뉴 확인                                │
+│     - Market, Strategies, Coins, Simulate, Learn, Fees     │
+│     - 각각 다른 페이지로 이동하는지 확인                    │
+│     - _redirects가 실제 페이지를 가리지 않는지 확인         │
+│                                                             │
+│  커밋 메시지에 빌드 결과 포함:                               │
+│  "fix: ... (build: 1257 pages, qa-redirects: PASS)"        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## _redirects 관리 규칙 (2026-02-19 교훈)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Cloudflare Pages: _redirects > 실제 HTML 파일 (우선순위!)  │
+│                                                             │
+│  ❌ 금지: 실제 콘텐츠 페이지 경로를 _redirects에 넣기       │
+│     → 페이지가 존재해도 리다이렉트가 먹어버림               │
+│                                                             │
+│  ✅ 허용: Astro.redirect() 페이지만 _redirects에 추가       │
+│     → 이중 안전장치 (Astro + Cloudflare)                    │
+│                                                             │
+│  페이지 삭제/이동 시:                                        │
+│  1. 소스 파일을 Astro.redirect()로 변환                     │
+│  2. _redirects에 추가 (선택, 이중 안전장치)                 │
+│  3. bash scripts/qa-redirects.sh 실행                       │
+│                                                             │
+│  사건: /coins → /simulate 잔여 리다이렉트로                 │
+│  Coins 메뉴가 Simulate로 이동하는 버그 (2026-02-19)        │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ## 디렉토리 구조
 
 ```
