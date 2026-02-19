@@ -494,8 +494,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
           <span class="text-[--color-text-muted]">{t.high} <span class="text-[--color-up]">{formatChartPrice(displayBar.h)}</span></span>
           <span class="text-[--color-text-muted]">{t.low} <span class="text-[--color-red]">{formatChartPrice(displayBar.l)}</span></span>
           <span class="text-[--color-text-muted]">{t.close} <span style={{ color: displayBar.c >= displayBar.o ? 'var(--color-up)' : 'var(--color-down)' }}>{formatChartPrice(displayBar.c)}</span></span>
-          <span class="text-[--color-text-muted]">{t.vol} <span class="text-[--color-text-muted]">{formatVolumeRaw(displayBar.v)}</span></span>
-          <span class={`font-semibold ${displayChange >= 0 ? 'text-[--color-up]' : 'text-[--color-red]'}`}>
+          <span class="text-[--color-text-muted] hidden sm:inline">{t.vol} <span class="text-[--color-text-muted]">{formatVolumeRaw(displayBar.v)}</span></span>
+          <span class={`font-semibold hidden sm:inline ${displayChange >= 0 ? 'text-[--color-up]' : 'text-[--color-red]'}`}>
             {displayChange > 0 ? '+' : ''}{displayChange.toFixed(2)}%
           </span>
         </div>

@@ -318,7 +318,7 @@ const isActive = (match: string) => basePath.startsWith(match);
         <!-- Divider -->
         <div class="border-t border-[--color-border] pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-[--color-text-muted]">
           <p>{t('footer.disclaimer')}</p>
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 flex-wrap">
             <p>{t('footer.affiliate')} <a href={feesPath} class="text-[--color-accent] hover:underline">{t('footer.details')}</a></p>
             <span>&copy; 2026 PRUVIQ</span>
           </div>

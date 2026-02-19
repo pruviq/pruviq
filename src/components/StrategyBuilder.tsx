@@ -608,11 +608,11 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
 
         <div class="space-y-3">
           {conditions.map((cond, i) => (
-            <div key={cond.id} class="flex flex-wrap items-center gap-2 p-3 rounded-lg bg-[--color-bg] border border-[--color-border]">
+            <div key={cond.id} class="flex flex-wrap items-center gap-2 p-2 sm:p-3 rounded-lg bg-[--color-bg] border border-[--color-border]">
               {i > 0 && (
-                <span class="font-mono text-xs text-[--color-accent] font-bold w-10">AND</span>
+                <span class="font-mono text-xs text-[--color-accent] font-bold w-8">AND</span>
               )}
-              {i === 0 && <span class="font-mono text-xs text-[--color-text-muted] w-10">IF</span>}
+              {i === 0 && <span class="font-mono text-xs text-[--color-text-muted] w-8">IF</span>}
 
               {/* Field */}
               <select
@@ -627,7 +627,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
                     op: isBool ? '==' : '>=',
                   });
                 }}
-                class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] min-w-[120px] sm:min-w-[160px]"
+                class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] min-w-[100px] sm:min-w-[160px]"
               >
                 {fieldGroups.map((g) => (
                   <optgroup key={g.id} label={g.name}>
@@ -642,7 +642,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               <select
                 value={cond.op}
                 onChange={(e: Event) => updateCondition(cond.id, { op: (e.target as HTMLSelectElement).value })}
-                class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-accent] w-[80px] sm:w-[100px]"
+                class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-accent] w-[70px] sm:w-[100px]"
               >
                 {getOps(t).map((op) => (
                   <option key={op.value} value={op.value}>{op.label}</option>
@@ -654,7 +654,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
                 <select
                   value={cond.field2}
                   onChange={(e: Event) => updateCondition(cond.id, { field2: (e.target as HTMLSelectElement).value })}
-                  class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] min-w-[140px]"
+                  class="bg-[--color-bg-card] border border-[--color-border] rounded px-2 py-1.5 text-sm font-mono text-[--color-text] min-w-[100px] sm:min-w-[140px]"
                 >
                   {availableFields.filter((f) => f !== cond.field).map((f) => (
                     <option key={f} value={f}>{f}</option>

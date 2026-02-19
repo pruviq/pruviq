@@ -310,7 +310,9 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
         <MetricCard label={t.winRate} value={`${s.win_rate}%`} color={wrColor} />
         <MetricCard label={t.pnl} value={formatUsd(s.total_pnl)} color={pnlColor} />
         <MetricCard label={t.pf} value={s.profit_factor.toFixed(2)} color={pfColor} />
-        <MetricCard label={t.mdd} value={`${s.max_drawdown_pct.toFixed(1)}%`} color="var(--color-red)" />
+        <div class="col-span-2 md:col-span-1">
+          <MetricCard label={t.mdd} value={`${s.max_drawdown_pct.toFixed(1)}%`} color="var(--color-red)" />
+        </div>
       </div>
 
       {/* Cumulative PnL Chart */}

@@ -133,7 +133,7 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
             </div>
 
             {/* Fees */}
-            <div class="flex-1 grid grid-cols-3 gap-2 text-center">
+            <div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2 text-center">
               <div>
                 <div class="font-mono text-xs text-[--color-text-muted] mb-1">{t.standard}</div>
                 <div class="font-mono text-sm line-through text-[--color-text-muted]">{fmt(standard)}<span class="text-[0.6rem]">/mo</span></div>
