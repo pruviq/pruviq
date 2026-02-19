@@ -328,7 +328,15 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
       )}
 
       {marketErr && (
-        <div className="text-center py-10 text-[--color-red] text-sm">{l.error}</div>
+        <div className="text-center py-10">
+          <p className="font-mono text-sm text-[--color-red] mb-3">{l.error}</p>
+          <button
+            onClick={() => { setMarketErr(false); fetchMarket(); }}
+            className="px-4 py-2 rounded-lg border border-[--color-border] bg-[--color-bg-card] text-[--color-text] font-mono text-sm cursor-pointer hover:border-[--color-accent] transition-colors min-h-[44px]"
+          >
+            {lang === 'ko' ? '다시 시도' : 'Retry'}
+          </button>
+        </div>
       )}
 
       {market && (
@@ -469,7 +477,15 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
         </div>
       )}
       {macroErr && (
-        <div className="text-center py-6 text-[--color-red] text-sm mb-6">{l.macroError}</div>
+        <div className="text-center py-6 mb-6">
+          <p className="font-mono text-sm text-[--color-red] mb-3">{l.macroError}</p>
+          <button
+            onClick={() => { setMacroErr(false); fetchMacro(); }}
+            className="px-4 py-2 rounded-lg border border-[--color-border] bg-[--color-bg-card] text-[--color-text] font-mono text-sm cursor-pointer hover:border-[--color-accent] transition-colors min-h-[44px]"
+          >
+            {lang === 'ko' ? '다시 시도' : 'Retry'}
+          </button>
+        </div>
       )}
 
       {/* News Feed */}
@@ -508,7 +524,15 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
 
         {!news && !newsErr && <SkeletonNews />}
         {newsErr && (
-          <div className="text-center py-8 text-[--color-red] text-[13px]">{l.newsError}</div>
+          <div className="text-center py-8">
+            <p className="font-mono text-sm text-[--color-red] mb-3">{l.newsError}</p>
+            <button
+              onClick={() => { setNewsErr(false); fetchNews(); }}
+              className="px-4 py-2 rounded-lg border border-[--color-border] bg-[--color-bg-card] text-[--color-text] font-mono text-sm cursor-pointer hover:border-[--color-accent] transition-colors min-h-[44px]"
+            >
+              {lang === 'ko' ? '다시 시도' : 'Retry'}
+            </button>
+          </div>
         )}
         {news && filteredNews.length > 0 && (
           <div className="fade-in">

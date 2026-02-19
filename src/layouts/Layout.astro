@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { getLangFromUrl, useTranslations, getAlternatePath, getBasePath } from '../i18n/index';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 interface Props {
   title: string;
@@ -8,6 +9,7 @@ interface Props {
   type?: 'website' | 'article';
   date?: string;
   category?: string;
+  ogImage?: string;
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -17,6 +19,7 @@ const basePath = getBasePath(Astro.url.pathname);
 const cfToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
 
 const { title, description = t('meta.home_desc'), type = 'website', date, category } = Astro.props;
+const ogImage = new URL(Astro.props.ogImage || '/og-image.png', Astro.site || 'https://pruviq.com').href;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://pruviq.com');
 const enURL = new URL(basePath, Astro.site || 'https://pruviq.com');
 const koURL = new URL(`/ko${basePath === '/' ? '' : basePath}`, Astro.site || 'https://pruviq.com');
@@ -32,10 +35,17 @@ const termsPath = lang === 'ko' ? '/ko/terms' : '/terms';
 
 // Legacy paths (for footer/redirects)
 const strategiesPath = lang === 'ko' ? '/ko/strategies' : '/strategies';
+const coinsPath = lang === 'ko' ? '/ko/coins' : '/coins';
+const builderPath = lang === 'ko' ? '/ko/builder' : '/builder';
+const performancePath = lang === 'ko' ? '/ko/performance' : '/performance';
+const blogPath = lang === 'ko' ? '/ko/blog' : '/blog';
 
 // Active nav detection
 const navItems = [
   { href: marketPath, match: '/market', label: t('nav.market') },
+  { href: strategiesPath, match: '/strategies', label: t('nav.strategies') },
+  { href: coinsPath, match: '/coins', label: t('nav.coins') },
+  { href: builderPath, match: '/builder', label: t('nav.builder') },
   { href: simulatePath, match: '/simulate', label: t('nav.simulate') },
   { href: learnPath, match: '/learn', label: t('nav.learn') },
   { href: feesPath, match: '/fees', label: t('nav.fees') },
@@ -71,14 +81,14 @@ const isActive = (match: string) => basePath.startsWith(match);
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:site_name" content="PRUVIQ" />
     <meta property="og:locale" content={lang === 'ko' ? 'ko_KR' : 'en_US'} />
-    <meta property="og:image" content={new URL('/og-image.png', Astro.site || 'https://pruviq.com').href} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL('/og-image.png', Astro.site || 'https://pruviq.com').href} />
+    <meta name="twitter:image" content={ogImage} />
     <title>{title}</title>
     <!-- JSON-LD Organization -->
     {type === 'website' && (
@@ -235,14 +245,14 @@ const isActive = (match: string) => basePath.startsWith(match);
         <a href={lang === 'ko' ? '/ko/' : '/'} class="flex items-center gap-2">
           <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
         </a>
-        <div class="hidden md:flex items-center gap-8 text-sm">
+        <div class="hidden md:flex items-center gap-5 text-[0.8125rem]">
           {navItems.map(item => (
             <a href={item.href} class:list={[
               'transition-colors',
               isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted] hover:text-[--color-text]'
             ]}>{item.label}</a>
           ))}
-          <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
+          <a href={altPath} class="font-mono text-xs px-3 py-1.5 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]" aria-label="Toggle menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -261,6 +271,7 @@ const isActive = (match: string) => basePath.startsWith(match);
     </nav>
 
     <main class="pt-16">
+      <Breadcrumbs />
       <slot />
     </main>
 
@@ -278,6 +289,9 @@ const isActive = (match: string) => basePath.startsWith(match);
               <div class="flex flex-col gap-2">
                 <a href={marketPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.market')}</a>
                 <a href={simulatePath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.simulate')}</a>
+                <a href={strategiesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.strategies')}</a>
+                <a href={coinsPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.coins')}</a>
+                <a href={builderPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.builder')}</a>
                 <a href={feesPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.fees')}</a>
               </div>
             </div>
@@ -285,6 +299,7 @@ const isActive = (match: string) => basePath.startsWith(match);
               <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">{t('footer.col_resources')}</p>
               <div class="flex flex-col gap-2">
                 <a href={learnPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.learn')}</a>
+                <a href={blogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('nav.blog')}</a>
                 <a href={aboutPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.about')}</a>
                 <a href={changelogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.changelog')}</a>
                 <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.telegram')}</a>

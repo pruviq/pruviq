@@ -6,6 +6,10 @@ export const ko: Record<TranslationKey, string> = {
   'nav.simulate': '시뮬레이션',
   'nav.learn': '학습',
   'nav.fees': '수수료',
+  'nav.strategies': '전략',
+  'nav.coins': '코인',
+  'nav.builder': '빌더',
+  'nav.blog': '블로그',
   'nav.lang': 'EN',
 
   // Hero

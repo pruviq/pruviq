@@ -4,6 +4,10 @@ export const en = {
   'nav.simulate': 'Simulate',
   'nav.learn': 'Learn',
   'nav.fees': 'Fees',
+  'nav.strategies': 'Strategies',
+  'nav.coins': 'Coins',
+  'nav.builder': 'Builder',
+  'nav.blog': 'Blog',
   'nav.lang': 'KO',
 
   // Hero

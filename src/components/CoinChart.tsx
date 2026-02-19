@@ -435,7 +435,17 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     );
   }
   if (error || !ohlcv) {
-    return <div class="py-8 text-center font-mono text-sm text-[--color-red]">{t.error}</div>;
+    return (
+      <div class="py-8 text-center">
+        <p class="font-mono text-sm text-[--color-red] mb-3">{t.error}</p>
+        <button
+          onClick={() => { setError(null); setLoading(true); fetch(`${API_URL}/ohlcv/${SYMBOL}?limit=3000`).then(res => { if (!res.ok) throw new Error('Failed'); return res.json(); }).then(json => { setOhlcv(json.data); setLoading(false); }).catch(err => { setError(err.message); setLoading(false); }); }}
+          class="px-4 py-2 rounded-lg border border-[--color-border] bg-[--color-bg-card] text-[--color-text] font-mono text-sm cursor-pointer hover:border-[--color-accent] transition-colors min-h-[44px]"
+        >
+          {lang === 'ko' ? '다시 시도' : 'Retry'}
+        </button>
+      </div>
+    );
   }
 
   const lastBar = ohlcv[ohlcv.length - 1];
