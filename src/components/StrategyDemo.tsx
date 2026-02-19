@@ -53,9 +53,10 @@ const labels = {
     error: 'Failed to load demo data.',
     noData: 'No data for this combination.',
     disclaimer: '* Simulation includes 0.04% futures fees + 0.02% slippage per trade. Past performance does not guarantee future results.',
-    ctaTitle: 'Ready to Trade?',
-    ctaDesc: 'Save up to 20% on trading fees with PRUVIQ referral links. Lifetime discount.',
-    ctaFees: 'Compare Exchange Fees',
+    ctaTitle: 'Run this strategy live?',
+    ctaDesc: 'You\'ll need an exchange account. Sign up through PRUVIQ to save on fees.',
+    ctaExchange: 'Sign Up on Binance (10% off)',
+    ctaFees: 'Compare All Exchanges',
     ctaCommunity: 'Join Community',
   },
   ko: {
@@ -69,9 +70,10 @@ const labels = {
     error: '데모 데이터 로딩 실패.',
     noData: '이 조합에 대한 데이터가 없습니다.',
     disclaimer: '* 시뮬레이션은 0.04% 선물 수수료 + 0.02% 슬리피지를 포함합니다. 과거 성과는 미래 결과를 보장하지 않습니다.',
-    ctaTitle: '실제 거래를 시작하려면?',
-    ctaDesc: 'PRUVIQ 제휴 링크로 거래소 수수료 최대 20% 할인. 평생 적용.',
-    ctaFees: '거래소 수수료 비교',
+    ctaTitle: '이 전략을 실제로 실행하려면?',
+    ctaDesc: '거래소 계정이 필요합니다. PRUVIQ를 통해 가입하면 수수료를 절약할 수 있습니다.',
+    ctaExchange: '바이낸스 가입 (10% 할인)',
+    ctaFees: '전체 거래소 비교',
     ctaCommunity: '커뮤니티 참여',
   },
 };
@@ -336,8 +338,13 @@ export default function StrategyDemo({
         <h3 class="text-lg font-bold mb-2">{t.ctaTitle}</h3>
         <p class="text-[--color-text-muted] text-sm mb-4">{t.ctaDesc}</p>
         <div class="flex gap-3 flex-wrap">
-          <a href={lang === 'ko' ? '/ko/fees' : '/fees'} class="inline-block bg-[--color-accent] text-[--color-bg] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity">
-            {t.ctaFees} &rarr;
+          <a href="https://accounts.binance.com/register?ref=PRUVIQ" target="_blank" rel="noopener"
+             class="inline-block bg-[--color-accent] text-[--color-bg] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity">
+            {t.ctaExchange} &rarr;
+          </a>
+          <a href={lang === 'ko' ? '/ko/fees' : '/fees'}
+             class="inline-block border border-[--color-border] text-[--color-text] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:border-[--color-accent] transition-colors">
+            {t.ctaFees}
           </a>
           <a href="https://t.me/PRUVIQ" target="_blank" rel="noopener" class="inline-block border border-[--color-border] text-[--color-text] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:border-[--color-accent] transition-colors">
             {t.ctaCommunity}

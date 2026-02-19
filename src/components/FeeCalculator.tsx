@@ -34,7 +34,7 @@ const labels = {
     savings: '연간 절약액',
     signup: '가입하기',
     coming: '준비 중',
-    disclaimer: 'VIP 0 (기본 등급) 테이커 수수료 기준. 실제 수수료는 VIP 등급에 따라 다를 수 있습니다.',
+    disclaimer: 'VIP 0 (기본 등급) 테이커 수수료 기준. 실제 수수료는 VIP 등급에 따라 다를 수 있습니다. 원화 환산은 약 1,450원/달러 기준 참고값입니다.',
     spotTab: '현물 거래',
     futuresTab: '선물 거래',
   },
@@ -47,6 +47,13 @@ function fmt(n: number): string {
 
 function fmtFull(n: number): string {
   return `$${n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+}
+
+const KRW_RATE = 1450;
+function fmtKrw(n: number): string {
+  const krw = Math.round(n * KRW_RATE);
+  if (krw >= 10000) return `${(krw / 10000).toFixed(0)}만원`;
+  return `${krw.toLocaleString('ko-KR')}원`;
 }
 
 interface Props {
@@ -116,7 +123,10 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
             onInput={(e: Event) => setVolume(volumeSteps[Number((e.target as HTMLInputElement).value)])}
             class="w-full accent-[--color-accent]"
           />
-          <div class="font-mono text-lg font-bold mt-1">{fmtFull(volume)}</div>
+          <div class="font-mono text-lg font-bold mt-1">
+            {fmtFull(volume)}
+            {lang === 'ko' && <span class="text-sm text-[--color-text-muted] ml-2">({fmtKrw(volume)})</span>}
+          </div>
         </div>
       </div>
 
@@ -144,7 +154,10 @@ export default function FeeCalculator({ lang = 'en' }: Props) {
               </div>
               <div>
                 <div class="font-mono text-xs text-[--color-text-muted] mb-1">{t.savings}</div>
-                <div class="font-mono text-sm font-bold text-[--color-accent]">{fmtFull(Math.round(savingsYear))}</div>
+                <div class="font-mono text-sm font-bold text-[--color-accent]">
+                  {fmtFull(Math.round(savingsYear))}
+                  {lang === 'ko' && <div class="text-[0.6rem] text-[--color-text-muted]">({fmtKrw(savingsYear)})</div>}
+                </div>
               </div>
             </div>
 

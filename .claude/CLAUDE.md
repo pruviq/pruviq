@@ -1,17 +1,18 @@
-# PRUVIQ v1.3.0
+# PRUVIQ v1.5.0
 
 "Don't Believe. Verify." — 무료 크립토 전략 시뮬레이션 + 시장 컨텍스트 플랫폼
 
 ## 프로젝트 상태
 
 ```
-버전: v1.3.0
-Phase: v0.5.0 베타 준비 중
+버전: v1.5.0
+Phase: 프로덕션 안정화
 시작일: 2026-02-14
-상태: 6-Agent 감사 완료, Sprint 1 진행 중
+상태: P0/P1/MEDIUM 전부 해결 + 전체 검증 PASS
 GitHub: poong92/pruviq
 배포: Cloudflare Pages (pruviq.com)
 백엔드: api.pruviq.com (Mac Mini, FastAPI)
+빌드: 1,257 pages (0 errors)
 ```
 
 ## 기술 스택
@@ -150,9 +151,9 @@ pruviq/
 │   │   ├── learn/           # 교육 (index, [id])
 │   │   ├── coins/           # 코인 (index, [symbol])
 │   │   ├── market/          # 시장
-│   │   ├── performance/     # 성과
+│   │   ├── performance/     # → /simulate 리다이렉트
 │   │   ├── fees.astro       # 수수료 비교
-│   │   ├── builder.astro    # 전략 빌더
+│   │   ├── builder.astro    # → /simulate 리다이렉트
 │   │   ├── about.astro      # About
 │   │   ├── privacy.astro    # 개인정보
 │   │   ├── terms.astro      # 이용약관
@@ -185,36 +186,50 @@ pruviq/
 | seo-specialist | 메타 태그, 인덱싱, 구조화 데이터, 키워드 | Read, Grep, Glob, WebSearch, WebFetch |
 | content-strategist | 카피라이팅, 포지셔닝, 경쟁사 비교, 한국어 | Read, Grep, Glob, WebSearch, WebFetch |
 
-## v1.3.0 감사 결과 (2026-02-18)
+## 변경 이력
 
-### 점수 요약
-| 항목 | 점수 | 상태 |
-|------|------|------|
-| 신뢰 신호 | 4/10 | P0 |
-| SEO/인덱싱 | 6/10 | P0 |
-| i18n 완성도 | 5/10 | P1 |
-| 프론트엔드 코드 | 6/10 | P1 |
-| UI/UX | 6/10 | P1 |
-| 콘텐츠 품질 | 8/10 | OK |
-| 한국어 품질 | 8.5/10 | OK |
-| 법적 준수 | 7/10 | P2 |
-| 데이터 정확도 | 9.5/10 | OK |
+### v1.5.0 (2026-02-19) — 현재
+- **P0/P1/MEDIUM 전부 해결** — 6-Agent 감사에서 발견된 이슈 100% 클리어
+- **리다이렉트 충돌 수정** — _redirects가 Coins/Blog 콘텐츠 페이지를 가리는 버그 해결
+- **QA 자동화** — qa-redirects.sh 스크립트 + CLAUDE.md QA 규칙 추가
+- **전체 검증 PASS** — 3-Layer 검증 (Live URL 12/12 + Source 8/8 + Dist 12/12)
 
-### P0 CRITICAL (0건 — 전부 해결!)
-- 모든 P0 해결 완료
+### v1.4.0 (2026-02-19)
+- **Sprint 1 P0 수정 완료**
+  - GSC 등록 + sitemap 제출 완료
+  - API URL 중앙화 (src/config/api.ts 단일 소스)
+  - CTA hover/active 피드백 추가
+  - 콘셉트 정리: 백테스트 환경 제공이 핵심 (실거래 증명 불필요)
+- **Sprint 2 P1 수정 완료**
+  - i18n 387/387 키 완성 (EN=KO, 타입 안전)
+  - meta description/title 전 페이지 최적화
+  - 모바일 터치 타겟 44px, 반응형 개선
+  - prose CSS 중복 제거 (global.css 단일)
+  - ResizeObserver 메모리 릭 수정
+- **MEDIUM 수정 완료**
+  - CoinListTable `<a>` 태그 변환 (SEO 크롤링)
+  - Market 펀딩률 CoinGecko `<a>` 링크
+  - coin-symbols.ts non-ASCII 정리
+  - Market disclaimer 데이터 갱신 주기 표시
+- **Binance API 완전 제거** — CoinGecko로 전환 (autotrader IP 공유 문제 해결)
+- **Market 거시경제 섹션** — TradingView Economic Calendar 추가
 
-### ✅ 해결 확인 (2026-02-19 검증)
-- ~~COMING SOON 키 잔존~~ → EN/KO 양쪽 의도적 UI 라벨로 확인
-- ~~CTA 버튼 피드백~~ → hover:opacity-90 + transition 존재 (active 피드백은 P1)
-- ~~Privacy/Terms 한국어~~ → ko/privacy.astro, ko/terms.astro 존재 확인
-- ~~API URL localhost:8400~~ → import.meta.env.PUBLIC_PRUVIQ_API_URL 전환 완료
-- ~~홈 실거래 증명~~ → 컨셉 변경: 백테스트 환경 제공이 핵심 (실거래 노출 불필요)
-- ~~API URL fallback 불일치~~ → src/config/api.ts 단일 소스 전환 완료 (6ed59b5)
-- ~~Google 미인덱싱~~ → GSC 등록+sitemap 제출 완료 (2/15~), 인덱싱 대기 중 (정상)
+### v1.3.0 (2026-02-18)
+- **6-Agent 종합 감사 완료**
+- 감사 보고서: `docs/UNIFIED_AUDIT_v1.3.0.md`, `docs/COMPETITIVE_AUDIT_v1.3.0.md`
 
-### 상세 보고서
-- `docs/UNIFIED_AUDIT_v1.3.0.md` (통합 감사)
-- `docs/COMPETITIVE_AUDIT_v1.3.0.md` (경쟁사 비교)
+### v1.3.0 감사 점수 (before → after)
+| 항목 | v1.3.0 감사 | v1.5.0 현재 | 변화 |
+|------|------------|------------|------|
+| 신뢰 신호 | 4/10 | 7/10 | +3 |
+| SEO/인덱싱 | 6/10 | 8/10 | +2 |
+| i18n 완성도 | 5/10 | 9/10 | +4 |
+| 프론트엔드 코드 | 6/10 | 8/10 | +2 |
+| UI/UX | 6/10 | 8/10 | +2 |
+| 콘텐츠 품질 | 8/10 | 8/10 | = |
+| 한국어 품질 | 8.5/10 | 8.5/10 | = |
+| 법적 준수 | 7/10 | 7/10 | = |
+| 데이터 정확도 | 9.5/10 | 9.5/10 | = |
 
 ## 인프라
 
@@ -253,24 +268,18 @@ v0.3.0 ✅ UX 구조조정 + i18n (NAV 간소화, 한국어 19페이지)
 v1.0.0 ✅ 콘텐츠 확장 (블로그 17x2, 전략 5x2)
 v1.1.0 ✅ 시장 대시보드 + 코인 차트
 v1.2.0 ✅ 전략 비교 + 성과 대시보드
-v1.3.0 ✅ 6-Agent 종합 감사 완료 (현재)
+v1.3.0 ✅ 6-Agent 종합 감사 완료
+v1.4.0 ✅ Sprint 1 P0 수정 + Sprint 2 P1 수정
+v1.5.0 ✅ MEDIUM 수정 + 리다이렉트 QA + 전체 검증 PASS (현재)
 
-v1.4.0: Sprint 1 Quick Wins (P0 수정)
-  - Google Search Console 등록 + sitemap 제출
-  - COMING SOON 제거
-  - CTA 호버 피드백
-  - API URL 중앙화
-  - 홈에 실거래 증명 섹션
+v2.0.0: 백엔드 API 연동 + 멀티 전략
+  - Mac Mini API 서버 가동 (api.pruviq.com)
+  - 5개 전략 실시간 시뮬레이션
+  - 사용자 커스텀 파라미터 백테스트
+  - 전략 비교 라이브 데이터
 
-v1.5.0: Sprint 2 (P1 수정)
-  - i18n 완성도 향상
-  - Learn 페이지 i18n화
-  - 타이틀/메타 최적화
-  - 모바일 터치 타겟 44px
-  - 로딩 상태 추가
-
-v2.0.0: 멀티 전략 시뮬레이션
-  - 5개 전략 모두 인터랙티브 데모
-  - 전략 비교 페이지
-  - 백엔드 전략 레지스트리
+v2.1.0: 성장
+  - 블로그 트래픽 확보 (SEO 효과 측정)
+  - 레퍼럴 전환 추적
+  - Product Hunt 런칭
 ```

@@ -13,6 +13,8 @@ export interface Exchange {
   referralUrl: string;
   available: boolean;
   tag: string;            // English tag, e.g. "#1 Volume"
+  spotOnly?: boolean;     // true for exchanges without futures (e.g. Korean exchanges)
+  infoOnly?: boolean;     // true for non-affiliate info-only exchanges
 }
 
 export const exchanges: Exchange[] = [
@@ -48,6 +50,36 @@ export const exchanges: Exchange[] = [
     referralUrl: '#',
     available: false,
     tag: '120+ Countries',
+  },
+];
+
+/** Korean exchanges — info-only, no referral */
+export const koreanExchanges: Exchange[] = [
+  {
+    id: 'upbit',
+    name: 'Upbit (업비트)',
+    spot: { maker: 0.0005, taker: 0.0005 },
+    futures: { maker: 0, taker: 0 },
+    discount: 0,
+    discountLabel: '—',
+    referralUrl: 'https://upbit.com',
+    available: true,
+    tag: '#1 Korea',
+    spotOnly: true,
+    infoOnly: true,
+  },
+  {
+    id: 'bithumb',
+    name: 'Bithumb (빗썸)',
+    spot: { maker: 0.0004, taker: 0.0004 },
+    futures: { maker: 0, taker: 0 },
+    discount: 0,
+    discountLabel: '—',
+    referralUrl: 'https://www.bithumb.com',
+    available: true,
+    tag: '#2 Korea',
+    spotOnly: true,
+    infoOnly: true,
   },
 ];
 

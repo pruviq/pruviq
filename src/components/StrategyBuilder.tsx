@@ -125,8 +125,9 @@ const labels = {
     toggleVal: '[val]',
     toggleField: '[field]',
     coinsUnit: 'coins',
-    ctaTitle: 'Ready to Trade?',
-    ctaDesc: 'Save up to 20% on exchange fees with PRUVIQ referral links.',
+    ctaTitle: 'Run this strategy live?',
+    ctaDesc: 'Sign up through PRUVIQ to save on exchange fees.',
+    ctaExchange: 'Binance (10% off)',
     ctaButton: 'Compare Fees',
   },
   ko: {
@@ -187,9 +188,10 @@ const labels = {
     toggleVal: '[값]',
     toggleField: '[필드]',
     coinsUnit: '코인',
-    ctaTitle: '실제 거래를 시작하려면?',
-    ctaDesc: 'PRUVIQ 추천 링크로 거래소 수수료 최대 20% 할인.',
-    ctaButton: '수수료 비교',
+    ctaTitle: '이 전략을 실제로 실행하려면?',
+    ctaDesc: 'PRUVIQ를 통해 가입하면 수수료를 절약할 수 있습니다.',
+    ctaExchange: '바이낸스 (10% 할인)',
+    ctaButton: '전체 비교',
   },
 };
 
@@ -952,14 +954,21 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
 
           {/* CTA after results */}
           <div class="mt-6 p-5 bg-[--color-bg-card] border border-[--color-border] rounded-xl">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex flex-col gap-3">
               <div>
                 <h3 class="font-bold text-sm mb-1">{t.ctaTitle}</h3>
                 <p class="text-[--color-text-muted] text-xs">{t.ctaDesc}</p>
               </div>
-              <a href={lang === 'ko' ? '/ko/fees' : '/fees'} class="shrink-0 bg-[--color-accent] text-[--color-bg] px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity whitespace-nowrap">
-                {t.ctaButton} &rarr;
-              </a>
+              <div class="flex flex-wrap gap-2">
+                <a href="https://accounts.binance.com/register?ref=PRUVIQ" target="_blank" rel="noopener"
+                   class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:opacity-90 transition-opacity whitespace-nowrap">
+                  {t.ctaExchange} &rarr;
+                </a>
+                <a href={lang === 'ko' ? '/ko/fees' : '/fees'}
+                   class="border border-[--color-border] text-[--color-text-muted] px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:border-[--color-accent] hover:text-[--color-text] transition-colors whitespace-nowrap">
+                  {t.ctaButton}
+                </a>
+              </div>
             </div>
           </div>
         </div>

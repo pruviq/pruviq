@@ -238,6 +238,15 @@ export const en = {
   'fees.signup': 'Sign Up',
   'fees.coming_soon': 'Coming Soon',
   'fees.footnote': 'Maker / Taker rates shown. Higher-volume traders unlock lower tiers automatically. Last updated: Feb 2026.',
+  'fees.korean_title': 'Korean Exchanges (Reference)',
+  'fees.korean_desc': 'For comparison only. These exchanges are spot-only and not affiliated with PRUVIQ.',
+  'fees.card_upbit_tag': '#1 IN KOREA',
+  'fees.card_upbit_desc': 'Largest Korean exchange by volume. KRW pairs. Spot trading only.',
+  'fees.card_bithumb_tag': '#2 IN KOREA',
+  'fees.card_bithumb_desc': 'Second largest Korean exchange. KRW pairs. Spot trading only.',
+  'fees.visit': 'Visit Site',
+  'fees.spot_only': 'Spot Only',
+  'fees.no_futures': 'No Futures',
   'fees.faq_title': 'FAQ',
   'fees.faq1_q': 'Does PRUVIQ earn from this?',
   'fees.faq1_a': 'Yes. Exchanges pay PRUVIQ a commission from their revenue. This does NOT come from your pocket — your fees are always lower with a referral than without one.',
@@ -368,6 +377,7 @@ export const en = {
   'blog.cta_title': 'Ready to test strategies yourself?',
   'blog.cta_desc': 'Simulate trading strategies on 535 coins with 2+ years of data. Free.',
   'blog.cta_button': 'Try Live Demo',
+  'blog.cta_fees': 'Save on Fees',
   'blog.cta_community': 'Join Community',
 
   // Compare page

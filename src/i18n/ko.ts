@@ -240,6 +240,15 @@ export const ko: Record<TranslationKey, string> = {
   'fees.signup': '가입하기',
   'fees.coming_soon': '준비 중',
   'fees.footnote': '메이커 / 테이커 수수료 기준. 거래량이 높으면 자동으로 낮은 등급이 적용됩니다. 최종 업데이트: 2026년 2월.',
+  'fees.korean_title': '국내 거래소 (참고용)',
+  'fees.korean_desc': '비교 참고용입니다. 현물 거래만 지원하며 PRUVIQ 제휴 할인이 적용되지 않습니다.',
+  'fees.card_upbit_tag': '국내 1위',
+  'fees.card_upbit_desc': '국내 최대 거래량. 원화(KRW) 거래 지원. 현물 거래만 가능.',
+  'fees.card_bithumb_tag': '국내 2위',
+  'fees.card_bithumb_desc': '국내 2위 거래소. 원화(KRW) 거래 지원. 현물 거래만 가능.',
+  'fees.visit': '사이트 방문',
+  'fees.spot_only': '현물만',
+  'fees.no_futures': '선물 미지원',
   'fees.faq_title': '자주 묻는 질문',
   'fees.faq1_q': 'PRUVIQ가 수익을 얻나요?',
   'fees.faq1_a': '네. 거래소가 PRUVIQ에 수익의 일부를 지급합니다. 이것은 회원님의 주머니에서 나오지 않습니다 — 추천을 통한 수수료는 항상 더 낮습니다.',
@@ -370,6 +379,7 @@ export const ko: Record<TranslationKey, string> = {
   'blog.cta_title': '직접 전략을 테스트해 보시겠습니까?',
   'blog.cta_desc': '535개 코인, 2년 이상의 데이터로 트레이딩 전략을 시뮬레이션하세요. 무료.',
   'blog.cta_button': '라이브 데모 체험',
+  'blog.cta_fees': '수수료 절약하기',
   'blog.cta_community': '커뮤니티 참여',
 
   // Compare page
