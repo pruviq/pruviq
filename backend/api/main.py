@@ -980,72 +980,8 @@ def _fetch_fred_series(series_id: str) -> dict:
         return {}
 
 
-def _fetch_binance_oi(symbol: str = "BTCUSDT") -> dict:
-    """Fetch Open Interest from Binance Futures (free, no key)."""
-    try:
-        resp = http_requests.get(
-            f"https://fapi.binance.com/fapi/v1/openInterest?symbol={symbol}",
-            timeout=8
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        oi = float(data.get("openInterest", 0))
-
-        # Get price to calculate USD value
-        price_resp = http_requests.get(
-            f"https://fapi.binance.com/fapi/v1/ticker/price?symbol={symbol}",
-            timeout=5
-        )
-        price_resp.raise_for_status()
-        price = float(price_resp.json().get("price", 0))
-
-        oi_usd_b = round(oi * price / 1e9, 2)
-        return {"oi_b": oi_usd_b, "oi_raw": oi}
-    except Exception as e:
-        logger.warning(f"Binance OI fetch failed for {symbol}: {e}")
-        return {"oi_b": 0, "oi_raw": 0}
-
-
-def _fetch_binance_ls_ratio(symbol: str = "BTCUSDT") -> float:
-    """Fetch global Long/Short ratio from Binance (free, no key)."""
-    try:
-        resp = http_requests.get(
-            f"https://fapi.binance.com/futures/data/globalLongShortAccountRatio"
-            f"?symbol={symbol}&period=1h&limit=1",
-            timeout=8
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        if data:
-            return round(float(data[0].get("longShortRatio", 0)), 3)
-    except Exception as e:
-        logger.warning(f"Binance L/S ratio fetch failed for {symbol}: {e}")
-    return 0
-
-
-def _fetch_binance_oi_change(symbol: str = "BTCUSDT") -> float:
-    """Fetch OI change over 24h from Binance historical OI."""
-    try:
-        resp = http_requests.get(
-            f"https://fapi.binance.com/futures/data/openInterestHist"
-            f"?symbol={symbol}&period=1h&limit=25",
-            timeout=8
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        if len(data) >= 2:
-            current = float(data[-1].get("sumOpenInterestValue", 0))
-            past = float(data[0].get("sumOpenInterestValue", 0))
-            if past > 0:
-                return round((current - past) / past * 100, 2)
-    except Exception as e:
-        logger.warning(f"Binance OI history fetch failed for {symbol}: {e}")
-    return 0
-
-
 def _build_macro_data() -> dict:
-    """Build macro economic dashboard data from free APIs."""
-    # 1. FRED macro indicators
+    """Build macro economic dashboard data. NO Binance API (shared IP with autotrader)."""
     indicators = []
     for series_id, info in FRED_SERIES.items():
         data = _fetch_fred_series(series_id)
@@ -1060,26 +996,9 @@ def _build_macro_data() -> dict:
                 source=info["source"],
             ))
 
-    # 2. Binance derivatives data
-    btc_oi = _fetch_binance_oi("BTCUSDT")
-    eth_oi = _fetch_binance_oi("ETHUSDT")
-    btc_ls = _fetch_binance_ls_ratio("BTCUSDT")
-    eth_ls = _fetch_binance_ls_ratio("ETHUSDT")
-    btc_oi_chg = _fetch_binance_oi_change("BTCUSDT")
-    eth_oi_chg = _fetch_binance_oi_change("ETHUSDT")
-
-    derivatives = DerivativesData(
-        btc_open_interest_b=btc_oi["oi_b"],
-        eth_open_interest_b=eth_oi["oi_b"],
-        btc_ls_ratio=btc_ls,
-        eth_ls_ratio=eth_ls,
-        btc_oi_change_24h=btc_oi_chg,
-        eth_oi_change_24h=eth_oi_chg,
-    )
-
     return MacroResponse(
         indicators=indicators,
-        derivatives=derivatives,
+        derivatives=None,
         events=[],  # TradingView widget handles calendar on frontend
         generated=datetime.now(timezone.utc).isoformat(),
     ).model_dump()

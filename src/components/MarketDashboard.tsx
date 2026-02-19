@@ -31,21 +31,13 @@ const labels = {
     allSources: 'All',
     lastUpdated: 'Last updated',
     ago: 'ago',
-    macroTitle: 'Macro & Derivatives',
-    macroDesc: 'Key economic indicators and crypto derivatives data',
-    openInterest: 'Open Interest',
-    lsRatio: 'Long/Short Ratio',
-    oiChange24h: '24h OI Change',
+    macroTitle: 'Macro Economic',
     macroIndicators: 'Economic Indicators',
-    derivativesData: 'Derivatives',
     previous: 'prev',
     current: 'current',
-    macroLoading: 'Loading macro data...',
     macroError: 'Failed to load macro data.',
     economicCalendar: 'Economic Calendar',
     calendarNote: 'Powered by TradingView',
-    long: 'Long',
-    short: 'Short',
   },
   ko: {
     tag: '시장 현황',
@@ -75,21 +67,13 @@ const labels = {
     allSources: '전체',
     lastUpdated: '마지막 업데이트',
     ago: '전',
-    macroTitle: '거시경제 & 파생상품',
-    macroDesc: '주요 경제 지표 및 암호화폐 파생상품 데이터',
-    openInterest: '미결제약정',
-    lsRatio: '롱/숏 비율',
-    oiChange24h: '24시간 OI 변화',
+    macroTitle: '거시경제',
     macroIndicators: '경제 지표',
-    derivativesData: '파생상품',
     previous: '이전',
     current: '현재',
-    macroLoading: '거시경제 데이터 로딩 중...',
     macroError: '거시경제 데이터 로딩 실패.',
     economicCalendar: '경제 캘린더',
     calendarNote: 'TradingView 제공',
-    long: '롱',
-    short: '숏',
   },
 };
 
@@ -101,14 +85,8 @@ type MacroIndicator = {
   id: string; name: string; value: number; previous?: number;
   unit: string; updated: string; source: string;
 };
-type DerivativesData = {
-  btc_open_interest_b: number; eth_open_interest_b: number;
-  btc_ls_ratio: number; eth_ls_ratio: number;
-  btc_oi_change_24h: number; eth_oi_change_24h: number;
-};
 type MacroData = {
   indicators: MacroIndicator[];
-  derivatives?: DerivativesData;
   generated: string;
 };
 
@@ -425,59 +403,6 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
           <div className="text-xs font-semibold text-[--color-text-muted] uppercase tracking-wider mb-3">
             {l.macroTitle}
           </div>
-
-          {/* Derivatives Cards */}
-          {macro.derivatives && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-              <div className="border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] card-hover">
-                <div className="text-[11px] text-[--color-text-muted] uppercase tracking-wider mb-1.5">BTC {l.openInterest}</div>
-                <div className="text-xl font-bold font-mono text-[--color-text]">${macro.derivatives.btc_open_interest_b.toFixed(1)}B</div>
-                <div className="text-xs font-mono mt-1" style={{ color: changeColor(macro.derivatives.btc_oi_change_24h) }}>
-                  {macro.derivatives.btc_oi_change_24h > 0 ? '+' : ''}{macro.derivatives.btc_oi_change_24h.toFixed(2)}% 24h
-                </div>
-              </div>
-              <div className="border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] card-hover">
-                <div className="text-[11px] text-[--color-text-muted] uppercase tracking-wider mb-1.5">ETH {l.openInterest}</div>
-                <div className="text-xl font-bold font-mono text-[--color-text]">${macro.derivatives.eth_open_interest_b.toFixed(1)}B</div>
-                <div className="text-xs font-mono mt-1" style={{ color: changeColor(macro.derivatives.eth_oi_change_24h) }}>
-                  {macro.derivatives.eth_oi_change_24h > 0 ? '+' : ''}{macro.derivatives.eth_oi_change_24h.toFixed(2)}% 24h
-                </div>
-              </div>
-              <div className="border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] card-hover col-span-2 md:col-span-1">
-                <div className="text-[11px] text-[--color-text-muted] uppercase tracking-wider mb-1.5">{l.lsRatio}</div>
-                <div className="flex items-baseline gap-3">
-                  <div>
-                    <span className="text-xs text-[--color-text-muted]">BTC</span>
-                    <span className="text-lg font-bold font-mono text-[--color-text] ml-1">{macro.derivatives.btc_ls_ratio.toFixed(2)}</span>
-                  </div>
-                  <div>
-                    <span className="text-xs text-[--color-text-muted]">ETH</span>
-                    <span className="text-lg font-bold font-mono text-[--color-text] ml-1">{macro.derivatives.eth_ls_ratio.toFixed(2)}</span>
-                  </div>
-                </div>
-                <div className="mt-2 flex gap-2">
-                  {[
-                    { label: 'BTC', ratio: macro.derivatives.btc_ls_ratio },
-                    { label: 'ETH', ratio: macro.derivatives.eth_ls_ratio },
-                  ].map(({ label, ratio }) => {
-                    const longPct = ratio > 0 ? (ratio / (1 + ratio)) * 100 : 50;
-                    return (
-                      <div key={label} className="flex-1">
-                        <div className="flex h-1.5 rounded-full overflow-hidden bg-[--color-bg-hover]">
-                          <div className="bg-[--color-up] rounded-l-full" style={{ width: `${longPct}%` }} />
-                          <div className="bg-[--color-down] rounded-r-full" style={{ width: `${100 - longPct}%` }} />
-                        </div>
-                        <div className="flex justify-between mt-0.5">
-                          <span className="text-[9px] text-[--color-up] font-mono">{l.long} {longPct.toFixed(0)}%</span>
-                          <span className="text-[9px] text-[--color-down] font-mono">{l.short} {(100 - longPct).toFixed(0)}%</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Macro Economic Indicators Table */}
           {macro.indicators.length > 0 && (
