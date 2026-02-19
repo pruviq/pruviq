@@ -22,7 +22,7 @@ const { title, description = t('meta.home_desc'), type = 'website', date, catego
 const ogImage = new URL(Astro.props.ogImage || '/og-image.png', Astro.site || 'https://pruviq.com').href;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://pruviq.com');
 const enURL = new URL(basePath, Astro.site || 'https://pruviq.com');
-const koURL = new URL(`/ko${basePath === '/' ? '' : basePath}`, Astro.site || 'https://pruviq.com');
+const koURL = new URL(`/ko${basePath === '/' ? '/' : basePath}`, Astro.site || 'https://pruviq.com');
 
 const marketPath = lang === 'ko' ? '/ko/market' : '/market';
 const simulatePath = lang === 'ko' ? '/ko/simulate' : '/simulate';
