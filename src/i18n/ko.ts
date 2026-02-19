@@ -300,7 +300,7 @@ export const ko: Record<TranslationKey, string> = {
   'market.news_loading': '뉴스 로딩 중...',
   'market.news_error': '뉴스 로딩 실패.',
   'market.updated': '업데이트',
-  'market.disclaimer': '시장 데이터는 정보 제공 목적으로만 제공됩니다. 투자 조언이 아닙니다. 5분마다 갱신됩니다.',
+  'market.disclaimer': '시장 데이터는 정보 제공 목적으로만 제공됩니다. 투자 조언이 아닙니다. 데이터는 2분마다 갱신됩니다.',
 
   // Meta
   'meta.market_title': '시장 대시보드 - PRUVIQ',

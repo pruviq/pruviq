@@ -298,7 +298,7 @@ export const en = {
   'market.news_loading': 'Loading news...',
   'market.news_error': 'Failed to load news.',
   'market.updated': 'Updated',
-  'market.disclaimer': 'Market data is provided for informational purposes only. Not financial advice. Data refreshed every 5 minutes.',
+  'market.disclaimer': 'Market data is provided for informational purposes only. Not financial advice. Data refreshed every 2 minutes.',
 
   // Meta
   'meta.market_title': 'Market Dashboard - PRUVIQ',

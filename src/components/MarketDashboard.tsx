@@ -392,9 +392,9 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
               <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] overflow-x-auto">
                 {market.extreme_funding.map(f => (
                   <div key={f.symbol} className="flex justify-between items-center px-4 py-2.5 border-b border-[--color-border] last:border-0">
-                    <span className="font-mono text-[13px] font-medium text-[--color-text-muted]">
+                    <a href={`${lang === 'ko' ? '/ko' : ''}/coins/${f.symbol.toLowerCase().replace('usdt', '')}usdt`} className="font-mono text-[13px] font-medium text-[--color-text-muted] no-underline hover:text-[--color-accent] transition-colors">
                       {f.symbol.replace('USDT', '')}
-                    </span>
+                    </a>
                     <div className="text-right">
                       <span className="font-mono text-[13px] font-semibold" style={{ color: changeColor(f.rate) }}>
                         {f.rate > 0 ? '+' : ''}{f.rate.toFixed(4)}%

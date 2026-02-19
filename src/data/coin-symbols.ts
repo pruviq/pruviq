@@ -576,7 +576,6 @@ export const COIN_SYMBOLS = [
   'ZRCUSDT',
   'ZROUSDT',
   'ZRXUSDT',
-  '币安人生USDT'
 ] as const;
 
 export type CoinSymbol = typeof COIN_SYMBOLS[number];

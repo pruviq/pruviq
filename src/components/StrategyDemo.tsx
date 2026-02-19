@@ -128,6 +128,7 @@ export default function StrategyDemo({
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
   const seriesRef = useRef<any>(null);
+  const roRef = useRef<ResizeObserver | null>(null);
 
   // Load strategy-specific demo JSON
   const demoUrl = `/data/demo-${strategy}.json`;
@@ -202,6 +203,7 @@ export default function StrategyDemo({
         for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
       });
       ro.observe(chartContainerRef.current);
+      roRef.current = ro;
 
       const key = `sl${sl}_tp${tp}`;
       const result = data.results[key];
@@ -209,12 +211,14 @@ export default function StrategyDemo({
         series.setData(result.equity_curve);
         chart.timeScale().fitContent();
       }
-
-      return () => { ro.disconnect(); };
     });
 
     return () => {
       disposed = true;
+      if (roRef.current) {
+        roRef.current.disconnect();
+        roRef.current = null;
+      }
       if (chartRef.current) {
         chartRef.current.remove();
         chartRef.current = null;
