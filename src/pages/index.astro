@@ -27,7 +27,7 @@ const t = useTranslations('en');
         </p>
         <div class="flex flex-col sm:flex-row gap-4 mb-12">
           <a href="/simulate"
-             class="bg-[--color-accent] text-[--color-bg] px-8 py-3 rounded font-semibold text-center hover:bg-[--color-accent-dim] transition-colors">
+             class="btn-primary bg-[--color-accent] text-[--color-bg] px-8 py-3 rounded font-semibold text-center hover:bg-[--color-accent-dim]">
             {t('hero.cta_builder')} &rarr;
           </a>
           <a href="/strategies"
@@ -37,16 +37,16 @@ const t = useTranslations('en');
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card] card-hover">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="border border-[--color-border] rounded p-5 bg-[--color-bg-card] card-hover">
             <p class="font-mono text-[--color-accent] text-2xl font-bold">535</p>
             <p class="text-[--color-text-muted] text-sm">{t('hero.stat1')}</p>
           </div>
-          <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card] card-hover">
+          <div class="border border-[--color-border] rounded p-5 bg-[--color-bg-card] card-hover">
             <p class="font-mono text-[--color-accent] text-2xl font-bold">{t('hero.stat2_val')}</p>
             <p class="text-[--color-text-muted] text-sm">{t('hero.stat2')}</p>
           </div>
-          <div class="border border-[--color-border] rounded p-4 bg-[--color-bg-card] card-hover">
+          <div class="border border-[--color-border] rounded p-5 bg-[--color-bg-card] card-hover">
             <p class="font-mono text-[--color-accent] text-2xl font-bold">100%</p>
             <p class="text-[--color-text-muted] text-sm">{t('hero.stat3')}</p>
           </div>
@@ -56,7 +56,7 @@ const t = useTranslations('en');
   </section>
 
   <!-- FEATURES -->
-  <section class="py-20 border-t border-[--color-border]">
+  <section class="py-20 border-t border-[--color-border] bg-[--color-bg-subtle]">
     <div class="max-w-6xl mx-auto px-4">
       <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">{t('features.tag')}</p>
       <h2 class="text-3xl md:text-4xl font-bold mb-12">{t('features.title')}</h2>
@@ -114,21 +114,21 @@ const t = useTranslations('en');
   </section>
 
   <!-- CTA -->
-  <section class="py-20 border-t border-[--color-border]">
+  <section class="py-20 border-t border-[--color-border] bg-[--color-bg-subtle]">
     <div class="max-w-6xl mx-auto px-4 text-center">
       <p class="font-mono text-[--color-text-muted] text-sm mb-4 tracking-wider">{t('cta.tag')}</p>
-      <h2 class="text-3xl md:text-5xl font-bold mb-4">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">
         <span class="text-[--color-accent]">{t('cta.title')}</span>
       </h2>
       <p class="text-[--color-text-muted] text-lg mb-4 max-w-xl mx-auto">{t('cta.desc1')}</p>
       <p class="text-[--color-text-muted] text-sm mb-8 max-w-md mx-auto">{t('cta.desc2')}</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center mb-4">
         <a href="/simulate"
-           class="inline-block bg-[--color-accent] text-[--color-bg] px-10 py-4 rounded font-semibold text-lg hover:bg-[--color-accent-dim] transition-colors">
+           class="btn-primary inline-block bg-[--color-accent] text-[--color-bg] px-8 py-3 rounded font-semibold text-lg hover:bg-[--color-accent-dim]">
           {t('cta.button1')} &rarr;
         </a>
         <a href="/strategies"
-           class="inline-block border border-[--color-border] text-[--color-text] px-10 py-4 rounded font-semibold text-lg hover:border-[--color-accent] hover:text-[--color-accent] transition-colors">
+           class="inline-block border border-[--color-border] text-[--color-text] px-8 py-3 rounded font-semibold text-lg hover:border-[--color-accent] hover:text-[--color-accent] transition-colors">
           {t('hero.cta1')}
         </a>
       </div>

@@ -107,6 +107,14 @@ body {
 .flash-up { animation: flash-green 0.6s ease-out; }
 .flash-down { animation: flash-red 0.6s ease-out; }
 
+/* Primary CTA glow */
+.btn-primary {
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 0 40px rgba(0, 255, 136, 0.1);
+}
+
 /* Card hover effect */
 .card-hover {
   transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -138,6 +146,33 @@ body {
   border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
+}
+
+/* Page transition loading bar */
+#page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color-accent);
+  z-index: 100;
+  transition: width 0.3s ease;
+  width: 0;
+  opacity: 0;
+}
+#page-loader.loading {
+  opacity: 1;
+  animation: pageLoad 1.5s ease-in-out forwards;
+}
+@keyframes pageLoad {
+  0% { width: 0; }
+  50% { width: 70%; }
+  100% { width: 90%; }
+}
+
+/* Nav scroll shadow */
+nav.scrolled {
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
 }
 
 /* Active press feedback */
@@ -174,8 +209,8 @@ a:focus-visible,
 /* Prose — markdown/content typography */
 .prose {
   color: var(--color-text-muted);
-  line-height: 1.8;
-  font-size: 0.95rem;
+  line-height: 1.75;
+  font-size: 1rem;
 }
 .prose h2 {
   color: var(--color-text);
@@ -208,6 +243,7 @@ a:focus-visible,
 .prose pre {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
   border-radius: 0.5rem;
   padding: 1.25rem;
   overflow-x: auto;
@@ -252,6 +288,18 @@ a:focus-visible,
   border-collapse: collapse;
   margin-bottom: 1.5rem;
   font-size: 0.85rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+.prose table::-webkit-scrollbar {
+  height: 6px;
+}
+.prose table::-webkit-scrollbar-track {
+  background: transparent;
+}
+.prose table::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
 }
 .prose th, .prose td {
   border: 1px solid var(--color-border);

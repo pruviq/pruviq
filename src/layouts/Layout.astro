@@ -239,12 +239,13 @@ const isActive = (match: string) => basePath.startsWith(match);
     )}
   </head>
   <body class="min-h-screen">
+    <div id="page-loader"></div>
     <nav class="fixed top-0 w-full z-50 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-md" role="navigation" aria-label="Main">
-      <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href={lang === 'ko' ? '/ko/' : '/'} class="flex items-center gap-2">
           <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
         </a>
-        <div class="hidden md:flex items-center gap-5 text-[0.8125rem]">
+        <div class="hidden md:flex items-center gap-6 text-[0.8125rem]">
           {navItems.map(item => (
             <a href={item.href} class:list={[
               'transition-colors',
@@ -258,9 +259,10 @@ const isActive = (match: string) => basePath.startsWith(match);
         </button>
       </div>
       <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
-        <div class="flex flex-col px-4 py-4 gap-4 text-sm">
+        <div class="flex flex-col px-4 py-4 gap-1 text-sm">
           {navItems.map(item => (
             <a href={item.href} class:list={[
+              'min-h-[44px] flex items-center',
               isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted]'
             ]}>{item.label}</a>
           ))}
@@ -325,6 +327,21 @@ const isActive = (match: string) => basePath.startsWith(match);
     </footer>
 
     <script>
+      // Page loader on navigation
+      const loader = document.getElementById('page-loader');
+      document.addEventListener('click', (e) => {
+        const link = (e.target as Element)?.closest('a[href]') as HTMLAnchorElement | null;
+        if (link && link.href && !link.target && !link.href.startsWith('mailto:') && !link.href.startsWith('tel:') && new URL(link.href).origin === window.location.origin) {
+          loader?.classList.add('loading');
+        }
+      });
+
+      // Nav scroll shadow
+      const nav = document.querySelector('nav');
+      window.addEventListener('scroll', () => {
+        nav?.classList.toggle('scrolled', window.scrollY > 10);
+      }, { passive: true });
+
       const menuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
 
