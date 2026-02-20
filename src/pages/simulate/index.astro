@@ -11,7 +11,7 @@ const t = useTranslations('en');
   <section class="py-16">
     <div class="max-w-5xl mx-auto px-4">
       <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">{t('simulate.tag')}</p>
-      <h1 class="text-3xl md:text-5xl font-bold mb-4">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">
         {t('simulate.title1')}<br/>{t('simulate.title2')}
       </h1>
       <p class="text-[--color-text-muted] text-lg mb-6 max-w-2xl">
@@ -28,12 +28,8 @@ const t = useTranslations('en');
     <div class="max-w-5xl mx-auto px-4">
       <div id="builder-mount">
         <div class="border border-[--color-border] rounded-xl p-8 bg-[--color-bg-card] text-center">
-          <div class="animate-pulse">
-            <div class="h-3 w-32 bg-[--color-border] rounded mx-auto mb-3" />
-            <div class="h-8 w-64 bg-[--color-border] rounded mx-auto mb-3" />
-            <div class="h-4 w-96 max-w-full bg-[--color-border] rounded mx-auto" />
-          </div>
-          <p class="text-[--color-text-muted] text-sm mt-4">{t('simulate.loading')}</p>
+          <div class="spinner mx-auto mb-4"></div>
+          <p class="text-[--color-text-muted] text-sm">{t('simulate.loading')}</p>
         </div>
       </div>
     </div>
@@ -47,7 +43,7 @@ const t = useTranslations('en');
         {t('simulate.strategies_desc')}
       </p>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <a href="/strategies/bb-squeeze-short" class="border border-[--color-border] rounded-lg p-5 bg-[--color-bg-card] card-hover block">
           <div class="flex items-center gap-2 mb-2">
             <span class="text-xs font-mono px-2 py-0.5 rounded bg-green-500/10 text-green-400 border border-green-500/20">{t('strategy.verified')}</span>
@@ -100,8 +96,8 @@ const t = useTranslations('en');
   </section>
 
   <!-- DISCLAIMER -->
-  <section class="pb-16">
-    <div class="max-w-5xl mx-auto px-4 text-center">
+  <section class="pb-16 bg-[--color-bg-subtle]">
+    <div class="max-w-5xl mx-auto px-4 text-center pt-12">
       <p class="text-[--color-text-muted] text-xs max-w-lg mx-auto">
         {t('simulate.disclaimer')}
       </p>

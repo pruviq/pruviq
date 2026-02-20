@@ -616,7 +616,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
 
         <div class="space-y-3">
           {conditions.map((cond, i) => (
-            <div key={cond.id} class="flex flex-wrap items-center gap-2 p-2 sm:p-3 rounded-lg bg-[--color-bg] border border-[--color-border]">
+            <div key={cond.id} class="flex flex-wrap items-center gap-2 p-3 rounded-lg bg-[--color-bg] border border-[--color-border]">
               {i > 0 && (
                 <span class="font-mono text-xs text-[--color-accent] font-bold w-8">AND</span>
               )}
@@ -845,10 +845,10 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       <button
         onClick={runBacktest}
         disabled={isRunning || conditions.length === 0}
-        class={`w-full py-4 rounded-xl font-bold text-lg font-mono cursor-pointer transition-all
+        class={`btn-primary w-full py-4 rounded-xl font-bold text-lg font-mono cursor-pointer transition-all
           ${isRunning || conditions.length === 0
             ? 'bg-[--color-border] text-[--color-text-muted] cursor-not-allowed'
-            : 'bg-[--color-accent] text-[--color-bg] hover:shadow-[0_0_20px_var(--color-accent-glow)]'
+            : 'bg-[--color-accent] text-[--color-bg]'
           }`}
       >
         {isRunning ? t.running : t.runBacktest}
@@ -961,7 +961,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
               </div>
               <div class="flex flex-wrap gap-2">
                 <a href="https://accounts.binance.com/register?ref=PRUVIQ" target="_blank" rel="noopener"
-                   class="bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:opacity-90 transition-opacity whitespace-nowrap">
+                   class="btn-primary bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:bg-[--color-accent-dim] whitespace-nowrap">
                   {t.ctaExchange} &rarr;
                 </a>
                 <a href={lang === 'ko' ? '/ko/fees' : '/fees'}
