@@ -1,7 +1,7 @@
 export const en = {
   // NAV
   'nav.market': 'Market',
-  'nav.simulate': 'Backtest',
+  'nav.simulate': 'Simulate',
   'nav.learn': 'Learn',
   'nav.fees': 'Fees',
   'nav.strategies': 'Strategies',
@@ -266,7 +266,7 @@ export const en = {
   // Coins
   'coins.tag': 'COIN EXPLORER',
   'coins.title': 'Browse All Coins',
-  'coins.desc': 'Explore 535+ coins with BB Squeeze simulation stats. Click any coin to see its candlestick chart and apply strategies.',
+  'coins.desc': 'Real-time market data for 500+ cryptocurrencies. Prices, market cap, volume, 7-day sparklines — updated every 15 minutes.',
   'coins.search': 'Search coins...',
   'coins.apply': 'Apply Strategy',
   'coins.resim': 'Re-simulate',
@@ -307,13 +307,13 @@ export const en = {
   'market.news_loading': 'Loading news...',
   'market.news_error': 'Failed to load news.',
   'market.updated': 'Updated',
-  'market.disclaimer': 'Market data is provided for informational purposes only. Not financial advice. Data refreshed every 2 minutes.',
+  'market.disclaimer': 'Market data is provided for informational purposes only. Not financial advice. Data refreshed every 15 minutes.',
 
   // Meta
   'meta.market_title': 'Market Dashboard - PRUVIQ',
   'meta.market_desc': 'Real-time crypto market overview. Fear & Greed Index, BTC dominance, top gainers/losers, funding rates, and aggregated crypto news.',
   'meta.coins_title': 'Coin Explorer - PRUVIQ',
-  'meta.coins_desc': 'Explore 535 coins with interactive candlestick charts. Apply BB Squeeze strategy, see entry/exit arrows, win rates, and profit factors. Free crypto strategy simulator.',
+  'meta.coins_desc': 'Real-time cryptocurrency market data. Browse 500+ coins with prices, market cap, trading volume, and 7-day price charts. Updated every 15 minutes.',
   'meta.home_title': 'PRUVIQ - Free Crypto Backtesting Tool',
   'meta.home_desc': 'Build and backtest crypto trading strategies on 535+ coins with 2+ years of real data. No code required. Fees and slippage included. Free forever.',
   'meta.index_desc': 'We have tested 5 strategies on 535 coins. 4 lost money. We published them all. Because you deserve to know what actually works before risking real money.',
