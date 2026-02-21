@@ -20,13 +20,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install test dependencies
+      run: npm install -D @playwright/test axe-core
+
+    - name: Install Chromium
+      run: npx playwright install --with-deps chromium
+
     - name: Build site
       run: npm run build
-
-    - name: Install Playwright + axe-core
-      run: |
-        npm install -D @playwright/test axe-core
-        npx playwright install --with-deps chromium
 
     - name: Run accessibility tests
       run: npx playwright test tests/accessibility/
