@@ -3,7 +3,7 @@ import type { TranslationKey } from './en';
 export const ko: Record<TranslationKey, string> = {
   // NAV
   'nav.market': '시장',
-  'nav.simulate': '백테스트',
+  'nav.simulate': '시뮬레이터',
   'nav.learn': '학습',
   'nav.fees': '수수료',
   'nav.strategies': '전략',
@@ -268,7 +268,7 @@ export const ko: Record<TranslationKey, string> = {
   // Coins
   'coins.tag': '코인 탐색기',
   'coins.title': '전체 코인 탐색',
-  'coins.desc': '535개 이상의 코인에서 BB Squeeze 시뮬레이션 결과를 탐색하세요. 코인을 클릭하면 캔들 차트와 전략을 적용할 수 있습니다.',
+  'coins.desc': '500개 이상 암호화폐의 실시간 시장 데이터. 가격, 시가총액, 거래량, 7일 차트 — 15분마다 갱신.',
   'coins.search': '코인 검색...',
   'coins.apply': '전략 적용',
   'coins.resim': '재시뮬레이션',
@@ -309,13 +309,13 @@ export const ko: Record<TranslationKey, string> = {
   'market.news_loading': '뉴스 로딩 중...',
   'market.news_error': '뉴스 로딩 실패.',
   'market.updated': '업데이트',
-  'market.disclaimer': '시장 데이터는 정보 제공 목적으로만 제공됩니다. 투자 조언이 아닙니다. 데이터는 2분마다 갱신됩니다.',
+  'market.disclaimer': '시장 데이터는 정보 제공 목적으로만 제공됩니다. 투자 조언이 아닙니다. 데이터는 15분마다 갱신됩니다.',
 
   // Meta
   'meta.market_title': '시장 대시보드 - PRUVIQ',
   'meta.market_desc': '실시간 암호화폐 시장 현황. 공포/탐욕 지수, BTC 도미넌스, 상승/하락 순위, 펀딩 비율, 주요 뉴스.',
   'meta.coins_title': '코인 탐색기 - PRUVIQ',
-  'meta.coins_desc': '535개 이상 코인의 캔들 차트와 BB Squeeze 전략 시뮬레이션. 모든 코인의 진입/청산 신호, 승률, 수익 팩터를 확인하세요.',
+  'meta.coins_desc': '실시간 암호화폐 시장 데이터. 500개 이상 코인의 가격, 시가총액, 거래량, 7일 차트를 확인하세요. 15분마다 갱신.',
   'meta.home_title': 'PRUVIQ - 무료 크립토 백테스팅 도구',
   'meta.home_desc': '535개 이상 코인에서 트레이딩 전략을 만들고 백테스트하세요. 코드 불필요. 수수료, 슬리피지 반영. 영원히 무료.',
   'meta.index_desc': '우리는 535개 코인에서 5개의 전략을 테스트했습니다. 4개는 손실을 냈습니다. 우리는 모든 결과를 공개합니다. 실제 자금을 투입하기 전에 무엇이 실제로 작동하는지 확인하세요.',
