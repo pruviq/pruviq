@@ -237,7 +237,8 @@ const isActive = (match: string) => basePath.startsWith(match);
         "articleSection": category || "education"
       })} />
     )}
-  </head>
+    <link rel="stylesheet" href="/touch-fix.css" />
+</head>
   <body class="min-h-screen">
     <div id="page-loader"></div>
     <nav class="fixed top-0 w-full z-50 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-md" role="navigation" aria-label="Main">
