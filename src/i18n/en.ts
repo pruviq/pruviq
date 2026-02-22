@@ -292,15 +292,13 @@ export const en = {
   // Market
   'market.tag': 'MARKET OVERVIEW',
   'market.title': 'Market Dashboard',
-  'market.desc': 'Real-time crypto market data. Fear & Greed Index, top movers, funding rates, and aggregated news from major crypto outlets.',
+  'market.desc': 'Real-time crypto market data. Fear & Greed Index, top movers, economic calendar, and aggregated news from major crypto outlets.',
   'market.fear_greed': 'Fear & Greed',
   'market.total_mcap': 'Total Market Cap',
   'market.btc_dom': 'BTC Dominance',
   'market.volume_24h': '24h Volume',
   'market.top_gainers': 'Top Gainers',
   'market.top_losers': 'Top Losers',
-  'market.funding_rates': 'Extreme Funding Rates',
-  'market.annual': 'Annual',
   'market.latest_news': 'Latest News',
   'market.loading': 'Loading market data...',
   'market.error': 'Failed to load market data.',
@@ -311,7 +309,7 @@ export const en = {
 
   // Meta
   'meta.market_title': 'Market Dashboard - PRUVIQ',
-  'meta.market_desc': 'Real-time crypto market overview. Fear & Greed Index, BTC dominance, top gainers/losers, funding rates, and aggregated crypto news.',
+  'meta.market_desc': 'Real-time crypto market overview. Fear & Greed Index, BTC dominance, top gainers/losers, economic calendar, and aggregated crypto news.',
   'meta.coins_title': 'Coin Explorer - PRUVIQ',
   'meta.coins_desc': 'Real-time cryptocurrency market data. Browse 500+ coins with prices, market cap, trading volume, and 7-day price charts. Updated every 15 minutes.',
   'meta.home_title': 'PRUVIQ - Free Crypto Backtesting Tool',
