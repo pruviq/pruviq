@@ -51,52 +51,82 @@ class SimResult:
 
 def find_signals_vectorized(df: pd.DataFrame, strategy, direction: str = "short") -> np.ndarray:
     """
-    Vectorized signal detection for BB Squeeze — returns array of signal indices.
-    Much faster than calling check_signal() per bar.
-    Supports both short and long directions.
+    Vectorized signal detection for BB Squeeze — AutoTrader v1.7.0 parity.
+
+    Conditions at signal bar (idx), entry at idx+1:
+    - recent_squeeze[idx-1]: any squeeze in past lookback candles (shift=1)
+    - bb_expanding[idx]: curr bb_width > prev bb_width (shift=0)
+    - bb_width_above_ma[idx]: curr bb_width > MA * 0.9 (shift=0)
+    - close vs bb_mid[idx]: direction filter (shift=0)
+    - vol_ratio[idx-1]: prev candle volume (shift=1)
+    - downtrend/uptrend[idx-1]: prev candle EMA trend (shift=1)
+    - bb_width_change[idx]: curr expansion speed >= 10% (shift=0)
     """
     n = len(df)
     if n < 100:
         return np.array([], dtype=int)
 
-    # Extract arrays
-    bb_width = df["bb_width"].values if "bb_width" in df.columns else np.zeros(n)
-    bb_width_min = df["bb_width_min"].values if "bb_width_min" in df.columns else np.zeros(n)
-    bb_expansion = df["bb_expansion"].values if "bb_expansion" in df.columns else np.zeros(n)
-    vol_ratio = df["vol_ratio"].values if "vol_ratio" in df.columns else np.zeros(n)
-    ema_fast = df["ema_fast"].values if "ema_fast" in df.columns else np.zeros(n)
-    ema_slow = df["ema_slow"].values if "ema_slow" in df.columns else np.zeros(n)
-    is_bearish = df["is_bearish"].values if "is_bearish" in df.columns else np.zeros(n, dtype=bool)
-    is_bullish = df["is_bullish"].values if "is_bullish" in df.columns else np.zeros(n, dtype=bool)
-    hour = df["hour"].values if "hour" in df.columns else np.zeros(n, dtype=int)
+    def col(name, default=None):
+        if name in df.columns:
+            return df[name].values
+        if default is not None:
+            return default
+        return np.zeros(n)
 
-    # Minimum index
+    # Extract arrays — AT parity fields
+    recent_squeeze = col("recent_squeeze", np.zeros(n, dtype=bool))
+    bb_expanding = col("bb_expanding", np.zeros(n, dtype=bool))
+    bb_width_above_ma = col("bb_width_above_ma", np.zeros(n, dtype=bool))
+    bb_width_change = col("bb_width_change")
+    close = col("close")
+    bb_mid = col("bb_mid")
+    vol_ratio = col("vol_ratio")
+    downtrend = col("downtrend", np.zeros(n, dtype=bool))
+    uptrend = col("uptrend", np.zeros(n, dtype=bool))
+    hour = col("hour", np.zeros(n, dtype=int))
+
     min_idx = strategy.ema_slow + strategy.squeeze_lookback
+    expansion_min = strategy.expansion_rate * 100  # 0.10 -> 10
 
-    # Vectorized conditions (all on prev = idx row, entry at idx+1)
     valid_range = np.arange(n) >= min_idx
-    has_width = (bb_width_min > 0) & (bb_width > 0)
-    is_near_squeeze = bb_width <= bb_width_min * 1.2
-    has_expansion = bb_expansion >= strategy.expansion_rate
-    has_volume = vol_ratio >= strategy.volume_ratio
 
-    # Time filter (check next bar's hour)
+    # Shifted conditions (prev candle = shift 1)
+    prev_recent_squeeze = np.roll(recent_squeeze, 1)
+    prev_recent_squeeze[0] = False
+    prev_vol_ratio = np.roll(vol_ratio, 1)
+    prev_vol_ratio[0] = 0
+    prev_downtrend = np.roll(downtrend, 1)
+    prev_downtrend[0] = False
+    prev_uptrend = np.roll(uptrend, 1)
+    prev_uptrend[0] = False
+
+    # Base conditions (matching AT exactly)
+    has_recent_squeeze = prev_recent_squeeze.astype(bool)
+    has_bb_expanding = bb_expanding.astype(bool)
+    has_bb_above_ma = bb_width_above_ma.astype(bool)
+    has_volume = prev_vol_ratio >= strategy.volume_ratio
+    has_expansion_speed = bb_width_change >= expansion_min
+
+    # Time filter (check entry bar = idx+1 hour)
     avoid_set = set(strategy.avoid_hours)
-    # For each idx, check if idx+1 hour is in avoid_hours
     next_hour_ok = np.ones(n, dtype=bool)
-    for i in range(n - 1):
-        if hour[i + 1] in avoid_set:
-            next_hour_ok[i] = False
+    if avoid_set:
+        for i in range(n - 1):
+            if int(hour[i + 1]) in avoid_set:
+                next_hour_ok[i] = False
     next_hour_ok[n - 1] = False  # Can't enter on last bar
 
     # Combine base conditions
-    base_ok = valid_range & has_width & is_near_squeeze & has_expansion & has_volume & next_hour_ok
+    base_ok = (
+        valid_range & has_recent_squeeze & has_bb_expanding
+        & has_bb_above_ma & has_volume & has_expansion_speed & next_hour_ok
+    )
 
-    # Direction-aware signal
+    # Direction-specific conditions
     if direction == "short":
-        signal = base_ok & (ema_fast < ema_slow) & is_bearish
+        signal = base_ok & (close < bb_mid) & prev_downtrend
     else:
-        signal = base_ok & (ema_fast > ema_slow) & is_bullish
+        signal = base_ok & (close > bb_mid) & prev_uptrend
 
     return np.where(signal)[0]
 
@@ -239,8 +269,8 @@ def run_fast(
     sl_pct: float = 0.10,
     tp_pct: float = 0.08,
     max_bars: int = 48,
-    fee_pct: float = 0.0004,
-    slippage_pct: float = 0.0002,
+    fee_pct: float = 0.0008,
+    slippage_pct: float = 0.0,
     direction: str = "short",
     market_type: str = "futures",
     strategy_id: str = None,

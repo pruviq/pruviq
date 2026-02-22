@@ -15,8 +15,10 @@ INDICATOR_REGISTRY = {
     "bb": {
         "name": "Bollinger Bands",
         "fields": ["bb_upper", "bb_lower", "bb_mid", "bb_width", "bb_width_ma",
-                    "bb_width_change", "is_squeeze"],
-        "default_params": {"period": 20, "std": 2.0, "squeeze_lookback": 10, "squeeze_threshold": 0.8},
+                    "bb_width_change", "is_squeeze", "recent_squeeze",
+                    "bb_expanding", "bb_width_above_ma"],
+        "default_params": {"period": 20, "std": 2.0, "squeeze_lookback": 10,
+                           "squeeze_threshold": 0.8, "expansion_threshold": 0.9},
     },
     "ema": {
         "name": "EMA Trend",
@@ -126,6 +128,7 @@ def _compute_bb(df: pd.DataFrame, p: dict):
     std_mult = p["std"]
     squeeze_lookback = p["squeeze_lookback"]
     threshold = p["squeeze_threshold"]
+    expansion_threshold = p.get("expansion_threshold", 0.9)
 
     df["bb_mid"] = df["close"].rolling(period).mean()
     bb_std = df["close"].rolling(period).std()
@@ -135,6 +138,13 @@ def _compute_bb(df: pd.DataFrame, p: dict):
     df["bb_width_ma"] = df["bb_width"].rolling(squeeze_lookback).mean()
     df["bb_width_change"] = df["bb_width"].pct_change() * 100
     df["is_squeeze"] = df["bb_width"] < df["bb_width_ma"] * threshold
+
+    # AutoTrader parity: rolling window squeeze detection
+    df["recent_squeeze"] = df["is_squeeze"].rolling(squeeze_lookback).max().astype(bool)
+    # AutoTrader parity: band width expanding (curr > prev)
+    df["bb_expanding"] = df["bb_width"] > df["bb_width"].shift(1)
+    # AutoTrader parity: width above MA threshold
+    df["bb_width_above_ma"] = df["bb_width"] > df["bb_width_ma"] * expansion_threshold
 
 
 def _compute_ema(df: pd.DataFrame, p: dict):
