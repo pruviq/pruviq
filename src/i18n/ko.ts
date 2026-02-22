@@ -294,15 +294,13 @@ export const ko: Record<TranslationKey, string> = {
   // Market
   'market.tag': '시장 현황',
   'market.title': '시장 대시보드',
-  'market.desc': '실시간 암호화폐 시장 데이터. 공포/탐욕 지수, 상승/하락 순위, 펀딩 비율, 주요 뉴스를 한눈에 확인하세요.',
+  'market.desc': '실시간 암호화폐 시장 데이터. 공포/탐욕 지수, 상승/하락 순위, 경제 캘린더, 주요 뉴스를 한눈에 확인하세요.',
   'market.fear_greed': '공포/탐욕 지수',
   'market.total_mcap': '총 시가총액',
   'market.btc_dom': 'BTC 도미넌스',
   'market.volume_24h': '24시간 거래량',
   'market.top_gainers': '상승 TOP 10',
   'market.top_losers': '하락 TOP 10',
-  'market.funding_rates': '극단 펀딩 비율',
-  'market.annual': '연환산',
   'market.latest_news': '최신 뉴스',
   'market.loading': '시장 데이터 로딩 중...',
   'market.error': '시장 데이터 로딩 실패.',
@@ -313,7 +311,7 @@ export const ko: Record<TranslationKey, string> = {
 
   // Meta
   'meta.market_title': '시장 대시보드 - PRUVIQ',
-  'meta.market_desc': '실시간 암호화폐 시장 현황. 공포/탐욕 지수, BTC 도미넌스, 상승/하락 순위, 펀딩 비율, 주요 뉴스.',
+  'meta.market_desc': '실시간 암호화폐 시장 현황. 공포/탐욕 지수, BTC 도미넌스, 상승/하락 순위, 경제 캘린더, 주요 뉴스.',
   'meta.coins_title': '코인 탐색기 - PRUVIQ',
   'meta.coins_desc': '실시간 암호화폐 시장 데이터. 500개 이상 코인의 가격, 시가총액, 거래량, 7일 차트를 확인하세요. 15분마다 갱신.',
   'meta.home_title': 'PRUVIQ - 무료 크립토 백테스팅 도구',
