@@ -183,6 +183,32 @@ Notes: Quick-wins copy (hero/nav) applied and meta.index_desc synced with hero.d
 ## CRON RUN LOGS
 
 - cron:63c0583a-741f-4b76-9f53-861ab7456f81 (gh-issues-autofix)
+  - Time: 2026-02-22 14:32 KST
+  - Action requested: list open GitHub issues (limit 10), assess fixability, create branches/PRs for fixable issues or comment when not fixable, and update MEMORY.md.
+  - What I did:
+    1. Read SOUL.md and MEMORY.md to confirm project context and rules.
+    2. Ran: `cd /Users/openclaw/pruviq && gh issue list --state open --limit 10` and retrieved 6 open issues (#12→#7).
+    3. Assessed each issue:
+       - #12 (Trust signals / reproducible package): implemented a frontend PoC (ReproBadge) and opened PR #13 (agents/repro-ui-20260222). Build succeeded locally (1284 pages).
+       - #11 (Mobile touch targets): quick audit shows src/styles/global.css already sets min-height:44px for primary CTAs under @media (pointer: coarse). Recommended: run Playwright mobile audit to find remaining elements <44px; offered to add test or focused PR. Commented on the issue.
+       - #10 (i18n Learn pages): verified parity between src/i18n/en.ts and src/i18n/ko.ts (both 398 keys) and /ko/learn pages are present; build succeeded. Commented on the issue (no fixes needed).
+       - #9 (SEO meta/sitemap): verified sitemap-index.xml and robots.txt exist and homepage meta tags present (curl checks). Recommended content PRs for meta improvements. Commented on the issue.
+       - #8 (A11Y color-contrast on /simulate): the reported artifact (reports/axe-_simulate.json) lists color-contrast failures (4 nodes). The JSON available here is a summary; requested a full axe output to identify nodes. Commented with next steps (re-run axe + adjust CSS variables).
+       - #7 (OPS /coins/stats 503): reproduced the 503 (curl returned 503). Added an ops-focused comment recommending logs/Sentry checks and health checks.
+    4. For issues where code changes were appropriate, created a branch and PR: agents/repro-ui-20260222 → PR #13 (feat(repro): UI PoC for reproducible package). Build passed. For other issues I left detailed comments and next steps.
+  - Result: PR #13 created for #12; comments added to issues #11, #10, #9, #8, and #7. No additional code changes were merged into main.
+  - Commits/Branches:
+    - branch: agents/repro-ui-20260222 → pushed to origin, PR: https://github.com/poong92/pruviq/pull/13 (frontend PoC ReproBadge)
+  - Files changed:
+    - src/components/ReproBadge.tsx (new)
+    - src/pages/strategies/[id].astro (import + ReproBadge insertion)
+  - Next steps / options:
+    a) Backend/CI: produce reproducible package metadata + zip files and publish under public/data/reproducible/ (or provide package_url in JSON) — then we can validate and show badges server-side.
+    b) For mobile touch-target audit: instruct me to (1) add a Playwright mobile-audit test or (2) accept a focused CSS-only PR to add fallbacks for remaining selectors.
+    c) For the ops 503: ops/SRE should collect backend logs, Sentry traces, and container/process health metrics; I can assist if logs/traces are provided.
+  - Notes: MEMORY.md updated with this run.
+
+- cron:63c0583a-741f-4b76-9f53-861ab7456f81 (gh-issues-autofix)
   - Time: 2026-02-22 10:30 KST
   - Action requested: list open GitHub issues (limit 10), assess fixability, create branches/PRs for fixable issues or comment when not fixable, and update MEMORY.md.
   - What I did:
