@@ -131,7 +131,7 @@ See docs/UNIFIED_AUDIT_v1.3.0.md for details.
 - Mobile-responsive (1280px desktop, 390px mobile)
 - Korean translations must match English 1:1
 - Build MUST pass before commit
-- Lighthouse: Performance 90+, SEO 95+, Accessibility 90+
+- Lighthouse: Performance 90+, SEO 95+, Accessibility 90%
 
 ## Key Documents (read when needed)
 
@@ -149,6 +149,18 @@ See docs/UNIFIED_AUDIT_v1.3.0.md for details.
 - No code copying from autotrader — concepts only
 - No live trading results — simulation results only
 - n8n API: http://127.0.0.1:5678 (key in ~/.env.pruviq)
+
+## Process Rules
+
+Before modifying any existing page, MUST first:
+1. Run `git log --oneline --follow <file>` to see its history and recent commits.
+2. Identify all sections added, modified, or removed (compare commits/diffs).
+3. Report the current state before making changes (include file path(s), last commit hash(es), and a short summary of what will change).
+4. Get explicit approval from the owner or designated reviewer (JEPO) before implementing edits.
+
+Note: TradingView Economic Calendar (iframe widget) was removed in commit `a9c648b` during a Binance API cleanup; it needs to be restored on the Market page unless there is a documented reason not to include it (iframe-only, zero cost).
+
+(Added by JEPO on 2026-02-22 15:03 KST)
 
 ## Pending Tasks
 
@@ -242,7 +254,7 @@ Notes: Quick-wins copy (hero/nav) applied and meta.index_desc synced with hero.d
   - Time: 2026-02-21 18:30 KST
   - Action requested: list open GitHub issues (limit 10), assess fixability, create branches/PRs for fixable issues or comment when not fixable, and update MEMORY.md.
   - What I did:
-    1. Read SOUL.md and MEMORY.md (confirmed project context and rules).
+    1. Re-read SOUL.md and MEMORY.md to confirm context and rules.
     2. Attempted to run: `cd /Users/openclaw/pruviq && gh issue list --state open --limit 10`.
     3. `gh` CLI is not authenticated in this environment (gh reported: "You are not logged into any GitHub hosts").
     4. Attempted unauthenticated GitHub API fetch; repository issues endpoint returned 404 (likely private repo).
@@ -346,28 +358,3 @@ Notes: Quick-wins copy (hero/nav) applied and meta.index_desc synced with hero.d
 ---
 
 Generated and committed by 프루빅 on 2026-02-21 18:38 KST.
-
-
-## UX Audit & Changes (2026-02-21)
-
-Summary:
-- Per JEPO instruction, performed user-focused UX review and applied P0 improvements to increase discoverability and trust.
-
-P0 (done, committed):
-- Added Hero trust block (verified strategies count + link to /performance) and made primary CTA 'Try Live Demo' more prominent (min-height for touch targets).
-  - Commit: 3570408 — feat(ux): hero trust block + primary CTA reorder; coin page apply-strategy CTA (P0)
-- Added "Apply this strategy" CTA on coin detail pages linking to /simulate?coin=<SYMBOL> to lower friction from browsing to testing.
-  - Commit: 3570408
-
-P1 (short-term, this week) — recorded to create issues / track:
-- Implement 60-second interactive demo flow (auto-fill demo parameters and one-click run) — improves first-time activation.
-- Create 'Verified' badge system & UI for strategy cards (automated QA pass indicator).
-- Mobile: audit & enforce 44px touch targets across primary buttons and nav (QA + minor CSS adjustments).
-
-P2 (mid-term):
-- Reproducible package PoC (backend job + UI download link) — ties into verification claims.
-- CI: add golden regression tests (look-ahead bias detection) and PR gating.
-- Accessibility deep scan (axe), fix any non-critical ARIA/contrast issues.
-
-Next steps:
-- Create GitHub Issues for P1/P2 tasks and drive implementation (requires repo issue API access). For now, tasks are in MEMORY.md for sprint planning.
