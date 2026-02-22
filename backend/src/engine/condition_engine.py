@@ -117,10 +117,12 @@ class ConditionEngine:
         # Evaluate the root condition tree
         mask = self._eval_group_vectorized(df, self.entry_conditions)
 
-        # Apply time filter
+        # Apply time filter on ENTRY bar (next bar after signal)
+        # Signal at idx → entry at idx+1 → filter on hour[idx+1]
         if self.avoid_hours and "hour" in df.columns:
-            hour_ok = ~df["hour"].isin(self.avoid_hours)
-            mask = mask & hour_ok.values
+            entry_hour = df["hour"].shift(-1)
+            hour_ok = ~entry_hour.isin(self.avoid_hours)
+            mask = mask & hour_ok.fillna(False).values
 
         # Never signal on the very last bar (need room for trade)
         mask[-1] = False
@@ -358,19 +360,29 @@ PRESET_STRATEGIES = {
         "name": "BB Squeeze SHORT",
         "direction": "short",
         "indicators": {
-            "bb": {"period": 20, "std": 2.0, "squeeze_lookback": 10, "squeeze_threshold": 0.8},
+            "bb": {"period": 20, "std": 2.0, "squeeze_lookback": 10,
+                    "squeeze_threshold": 0.8, "expansion_threshold": 0.9},
             "ema": {"fast": 20, "slow": 50},
             "volume": {"ma_period": 10},
-            "candle": {},
         },
         "entry": {
             "type": "AND",
             "conditions": [
-                {"field": "is_squeeze", "op": "==", "value": True, "shift": 1},
-                {"field": "bb_width_change", "op": ">=", "value": 10, "shift": 1},
-                {"field": "ema_fast", "op": "<", "field2": "ema_slow", "shift": 1},
+                # AutoTrader v1.7.0 parity — 7 conditions
+                # 1. Recent squeeze in past 10 candles (prev bar's window)
+                {"field": "recent_squeeze", "op": "==", "value": True, "shift": 1},
+                # 2. BB width expanding: curr > prev
+                {"field": "bb_expanding", "op": "==", "value": True, "shift": 0},
+                # 3. BB width above MA threshold (curr > MA * 0.9)
+                {"field": "bb_width_above_ma", "op": "==", "value": True, "shift": 0},
+                # 4. Price below BB mid (SHORT direction)
+                {"field": "close", "op": "<", "field2": "bb_mid", "shift": 0},
+                # 5. Volume spike (prev candle)
                 {"field": "vol_ratio", "op": ">=", "value": 2.0, "shift": 1},
-                {"field": "bearish", "op": "==", "value": True, "shift": 1},
+                # 6. Downtrend: EMA fast < slow (prev candle, NOT bearish candle)
+                {"field": "downtrend", "op": "==", "value": True, "shift": 1},
+                # 7. BB expansion speed >= 10% (curr candle)
+                {"field": "bb_width_change", "op": ">=", "value": 10, "shift": 0},
             ],
         },
         "avoid_hours": [2, 3, 10, 20, 21, 22, 23],
@@ -382,19 +394,21 @@ PRESET_STRATEGIES = {
         "name": "BB Squeeze LONG",
         "direction": "long",
         "indicators": {
-            "bb": {"period": 20, "std": 2.0, "squeeze_lookback": 10, "squeeze_threshold": 0.8},
+            "bb": {"period": 20, "std": 2.0, "squeeze_lookback": 10,
+                    "squeeze_threshold": 0.8, "expansion_threshold": 0.9},
             "ema": {"fast": 20, "slow": 50},
             "volume": {"ma_period": 10},
-            "candle": {},
         },
         "entry": {
             "type": "AND",
             "conditions": [
-                {"field": "is_squeeze", "op": "==", "value": True, "shift": 1},
-                {"field": "bb_width_change", "op": ">=", "value": 10, "shift": 1},
-                {"field": "ema_fast", "op": ">", "field2": "ema_slow", "shift": 1},
+                {"field": "recent_squeeze", "op": "==", "value": True, "shift": 1},
+                {"field": "bb_expanding", "op": "==", "value": True, "shift": 0},
+                {"field": "bb_width_above_ma", "op": "==", "value": True, "shift": 0},
+                {"field": "close", "op": ">", "field2": "bb_mid", "shift": 0},
                 {"field": "vol_ratio", "op": ">=", "value": 2.0, "shift": 1},
-                {"field": "bullish", "op": "==", "value": True, "shift": 1},
+                {"field": "uptrend", "op": "==", "value": True, "shift": 1},
+                {"field": "bb_width_change", "op": ">=", "value": 10, "shift": 0},
             ],
         },
         "avoid_hours": [2, 3, 10, 20, 21, 22, 23],

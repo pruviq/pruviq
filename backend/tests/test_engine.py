@@ -89,8 +89,9 @@ def test_cost_model():
     futures = CostModel.futures()
 
     assert spot.fee_pct == 0.001, "현물 수수료 0.1%"
-    assert futures.fee_pct == 0.0004, "선물 수수료 0.04%"
-    assert spot.slippage_pct == 0.0002, "슬리피지 0.02%"
+    assert futures.fee_pct == 0.0008, "선물 수수료 0.08% (taker, AT parity)"
+    assert futures.slippage_pct == 0.0, "선물 슬리피지 0% (AT parity)"
+    assert spot.slippage_pct == 0.0002, "현물 슬리피지 0.02%"
 
 
 def test_direction_filter():
