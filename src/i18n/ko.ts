@@ -548,4 +548,20 @@ export const ko: Record<TranslationKey, string> = {
   'api.sdk_title': '출시 예정',
   'api.sdk_desc': 'Python SDK와 WebSocket 피드가 개발 중입니다. 업데이트는 텔레그램에서 확인하세요.',
   'footer.api': 'API',
+
+  // Social proof / trust section
+  'trust.section_tag': '데이터로 검증됨',
+  'trust.section_title': '모든 주장은 검증 가능합니다.',
+  'trust.badge_mc': '몬테카를로 검증',
+  'trust.badge_mc_desc': '전략당 10,000회 랜덤 시뮬레이션으로 견고성 테스트',
+  'trust.badge_oos': 'Out-of-Sample 테스트',
+  'trust.badge_oos_desc': '2024, 2025, 2026년 데이터에서 독립 검증',
+  'trust.badge_live': '실거래 저널',
+  'trust.badge_live_desc': '실제 자금, 실제 거래, 실제 손실 — 매일 공개',
+  'trust.badge_open': '오픈소스 감사 가능',
+  'trust.badge_open_desc': '모든 전략 코드를 GitHub에 공개. 직접 확인하세요.',
+  'trust.stat_trades': '백테스트 거래 수',
+  'trust.stat_datapoints': '처리된 데이터 포인트',
+  'trust.stat_live_days': '실거래 결과 공개 일수',
+  'trust.stat_strategies': '테스트된 전략 (4개 실패)',
 };

@@ -546,6 +546,22 @@ export const en = {
   'api.sdk_title': 'Coming Soon',
   'api.sdk_desc': 'Python SDK and WebSocket feed are in development. Join our Telegram for updates.',
   'footer.api': 'API',
+
+  // Social proof / trust section
+  'trust.section_tag': 'VERIFIED BY DATA',
+  'trust.section_title': 'Every claim is verifiable.',
+  'trust.badge_mc': 'Monte Carlo Validated',
+  'trust.badge_mc_desc': '10,000 random simulations per strategy to test robustness',
+  'trust.badge_oos': 'Out-of-Sample Tested',
+  'trust.badge_oos_desc': 'Validated across 2024, 2025, and 2026 independently',
+  'trust.badge_live': 'Live Trading Journal',
+  'trust.badge_live_desc': 'Real money, real trades, real losses — published daily',
+  'trust.badge_open': 'Open Source Auditable',
+  'trust.badge_open_desc': 'All strategy code public on GitHub. Verify it yourself.',
+  'trust.stat_trades': 'Trades Backtested',
+  'trust.stat_datapoints': 'Data Points Processed',
+  'trust.stat_live_days': 'Days Live Trading Published',
+  'trust.stat_strategies': 'Strategies Tested (4 Failed)',
 } as const;
 
 export type TranslationKey = keyof typeof en;
