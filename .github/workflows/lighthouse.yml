@@ -3,6 +3,8 @@ name: Lighthouse Audit
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'public/data/**'
   workflow_dispatch:
     inputs:
       pr_number:
