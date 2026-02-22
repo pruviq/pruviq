@@ -66,7 +66,8 @@ def fetch_coingecko_markets() -> list[dict]:
         else:
             print(f"  WARN: Page {page} failed, continuing...")
         if page == 1:
-            time.sleep(6)
+            # Increase sleep to avoid CoinGecko free-tier rate limits
+            time.sleep(12)
     print(f"  Got {len(all_coins)} coins from CoinGecko")
     return all_coins
 
@@ -122,7 +123,11 @@ def build_coins_list(cg_coins: list[dict]) -> list[dict]:
 
 def build_market_json(global_data: Optional[dict], fear_index: int, fear_label: str,
                       coins: list[dict]) -> dict:
-    """Build market.json from global data + top movers."""
+    """Build market.json from global data + top movers.
+
+    If CoinGecko /global API fails (rate limit), fallback to calculating totals
+    from the coins list to avoid zeros showing in the UI.
+    """
     by_change = sorted(coins, key=lambda c: c.get("change_24h", 0), reverse=True)
 
     top_gainers = [
@@ -139,6 +144,17 @@ def build_market_json(global_data: Optional[dict], fear_index: int, fear_label: 
     btc = next((c for c in coins if c["symbol"] == "BTC"), {})
     eth = next((c for c in coins if c["symbol"] == "ETH"), {})
 
+    # Fallback calculations when global_data is unavailable
+    if global_data:
+        total_market_cap_usd = global_data.get("total_market_cap", {}).get("usd", 0)
+        total_volume_usd = global_data.get("total_volume", {}).get("usd", 0)
+        btc_dominance = global_data.get("market_cap_percentage", {}).get("btc", 0)
+    else:
+        total_market_cap_usd = sum(c.get("market_cap", 0) for c in coins)
+        total_volume_usd = sum(c.get("volume_24h", 0) for c in coins)
+        btc_market_cap = next((c.get("market_cap", 0) for c in coins if c["symbol"] == "BTC"), 0)
+        btc_dominance = (btc_market_cap / total_market_cap_usd * 100) if total_market_cap_usd else 0
+
     return {
         "btc_price": btc.get("price", 0),
         "btc_change_24h": btc.get("change_24h", 0),
@@ -146,15 +162,9 @@ def build_market_json(global_data: Optional[dict], fear_index: int, fear_label: 
         "eth_change_24h": eth.get("change_24h", 0),
         "fear_greed_index": fear_index,
         "fear_greed_label": fear_label,
-        "total_market_cap_b": round(
-            (global_data.get("total_market_cap", {}).get("usd", 0) / 1e9) if global_data else 0, 1
-        ),
-        "btc_dominance": round(
-            global_data.get("market_cap_percentage", {}).get("btc", 0) if global_data else 0, 1
-        ),
-        "total_volume_24h_b": round(
-            (global_data.get("total_volume", {}).get("usd", 0) / 1e9) if global_data else 0, 1
-        ),
+        "total_market_cap_b": round((total_market_cap_usd / 1e9) if total_market_cap_usd else 0, 1),
+        "btc_dominance": round(btc_dominance, 1),
+        "total_volume_24h_b": round((total_volume_usd / 1e9) if total_volume_usd else 0, 1),
         "top_gainers": top_gainers,
         "top_losers": top_losers,
         "extreme_funding": [],
@@ -172,7 +182,8 @@ def main():
         sys.exit(1)
 
     # 2. Fetch global data
-    time.sleep(4)
+    # Wait longer between markets and global to avoid CoinGecko rate limits on free tier
+    time.sleep(12)
     global_data = fetch_global_data()
 
     # 3. Fetch Fear & Greed
