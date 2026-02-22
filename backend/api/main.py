@@ -1127,7 +1127,7 @@ FRED_SERIES = {
     "DFF": {"name": "Fed Funds Rate", "unit": "%", "source": "FRED"},
     "DGS10": {"name": "US 10Y Treasury", "unit": "%", "source": "FRED"},
     "DGS2": {"name": "US 2Y Treasury", "unit": "%", "source": "FRED"},
-    "DTWEXBGS": {"name": "US Dollar Index (Broad)", "unit": "Index", "source": "FRED"},
+    "DTWEXBGS": {"name": "USD Trade-Weighted (Broad)", "unit": "Index", "source": "FRED"},
     "T10Y2Y": {"name": "10Y-2Y Yield Spread", "unit": "%", "source": "FRED"},
     "VIXCLS": {"name": "VIX (Volatility Index)", "unit": "Index", "source": "FRED"},
 }
