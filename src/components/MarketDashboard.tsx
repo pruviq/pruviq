@@ -178,9 +178,9 @@ function SkeletonNews() {
 
 /* --- Data Components --- */
 
-function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
+function StatCard({ label, value, sub, color, style }: { label: string; value: string; sub?: string; color?: string; style?: any }) {
   return (
-    <div className="border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] card-hover">
+    <div className="border border-[--color-border] rounded-lg p-4 bg-[--color-bg-card] card-hover" style={style}>
       <div className="text-[11px] text-[--color-text-muted] uppercase tracking-wider mb-1.5">{label}</div>
       <div className="text-2xl font-bold font-mono" style={{ color: color || 'var(--color-text)' }}>{value}</div>
       {sub && <div className="text-xs text-[--color-text-muted] mt-1">{sub}</div>}
@@ -313,6 +313,21 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
     return true;
   }) ?? [];
 
+  // Display helpers: show dash (—) when certain market values are 0 or missing
+  const totalMcapDisplay = market && market.total_market_cap_b ? `$${market.total_market_cap_b.toFixed(0)}B` : '—';
+  const btcDomDisplay = market && market.btc_dominance ? `${market.btc_dominance}%` : '—';
+  const volume24hDisplay = market && market.total_volume_24h_b ? `$${market.total_volume_24h_b.toFixed(0)}B` : '—';
+
+  // Fear & Greed subtle background tint
+  let fearGreedBg: string | undefined = undefined;
+  if (market && market.fear_greed_index != null) {
+    const fgi = market.fear_greed_index;
+    if (fgi >= 0 && fgi <= 25) fearGreedBg = 'rgba(255,0,0,0.08)'; // red tint
+    else if (fgi <= 50) fearGreedBg = 'rgba(255,140,0,0.08)'; // orange tint
+    else if (fgi <= 75) fearGreedBg = 'rgba(144,238,144,0.08)'; // light green tint
+    else fearGreedBg = 'rgba(0,128,0,0.08)'; // green tint
+  }
+
   return (
     <div className="max-w-[1100px] mx-auto">
       {/* Loading skeleton */}
@@ -367,10 +382,10 @@ export default function MarketDashboard({ lang = 'en' }: { lang?: 'en' | 'ko' })
 
           {/* Stat Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <StatCard label={l.fearGreed} value={`${market.fear_greed_index}`} sub={market.fear_greed_label} color={fgColor(market.fear_greed_index)} />
-            <StatCard label={l.totalMcap} value={`$${market.total_market_cap_b.toFixed(0)}B`} />
-            <StatCard label={l.btcDom} value={`${market.btc_dominance}%`} />
-            <StatCard label={l.volume24h} value={`$${market.total_volume_24h_b.toFixed(0)}B`} />
+            <StatCard label={l.fearGreed} value={`${market.fear_greed_index}`} sub={market.fear_greed_label} color={fgColor(market.fear_greed_index)} style={fearGreedBg ? { backgroundColor: fearGreedBg } : undefined} />
+            <StatCard label={l.totalMcap} value={totalMcapDisplay} />
+            <StatCard label={l.btcDom} value={btcDomDisplay} />
+            <StatCard label={l.volume24h} value={volume24hDisplay} />
           </div>
 
           {/* Top Gainers / Losers */}
