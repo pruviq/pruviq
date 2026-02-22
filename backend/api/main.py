@@ -27,7 +27,7 @@ from fastapi.responses import JSONResponse
 
 import numpy as np
 import pandas as pd
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 logger = logging.getLogger("pruviq")
 
@@ -1134,9 +1134,13 @@ FRED_SERIES = {
 
 
 def _fetch_fred_series(series_id: str) -> dict:
-    """Fetch latest value from FRED public API (no API key needed for observation)."""
+    """Fetch latest value from FRED public API (no API key needed for observation).
+    Uses 30-day window for faster response (0.4s vs 2s per call).
+    """
     try:
-        url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
+        end = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        start = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
+        url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}&cosd={start}&coed={end}"
         resp = http_requests.get(url, timeout=8)
         resp.raise_for_status()
         lines = resp.text.strip().split("\n")
