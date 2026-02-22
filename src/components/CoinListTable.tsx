@@ -98,6 +98,88 @@ const labels = {
 
 type SortKey = 'symbol' | 'price' | 'change_1h' | 'change_24h' | 'change_7d' | 'market_cap' | 'volume_24h' | 'win_rate' | 'profit_factor' | 'total_return_pct';
 
+const DIRECTION_LABELS: Record<string, { label: string; color: string }> = {
+  short: { label: 'SHORT', color: 'var(--color-down)' },
+  long: { label: 'LONG', color: 'var(--color-up)' },
+};
+
+function StrategyComparisonRow({ coin, bestStrategyId, colSpan, lang }: {
+  coin: CoinRow; bestStrategyId: string | null; colSpan: number; lang: string;
+}) {
+  const strategies = coin.strategies;
+  if (!strategies || Object.keys(strategies).length === 0) return null;
+
+  const entries = Object.entries(strategies).sort((a, b) => {
+    // Best strategy first, then by profit factor descending
+    if (a[0] === bestStrategyId) return -1;
+    if (b[0] === bestStrategyId) return 1;
+    return (b[1].profit_factor ?? 0) - (a[1].profit_factor ?? 0);
+  });
+
+  return (
+    <tr class="border-b border-[--color-border] bg-[--color-bg]">
+      <td colSpan={colSpan} class="px-0 py-0">
+        <div class="px-4 py-3 ml-4 border-l-2 border-[--color-accent]/30">
+          <div class="text-[0.625rem] text-[--color-text-muted] uppercase tracking-wider mb-2 font-semibold">
+            {lang === 'ko' ? '전략 비교' : 'Strategy Comparison'} — {coin.symbol}
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-[0.75rem] font-mono">
+              <thead>
+                <tr class="text-[--color-text-muted] text-[0.625rem] uppercase tracking-wider">
+                  <th class="text-left py-1 pr-3 font-normal">{lang === 'ko' ? '전략' : 'Strategy'}</th>
+                  <th class="text-center py-1 px-2 font-normal">{lang === 'ko' ? '방향' : 'Dir'}</th>
+                  <th class="text-right py-1 px-2 font-normal">{lang === 'ko' ? '거래' : 'Trades'}</th>
+                  <th class="text-right py-1 px-2 font-normal">{lang === 'ko' ? '승률' : 'WR'}</th>
+                  <th class="text-right py-1 px-2 font-normal">PF</th>
+                  <th class="text-right py-1 pl-2 font-normal">{lang === 'ko' ? '수익률' : 'Return'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map(([sid, st]) => {
+                  const isBest = sid === bestStrategyId;
+                  const dir = DIRECTION_LABELS[st.direction] || DIRECTION_LABELS.short;
+                  return (
+                    <tr key={sid} class={isBest ? 'bg-[--color-accent]/5' : ''}>
+                      <td class="py-1.5 pr-3 text-left whitespace-nowrap">
+                        <span class="inline-flex items-center gap-1.5">
+                          {isBest && <span class="text-[0.5rem] text-[--color-accent]" title="Best">&#9733;</span>}
+                          <span class={isBest ? 'font-semibold text-[--color-text]' : 'text-[--color-text-muted]'}>
+                            {STRATEGY_SHORT_NAMES[sid] || st.name}
+                          </span>
+                        </span>
+                      </td>
+                      <td class="py-1.5 px-2 text-center">
+                        <span class="text-[0.625rem] font-semibold" style={{ color: dir.color }}>{dir.label}</span>
+                      </td>
+                      <td class="py-1.5 px-2 text-right text-[--color-text-muted] tabular-nums">{st.trades ?? '-'}</td>
+                      <td class="py-1.5 px-2 text-right tabular-nums">
+                        {st.win_rate != null
+                          ? <span style={{ color: winRateColor(st.win_rate) }}>{st.win_rate.toFixed(1)}%</span>
+                          : '-'}
+                      </td>
+                      <td class="py-1.5 px-2 text-right tabular-nums">
+                        {st.profit_factor != null
+                          ? <span style={{ color: profitFactorColor(st.profit_factor) }}>{st.profit_factor.toFixed(2)}</span>
+                          : '-'}
+                      </td>
+                      <td class="py-1.5 pl-2 text-right tabular-nums">
+                        {st.total_return_pct != null
+                          ? <span style={{ color: signColor(st.total_return_pct) }}>{st.total_return_pct > 0 ? '+' : ''}{st.total_return_pct.toFixed(1)}%</span>
+                          : '-'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
 function formatMarketCap(v: number | null): string {
   if (v == null || v === 0) return '-';
   if (v >= 1e12) return `$${(v / 1e12).toFixed(2)}T`;
@@ -217,6 +299,7 @@ export default function CoinListTable({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
   const [sortBy, setSortBy] = useState<SortKey>('market_cap');
   const [sortDesc, setSortDesc] = useState(true);
   const [page, setPage] = useState(0);
+  const [expandedCoin, setExpandedCoin] = useState<string | null>(null);
 
   useEffect(() => {
     fetchWithFallback('/coins/stats', STATIC_DATA.coinsStats)
@@ -345,20 +428,30 @@ export default function CoinListTable({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
               const rank = page * PER_PAGE + i + 1;
               const coinUrl = `${basePath}/${coin.symbol.toLowerCase()}`;
               const sparkPositive = (coin.change_7d ?? coin.change_24h ?? 0) >= 0;
+              const hasStrategies = coin.strategies && Object.keys(coin.strategies).length > 1;
+              const isExpanded = expandedCoin === coin.symbol;
 
-              return (
+              return [
                 <tr
                   key={coin.symbol}
                   tabIndex={0}
                   role="link"
-                  onClick={(e: MouseEvent) => { if (!(e.target as HTMLElement).closest('a')) window.location.href = coinUrl; }}
+                  onClick={(e: MouseEvent) => {
+                    const target = e.target as HTMLElement;
+                    if (target.closest('[data-expand]')) {
+                      e.stopPropagation();
+                      setExpandedCoin(isExpanded ? null : coin.symbol);
+                      return;
+                    }
+                    if (!target.closest('a')) window.location.href = coinUrl;
+                  }}
                   onKeyDown={(e: KeyboardEvent) => {
                     if ((e.key === 'Enter' || e.key === ' ') && !(e.target as HTMLElement).closest('a')) {
                       e.preventDefault();
                       window.location.href = coinUrl;
                     }
                   }}
-                  class="cursor-pointer border-b border-[--color-border] row-hover"
+                  class={`cursor-pointer border-b border-[--color-border] row-hover ${isExpanded ? 'bg-[--color-accent]/5' : ''}`}
                 >
                   {/* # */}
                   <td class="px-2 py-2.5 text-center text-[--color-text-muted] text-[0.6875rem]">{rank}</td>
@@ -399,16 +492,43 @@ export default function CoinListTable({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
                       : <span class="text-[--color-text-muted]">-</span>}
                   </td>
 
-                  {/* Best Strategy Name */}
+                  {/* Best Strategy Name + expand toggle */}
                   <td class="px-2 py-2.5 hidden md:table-cell">
-                    <StrategyBadge strategyId={coin.best_strategy} name={coin.best_strategy_name} />
+                    <span class="inline-flex items-center gap-1">
+                      <StrategyBadge strategyId={coin.best_strategy} name={coin.best_strategy_name} />
+                      {hasStrategies && (
+                        <button
+                          data-expand
+                          type="button"
+                          aria-label={isExpanded ? 'Collapse' : 'Compare strategies'}
+                          aria-expanded={isExpanded}
+                          class="ml-0.5 p-0.5 rounded text-[--color-text-muted] hover:text-[--color-accent] transition-colors text-[0.625rem] cursor-pointer bg-transparent border-none"
+                          title={lang === 'ko' ? '전략 비교' : 'Compare'}
+                        >
+                          {isExpanded ? '\u25B2' : '\u25BC'}
+                        </button>
+                      )}
+                    </span>
                   </td>
 
-                  {/* Strategy: WR */}
+                  {/* Strategy: WR + mobile expand */}
                   <td class="px-2 py-2.5 text-right tabular-nums">
-                    {coin.win_rate != null
-                      ? <span style={{ color: winRateColor(coin.win_rate) }}>{coin.win_rate.toFixed(1)}%</span>
-                      : <span class="text-[--color-text-muted]">-</span>}
+                    <span class="inline-flex items-center justify-end gap-0.5">
+                      {coin.win_rate != null
+                        ? <span style={{ color: winRateColor(coin.win_rate) }}>{coin.win_rate.toFixed(1)}%</span>
+                        : <span class="text-[--color-text-muted]">-</span>}
+                      {hasStrategies && (
+                        <button
+                          data-expand
+                          type="button"
+                          aria-label={isExpanded ? 'Collapse' : 'Compare strategies'}
+                          aria-expanded={isExpanded}
+                          class="md:hidden ml-0.5 p-0.5 rounded text-[--color-text-muted] hover:text-[--color-accent] transition-colors text-[0.5rem] cursor-pointer bg-transparent border-none"
+                        >
+                          {isExpanded ? '\u25B2' : '\u25BC'}
+                        </button>
+                      )}
+                    </span>
                   </td>
 
                   {/* Strategy: PF */}
@@ -424,8 +544,17 @@ export default function CoinListTable({ lang = 'en' }: { lang?: 'en' | 'ko' }) {
                       ? <span style={{ color: signColor(coin.total_return_pct) }}>{coin.total_return_pct > 0 ? '+' : ''}{coin.total_return_pct.toFixed(1)}%</span>
                       : <span class="text-[--color-text-muted]">-</span>}
                   </td>
-                </tr>
-              );
+                </tr>,
+                isExpanded && hasStrategies && (
+                  <StrategyComparisonRow
+                    key={`${coin.symbol}-compare`}
+                    coin={coin}
+                    bestStrategyId={coin.best_strategy}
+                    colSpan={13}
+                    lang={lang}
+                  />
+                ),
+              ];
             })}
           </tbody>
         </table>
