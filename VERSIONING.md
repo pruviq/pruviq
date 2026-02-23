@@ -5,7 +5,7 @@
 PRUVIQ has TWO separate version tracks that must never be confused:
 
 ### 1. Platform Version (package.json)
-- **Current**: `0.2.2`
+- **Current**: `0.3.0`
 - **Format**: `0.MAJOR.MINOR` (pre-launch SemVer)
 - **Scope**: Website features, UI, simulator, API, infrastructure
 
