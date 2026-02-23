@@ -358,7 +358,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
           </h1>
           <span class="font-mono text-xl font-semibold">${formatChartPrice(lastBar.c)}</span>
           <span
-            class={`font-mono text-[0.8125rem] font-semibold px-2 py-0.5 rounded ${change >= 0 ? 'text-[--color-up] bg-[rgba(0,255,136,0.1)]' : 'text-[--color-red] bg-[rgba(255,68,68,0.1)]'}`}
+            class={`font-mono text-[0.8125rem] font-semibold px-2 py-0.5 rounded ${change >= 0 ? 'text-[--color-up] bg-[rgba(16,185,129,0.1)]' : 'text-[--color-red] bg-[rgba(255,68,68,0.1)]'}`}
           >
             {change > 0 ? '+' : ''}{change.toFixed(2)}%
           </span>
@@ -389,7 +389,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
         <div class="absolute top-2 right-3 z-10 flex flex-wrap gap-1.5">
           <ToggleBtn active={showBB} activeColor="rgba(100,150,255,0.8)" label={t.bbBands} onClick={() => setShowBB(!showBB)} />
           <ToggleBtn active={showEMA} activeColor="var(--color-chart-ema20)" label={t.ema} onClick={() => setShowEMA(!showEMA)} />
-          <ToggleBtn active={showVol} activeColor="rgba(0,255,136,0.6)" label={t.volume} onClick={() => setShowVol(!showVol)} />
+          <ToggleBtn active={showVol} activeColor="rgba(59,130,246,0.6)" label={t.volume} onClick={() => setShowVol(!showVol)} />
           <button
             onClick={() => chartRef.current?.timeScale().fitContent()}
             aria-label="Reset chart zoom"
@@ -417,7 +417,7 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
             <p class="text-[--color-text-muted] text-xs">{t.ctaDesc}</p>
           </div>
           <div class="flex gap-2 shrink-0">
-            <a href={lang === 'ko' ? '/ko/simulate' : '/simulate'} class="px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:opacity-90 transition-opacity whitespace-nowrap" style="background:#00ff88;color:#0a0a0a">
+            <a href={lang === 'ko' ? '/ko/simulate' : '/simulate'} class="px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:opacity-90 transition-opacity whitespace-nowrap" style="background:#3b82f6;color:#fff">
               {t.ctaSimulate} &rarr;
             </a>
             <a href={lang === 'ko' ? '/ko/fees' : '/fees'} class="border border-[--color-border] text-[--color-text] px-4 py-2 rounded-lg font-semibold text-xs no-underline hover:border-[--color-accent] transition-colors whitespace-nowrap">

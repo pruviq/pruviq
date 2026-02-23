@@ -617,7 +617,7 @@ export default function StrategyBuilder({ lang = 'en' }: Props) {
       const series = chart.addSeries(AreaSeries, {
         lineColor: color,
         topColor: isPositive ? getCssVar('--color-up-fill') : getCssVar('--color-down-fill'),
-        bottomColor: isPositive ? 'rgba(0, 255, 136, 0.0)' : 'rgba(255, 68, 68, 0.0)',
+        bottomColor: isPositive ? 'rgba(16, 185, 129, 0.0)' : 'rgba(255, 68, 68, 0.0)',
         lineWidth: 2,
         priceFormat: {
           type: 'custom',

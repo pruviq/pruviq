@@ -214,7 +214,7 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       const finalValue = cumulativeData.length > 0 ? cumulativeData[cumulativeData.length - 1].value : 0;
       const lineColor = finalValue >= 0 ? getCssVar('--color-accent') : getCssVar('--color-red');
       const topColor = finalValue >= 0 ? getCssVar('--color-accent-glow') : 'rgba(255, 68, 68, 0.3)';
-      const bottomColor = finalValue >= 0 ? 'rgba(0, 255, 136, 0.0)' : 'rgba(255, 68, 68, 0.0)';
+      const bottomColor = finalValue >= 0 ? 'rgba(16, 185, 129, 0.0)' : 'rgba(255, 68, 68, 0.0)';
 
       const areaSeries = chart.addSeries(AreaSeries, {
         lineColor,

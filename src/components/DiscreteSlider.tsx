@@ -125,7 +125,7 @@ export default function DiscreteSlider({
 
         {/* Thumb */}
         <div
-          class="absolute w-5 h-5 rounded-full bg-[--color-accent] shadow-[0_0_8px_rgba(0,255,136,0.4)] -translate-x-1/2 z-[2] transition-[left] duration-100 ease-out"
+          class="absolute w-5 h-5 rounded-full bg-[--color-accent] shadow-[0_0_8px_rgba(59,130,246,0.4)] -translate-x-1/2 z-[2] transition-[left] duration-100 ease-out"
           style={{ left: `${fillPct}%` }}
         />
       </div>
