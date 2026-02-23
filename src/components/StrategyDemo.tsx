@@ -190,7 +190,7 @@ export default function StrategyDemo({
       const series = chart.addSeries(AreaSeries, {
         lineColor: getCssVar('--color-accent'),
         topColor: getCssVar('--color-up-fill'),
-        bottomColor: 'rgba(0, 255, 136, 0.0)',
+        bottomColor: 'rgba(16, 185, 129, 0.0)',
         lineWidth: 2,
         priceFormat: {
           type: 'custom',
@@ -256,7 +256,7 @@ export default function StrategyDemo({
       seriesRef.current.applyOptions({
         lineColor: color,
         topColor: isPositive ? getCssVar('--color-up-fill') : getCssVar('--color-down-fill'),
-        bottomColor: isPositive ? 'rgba(0, 255, 136, 0.0)' : 'rgba(255, 68, 68, 0.0)',
+        bottomColor: isPositive ? 'rgba(16, 185, 129, 0.0)' : 'rgba(255, 68, 68, 0.0)',
       });
       seriesRef.current.setData(result.equity_curve);
       chartRef.current?.timeScale().fitContent();
@@ -339,7 +339,7 @@ export default function StrategyDemo({
         <p class="text-[--color-text-muted] text-sm mb-4">{t.ctaDesc}</p>
         <div class="flex gap-3 flex-wrap">
           <a href="https://accounts.binance.com/register?ref=PRUVIQ" target="_blank" rel="noopener"
-             class="inline-block px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity" style="background:#00ff88;color:#0a0a0a">
+             class="inline-block px-5 py-2.5 rounded-lg font-semibold text-sm no-underline hover:opacity-90 transition-opacity" style="background:#3b82f6;color:#fff">
             {t.ctaExchange} &rarr;
           </a>
           <a href={lang === 'ko' ? '/ko/fees' : '/fees'}

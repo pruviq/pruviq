@@ -22,13 +22,15 @@
   --color-bg-card: #111111;
   --color-bg-hover: #1a1a1a;
   --color-border: #222222;
-  --color-accent: #00ff88;
-  --color-accent-dim: #00cc6a;
+  --color-accent: #3b82f6;
+  --color-accent-dim: #2563eb;
   --color-text: #e5e5e5;
   --color-text-muted: #888888;
-  --color-red: #ff4444;
+  --color-red: #ef4444;
   --color-yellow: #ffaa00;
-  --color-up: #16c784;
+  --color-up: #10b981;
+  --color-green: #10b981;
+  --color-green-dim: #059669;
   --color-down: #ea3943;
   --color-fg-extreme-fear: #ea3943;
   --color-fg-fear: #ea8c00;
@@ -36,19 +38,19 @@
   --color-fg-greed: #93d900;
   --color-fg-extreme-greed: #16c784;
   --color-chart-grid: #131313;
-  --color-chart-crosshair: rgba(0, 255, 136, 0.27);
+  --color-chart-crosshair: rgba(59, 130, 246, 0.27);
   --color-chart-bb: rgba(100, 150, 255, 0.5);
   --color-chart-bb-fill: rgba(100, 150, 255, 0.06);
   --color-chart-ema20: #ffaa00;
   --color-chart-ema50: #aa66ff;
-  --color-chart-vol-up: rgba(22, 199, 132, 0.3);
+  --color-chart-vol-up: rgba(16, 185, 129, 0.3);
   --color-chart-vol-down: rgba(234, 57, 67, 0.3);
   --color-btc: #f7931a;
   --color-eth: #627eea;
   --color-bg-tooltip: rgba(17, 17, 17, 0.8);
-  --color-accent-glow: rgba(0, 255, 136, 0.3);
-  --color-up-fill: rgba(0, 255, 136, 0.2);
-  --color-down-fill: rgba(255, 68, 68, 0.2);
+  --color-accent-glow: rgba(59, 130, 246, 0.3);
+  --color-up-fill: rgba(16, 185, 129, 0.2);
+  --color-down-fill: rgba(239, 68, 68, 0.2);
   --color-bg-subtle: rgba(255, 255, 255, 0.02);
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -66,7 +68,7 @@ body {
 
 ::selection {
   background-color: var(--color-accent);
-  color: var(--color-bg);
+  color: #ffffff;
 }
 
 /* Animations */
@@ -81,12 +83,12 @@ body {
 }
 
 @keyframes flash-green {
-  0% { background-color: rgba(0, 255, 136, 0.15); }
+  0% { background-color: rgba(16, 185, 129, 0.15); }
   100% { background-color: transparent; }
 }
 
 @keyframes flash-red {
-  0% { background-color: rgba(255, 68, 68, 0.15); }
+  0% { background-color: rgba(239, 68, 68, 0.15); }
   100% { background-color: transparent; }
 }
 
@@ -109,13 +111,13 @@ body {
 
 /* Primary CTA glow */
 .btn-primary {
-  background-color: var(--color-accent, #00ff88) !important;
-  color: var(--color-bg, #0a0a0a) !important;
+  background-color: var(--color-accent, #3b82f6) !important;
+  color: #ffffff !important;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .btn-primary:hover {
-  background-color: var(--color-accent-dim, #00cc6a) !important;
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 0 40px rgba(0, 255, 136, 0.1);
+  background-color: var(--color-accent-dim, #2563eb) !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.1);
 }
 
 /* Card hover effect */
@@ -133,7 +135,7 @@ body {
   transition: background-color 0.15s ease;
 }
 .row-hover:hover {
-  background-color: rgba(0, 255, 136, 0.03);
+  background-color: rgba(59, 130, 246, 0.03);
 }
 
 /* Fade in utility */
@@ -191,10 +193,10 @@ a[href]:active {
 
 /* Simulator button selected glow */
 .sim-btn-active {
-  box-shadow: 0 0 8px rgba(0, 255, 136, 0.25), inset 0 0 12px rgba(0, 255, 136, 0.06);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.25), inset 0 0 12px rgba(59, 130, 246, 0.06);
 }
 .sim-btn-active-red {
-  box-shadow: 0 0 8px rgba(255, 68, 68, 0.25), inset 0 0 12px rgba(255, 68, 68, 0.06);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.25), inset 0 0 12px rgba(239, 68, 68, 0.06);
 }
 
 /* ─── Dark-mode form elements (select, input, option) ─── */
