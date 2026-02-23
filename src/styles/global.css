@@ -175,14 +175,23 @@ nav.scrolled {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Active press feedback */
+/* Active press feedback — strong visual click */
 button,
 a[href] {
-  transition: transform 0.1s ease;
+  transition: transform 0.08s ease, filter 0.08s ease, box-shadow 0.08s ease;
 }
 button:active:not(:disabled),
 a[href]:active {
-  transform: scale(0.98);
+  transform: scale(0.93) !important;
+  filter: brightness(0.7);
+}
+
+/* Simulator button selected glow */
+.sim-btn-active {
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.25), inset 0 0 12px rgba(0, 255, 136, 0.06);
+}
+.sim-btn-active-red {
+  box-shadow: 0 0 8px rgba(255, 68, 68, 0.25), inset 0 0 12px rgba(255, 68, 68, 0.06);
 }
 
 /* Focus visible (keyboard navigation) */
