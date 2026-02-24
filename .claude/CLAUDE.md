@@ -1,3 +1,35 @@
+# OWNER DIRECTIVES (최우선 — 반드시 따를 것)
+
+## 현재 작업 우선순위
+
+P0: /coins/[symbol] 상세 페이지 404 수정 (동적 라우트 → SSG getStaticPaths)
+P1: Terms of Service + Privacy Policy 페이지 생성
+P2: 모바일 반응형 개선 (/simulate/ 페이지 터치타겟)
+P3: SEO meta 태그 누락 페이지 보완
+
+## 금지 사항 (STOP LIST)
+
+다음을 하면 안 됨:
+- 문서/프레임워크/프로세스 문서 생성
+- 모니터링 인프라 구축 제안
+- 스킬 추가/생성
+- 리서치 보고서 작성
+- 선택지(A/B/C/D) 제시 — 바로 실행
+- MEMORY.md 자동 업데이트
+- GitHub 이슈에 자동 코멘트
+- git commit/push (PR만 생성, 머지는 오너가 함)
+
+## 응답 규칙
+
+3줄로 답할 것:
+- What: 뭘 했는지 (1줄)
+- Result: 빌드 통과 여부, PR 링크 (1줄)
+- Next: 다음 작업 (1줄)
+
+이 규칙을 어기면 안 됨.
+
+---
+
 # PRUVIQ v1.5.0
 
 "Don't Believe. Verify." — 무료 크립토 전략 시뮬레이션 + 시장 컨텍스트 플랫폼
@@ -173,10 +205,10 @@ pruviq/
 │   └── data/                # Pre-computed 데모 JSON
 ├── docs/                    # 설계 문서, 감사 보고서
 └── .claude/
-    └── agents/              # 5개 전문가 에이전트
+    └── agents/              # 8개 전문가 에이전트
 ```
 
-## 에이전트 (5개)
+## 에이전트 (8개)
 
 | 에이전트 | 역할 | 도구 |
 |----------|------|------|
@@ -185,6 +217,9 @@ pruviq/
 | qa-tester | i18n 완성도, 기능 테스트, 데이터 정합성 | Bash, Read, Grep, Glob, WebFetch |
 | seo-specialist | 메타 태그, 인덱싱, 구조화 데이터, 키워드 | Read, Grep, Glob, WebSearch, WebFetch |
 | content-strategist | 카피라이팅, 포지셔닝, 경쟁사 비교, 한국어 | Read, Grep, Glob, WebSearch, WebFetch |
+| backend-engineer | FastAPI, 시뮬레이션 엔진, 데이터 파이프라인 | Bash, Read, Write, Edit, Grep, Glob |
+| e2e-tester | Playwright E2E, 스크린샷, 회귀 테스트 | Bash, Read, Write, Edit, Grep, Glob, WebFetch |
+| deployment-ops | cron, 파이프라인, API 상태, 장애 대응, 인프라 | Bash, Read, Write, Edit, Grep, Glob, WebFetch |
 
 ## 변경 이력
 
