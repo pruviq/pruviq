@@ -13,11 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Attempt auto-merge if labeled and checks pass
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const labelName = 'automerge';
             const restrictedPrefixes = ['backend/'];
+            const MIN_CHECK_RUNS = 2;
 
             let pr = null;
             if (context.eventName === 'pull_request') {
@@ -65,22 +66,41 @@ jobs:
               }
             }
 
-            // Check combined status for head SHA
+            // Check Runs (not legacy commit statuses) for head SHA
             const headSha = pr.head && pr.head.sha ? pr.head.sha : null;
             if (!headSha) {
               core.info('No head SHA found for PR; aborting.');
               return;
             }
 
-            const status = await github.rest.repos.getCombinedStatusForRef({
+            const checks = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: headSha,
             });
-            core.info(`Combined status for ${headSha}: ${status.data.state}`);
 
-            if (status.data.state !== 'success') {
-              core.info('Checks not green yet; will not merge.');
+            const checkRuns = checks.data.check_runs.filter(
+              c => c.name !== 'attempt-merge'  // Exclude self
+            );
+            const total = checkRuns.length;
+            const allCompleted = checkRuns.every(c => c.status === 'completed');
+            const allSuccess = checkRuns.every(c => c.conclusion === 'success');
+
+            core.info(`Check Runs for ${headSha}: ${total} total, allCompleted=${allCompleted}, allSuccess=${allSuccess}`);
+            checkRuns.forEach(c => core.info(`  - ${c.name}: ${c.status} / ${c.conclusion}`));
+
+            if (total < MIN_CHECK_RUNS) {
+              core.info(`Only ${total} check runs found (minimum ${MIN_CHECK_RUNS}). Waiting for more.`);
+              return;
+            }
+
+            if (!allCompleted) {
+              core.info('Some checks still running; will not merge yet.');
+              return;
+            }
+
+            if (!allSuccess) {
+              core.info('Some checks failed; will not merge.');
               return;
             }
 
@@ -90,7 +110,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-                merge_method: 'merge',
+                merge_method: 'squash',
               });
               core.info(`Merged PR #${prNumber}`);
             } catch (err) {
