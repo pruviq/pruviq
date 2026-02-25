@@ -474,3 +474,39 @@ Generated and committed by 프루빅 on 2026-02-25 10:30 KST.
        - Review & merge open PRs for mobile touch targets (#30), contrast (#31), and SEO meta (#33) as appropriate.
 
 Generated and committed by PRUVIQ Bot on 2026-02-25 14:34 KST.
+
+
+- cron:63c0583a-741f-4b76-9f53-861ab7456f81 (gh-issues-autofix)
+  - Time: 2026-02-25 18:30 KST
+  - Actor: PRUVIQ Bot (프루빅)
+  - Action requested: list open GitHub issues (limit 10), assess fixability, create branches/PRs for fixable issues or comment when not fixable, and update MEMORY.md.
+  - What I did:
+    1. Read SOUL.md and MEMORY.md to confirm process rules and current project state.
+    2. Ran: `cd /Users/openclaw/pruviq && gh issue list --state open --limit 10` — found issues #36, #35, #21, #19, #12, #11, #10, #9, #8, #7.
+    3. Actions per issue:
+       - #36 (Improve: Network dependency tree, KO): Requested the originating pagespeed/agent audit artifact (issue had no actionable details). Will triage once artifact attached.
+       - #35 (Improve: Network dependency tree, EN): Same as #36 — requested audit artifact.
+       - #21 (chore/research: BRAVE_API_KEY): Prepared a draft workflow that demonstrates secure usage of BRAVE_API_KEY (does not include the secret). Branch: `agents/enable-brave-workflow-20260225`. Workflow exits safely if the secret is not set. To run the Brave-enabled research PoC an admin must add BRAVE_API_KEY as a repo secret or organization secret.
+       - #19 (OPS: api.pruviq.com 502/503): Operational. Added an uptime-monitor workflow earlier (PR #37) that pings endpoints and creates issues on 5xx. Asked ops to attach Cloudflare/origin logs and Sentry traces when incidents occur.
+       - #12 (Trust signals / reproducible package): Frontend PoC and demo artifacts exist in public/data/reproducible. Full automation requires CI and artifact hosting; offered to prepare a CI workflow on request.
+       - #11 (Mobile touch targets): Fix PR exists (PR #30). Recommended review/merge.
+       - #10 (i18n Learn translations): Parity verified; build produces /ko/learn pages. Offered to run a key-diff script if content team requests it.
+       - #9 (SEO meta & sitemap): Korean meta PR exists (PR #33). Recommended review/merge and post-merge Lighthouse checks.
+       - #8 (A11Y /simulate contrast): Contrast fix PR exists (PR #31). Recommended review/merge and post-merge axe check.
+       - #7 (OPS /coins/stats 503): Operational — tied into uptime-monitor PR #37 and requested logs/traces for root-cause analysis.
+    4. Code changes performed in this run:
+       - Created branch `agents/enable-brave-workflow-20260225` and added `.github/workflows/agent-research-brave.yml` (draft workflow that demonstrates use of BRAVE_API_KEY; exits safely when secret missing).
+       - Appended this CRON run log to MEMORY.md.
+       - Ran `npm run build` locally to verify site still builds after adding the workflow. Build succeeded.
+       - Committed changes and pushed branch; created PR (see PR link below).
+    5. Issue comments posted/updated:
+       - #36/#35: requested audit artifacts for triage.
+       - #21: linked the draft workflow PR and noted an admin must add BRAVE_API_KEY to run the Brave-enabled agent.
+       - #19/#7: linked uptime-monitor PR #37 and requested logs/traces when 5xx occur.
+       - #12/#11/#10/#9/#8: status comments linking existing PRs or offering next steps.
+    6. Next steps / recommendations:
+       - Owner/admin: add BRAVE_API_KEY as a repo secret (Settings → Secrets → Actions) or as an org-level secret; then the draft workflow can be executed to run Brave-enabled research.
+       - Ops: when 5xx/503s are detected, attach Cloudflare/origin logs, recent deploy IDs, and Sentry trace IDs to the generated issue so I can analyze traces.
+       - Review & merge open PRs: #30 (touch targets), #31 (contrast), #33 (SEO), and this new PR for the Brave workflow if acceptable.
+
+Generated and committed by PRUVIQ Bot on 2026-02-25 18:30 KST.

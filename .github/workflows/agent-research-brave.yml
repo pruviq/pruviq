@@ -1,0 +1,42 @@
+name: Agent research — Brave-enabled (draft)
+
+on:
+  workflow_dispatch: {}
+  # optional schedule (disabled by default)
+  # schedule:
+  #   - cron: '0 4 * * 1' # weekly
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run research PoC (Brave)
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          TZ: 'Asia/Seoul'
+        run: |
+          mkdir -p reports
+          if [ -z "${BRAVE_API_KEY}" ]; then
+            echo "BRAVE_API_KEY not set. This is a draft workflow that demonstrates how the research agent would use the secret. Add repository secret BRAVE_API_KEY to run a Brave-enabled report."
+            exit 0
+          fi
+          python3 scripts/research_agent.py --out reports/agent-research-$(date +%F).md
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-research-brave
+          path: reports/agent-research-*.md
+
+# Notes:
+# - This workflow is a draft that demonstrates reading BRAVE_API_KEY from repository secrets.
+# - It will exit early (no-op) if BRAVE_API_KEY is not set so the workflow is safe to keep in the repo.
+# - To enable: add a repo secret named BRAVE_API_KEY (Settings → Secrets → Actions) or set it in the organization level.
