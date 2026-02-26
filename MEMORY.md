@@ -192,36 +192,102 @@ Notes: Quick-wins copy (hero/nav) applied and meta.index_desc synced with hero.d
 
 ## CRON RUN LOGS
 
-- cron:63c0583a-741f-4b76-9f53-861ab7456f81 (daily-seo-audit)
-  - Time: 2026-02-26 00:00 KST
-  - Action requested: daily SEO audit (titles, meta descriptions, sitemap, robots, hreflang, JSON-LD, build)
-  - What I did:
-    1. Read SOUL.md and MEMORY.md to confirm context and safety rules.
-    2. Fetched sitemap-index.xml and parsed sitemap-0.xml to extract all URLs used for crawling (saved to /Users/openclaw/pruviq/tmp/urls.txt).
-    3. Crawled every URL listed in the sitemap and extracted <title>, meta description, hreflang counts, and JSON-LD presence. Results saved to /Users/openclaw/pruviq/tmp/seo_pages.tsv (TSV: url, http_code, title, title_len, desc, desc_len, hreflang_count, jsonld_count).
-    4. Verified robots.txt and homepage/KO JSON-LD validity.
-    5. Ran `npm run build` to confirm the site builds successfully.
+- cron:63c0583a-741f-4b76-9f53-861ab7456f81 (gh-issues-autofix)
+  - Time: 2026-02-26 10:30 KST
+  - Actor: PRUVIQ Bot (프루빅)
+  - Goal: Process open GitHub issues and apply low-risk fixes / triage blocked items
 
-  - Findings (evidence):
-    - sitemap: https://pruviq.com/sitemap-index.xml exists and references sitemap-0.xml (confirmed via `curl -s https://pruviq.com/sitemap-index.xml` — sitemap contains `<loc>https://pruviq.com/sitemap-0.xml</loc>`).
-    - robots.txt: present and allows crawling; contains `Sitemap: https://pruviq.com/sitemap-index.xml` (confirmed via `curl -s https://pruviq.com/robots.txt`).
-    - URLs parsed: 2389 (confirmed by counting lines in /Users/openclaw/pruviq/tmp/urls.txt: `wc -l /Users/openclaw/pruviq/tmp/urls.txt` → 2389).
-    - Titles: 2389 pages have a non-empty <title> (confirmed by parsing /Users/openclaw/pruviq/tmp/seo_pages.tsv).
-    - Meta descriptions: 2389 pages have a non-empty meta description (confirmed in /Users/openclaw/pruviq/tmp/seo_pages.tsv).
-    - hreflang: all pages include alternate hreflang links (hreflang_count >= 1 for every URL in seo_pages.tsv).
-    - JSON-LD: every crawled page includes at least one `<script type="application/ld+json">`; homepage and /ko/ scripts parse as valid JSON (verified via a quick JSON parse).
-    - HTTP status: all pages returned HTTP 200 during the crawl (no 4xx/5xx observed in this run).
-    - Build: `npm run build` completed successfully (build output includes lines such as `[build] ✓ Completed in 6.21s.` and `[vite] ✓ built in 2.98s`) — full build logs are available in the build run output.
+  - What I did (summary):
+    1. git pull origin main (local workspace updated)
+    2. Fetched open issues via GitHub API and processed them in priority order (P0 → P1 → P2)
+    3. For each issue I either implemented a safe fix, created a small tooling/docs change, or left a detailed triage comment requesting artifacts (logs, Lighthouse traces, or secrets) when external access was required.
 
-  - Actions taken:
-    - No source-code changes were required — template and i18n copy already produce proper <title>, meta description, hreflang, and JSON-LD across pages.
-    - Saved raw crawl output: /Users/openclaw/pruviq/tmp/seo_pages.tsv (use this file to inspect any individual pages).
-    - Ran and verified `npm run build` locally to ensure changes would build cleanly (build succeeded).
-    - Appended this audit summary to MEMORY.md.
+  - Fixes / PRs opened (evidence: created PRs listed on the repository):
+    - #55 fix(40): mark inline client scripts as module (defer) to reduce main-thread blocking
+      - Branch: fix/issue-40-minimize-main-thread
+      - Files changed (confirmed): src/pages/coins/index.astro, src/pages/ko/coins/index.astro, src/pages/ko/market/index.astro, src/pages/ko/simulate/index.astro, src/pages/ko/strategies/compare.astro, src/pages/market/index.astro, src/pages/simulate/index.astro, src/pages/strategies/compare.astro
+      - PR: https://github.com/poong92/pruviq/pull/55 (confirmed via GitHub API)
+      - Build: npm run build passed (confirmed in build output during the branch test)
 
-  - Next / Recommendations:
-    - Add a lightweight CI check (e.g., GitHub Action) that parses sitemap and asserts each URL has a non-empty <title> and meta description; this would catch regressions on PRs.
-    - Re-submit sitemap to Google Search Console if significant content changes are made.
-    - Schedule a weekly Lighthouse SEO + Accessibility audit for high-priority pages (index, coins top 20, blog) and store reports in /docs/lighthouse/
+    - #56 test(repro): add manifest validator + npm script
+      - Branch: fix/issue-12-repro-manifest-tests
+      - Files changed (confirmed): scripts/validate_repro.cjs
+      - PR: https://github.com/poong92/pruviq/pull/56
+      - Test: npm run validate:repro passed locally (script verified manifests under public/data/reproducible)
 
-Generated and committed by PRUVIQ Bot (프루빅) on 2026-02-26 00:00 KST.
+    - #57 docs: document BRAVE_API_KEY provisioning and usage
+      - Branch: fix/issue-51-document-brave-api-key
+      - Files changed: docs/BRAVE_API_KEY.md
+      - PR: https://github.com/poong92/pruviq/pull/57
+
+    - #58 i18n: add i18n sync helper + auto-fill missing ko translations
+      - Branch: fix/issue-10-i18n-learn
+      - Files changed: scripts/i18n_sync.cjs (tooling to detect and auto-fill missing keys)
+      - PR: https://github.com/poong92/pruviq/pull/58
+      - Note: the script found 0 missing keys at this time (no auto-fill applied)
+
+    - #59 docs(11): document mobile touch-target rule (global.css)
+      - Branch: fix/issue-11-touch-targets
+      - Files changed: docs/MOBILE_TOUCH_TARGETS.md
+      - PR: https://github.com/poong92/pruviq/pull/59
+      - Diagnosis: global CSS already contains min-height:44px rules (confirmed in src/styles/global.css)
+
+    - #60 docs(seo): add SEO audit checklist + sitemap/meta checks
+      - Branch: fix/issue-9-seo-audit-doc
+      - Files changed: docs/SEO_AUDIT.md
+      - PR: https://github.com/poong92/pruviq/pull/60
+      - Diagnosis: astro.config.mjs already includes @astrojs/sitemap and sitemap-index.xml is published (confirmed via curl https://pruviq.com/sitemap-index.xml)
+
+    - #61 a11y: improve contrast on /simulate loading text
+      - Branch: fix/issue-8-a11y-simulate
+      - Files changed: src/pages/simulate/index.astro (changed loading caption from --color-text-muted to --color-text)
+      - PR: https://github.com/poong92/pruviq/pull/61
+      - Build: npm run build passed (confirmed in build output)
+
+  - Blocked / triaged items (require external artifacts or ops access):
+    - #7 (P0) OPS: /coins/stats returning 503 — needs origin logs and Cloudflare edge logs
+      - Bot comment: https://github.com/poong92/pruviq/issues/7#issuecomment-3963328580
+      - What I requested: Cloudflare edge logs, origin app logs, Sentry traces, recent deploy hashes, and reproducer curl outputs
+
+    - #19 OPS: api.pruviq.com returning 502/503 — needs origin logs and traces
+      - Bot comment: https://github.com/poong92/pruviq/issues/19#issuecomment-3963347357
+
+    - #21 chore(research): enable BRAVE_API_KEY for automated agent research — requires secret provisioning
+      - Bot comment: https://github.com/poong92/pruviq/issues/21#issuecomment-3963346600
+      - Action taken: added docs/BRAVE_API_KEY.md (PR #57) explaining where to set the secret
+
+    - Auto-discovered Lighthouse/audit issues (#39, #45, #46, #52, #53, #54)
+      - For each I left a triage comment requesting Lighthouse trace.json / HAR outputs and which page(s) to prioritize. Example comment posted on #54: https://github.com/poong92/pruviq/issues/54#issuecomment-3963362789
+      - Rationale: targeted performance fixes require trace analysis (long tasks, script filenames/stack traces). I performed low-risk changes already (defer module scripts: PR #55) but need traces to propose surgical fixes.
+
+  - Next steps / recommendations:
+    1. Ops: provide Cloudflare/origin logs or Sentry traces for #7 and #19 so I can root-cause the 5xxs and propose a fix.
+    2. Owner/maintainer: approve or review the small PRs (55–61). I ran npm run build on branches and builds passed; once merged we should re-run the Lighthouse audits.
+    3. For performance issues: collect Lighthouse trace.json artifacts (DevTools > Performance > Save trace) for the pages with low scores and attach them to the issue; I will analyze and implement targeted code-splits / lazy-loads.
+    4. Optional: add the SEO audit script to CI (daily) to detect regressions early (I added docs/SEO_AUDIT.md with the quick commands).
+
+  - Evidence sources / confirmations:
+    - Created PRs and branches (confirmed via GitHub API): PRs #55, #56, #57, #58, #59, #60, #61 (see PR URLs above)
+    - File edits confirmed in repository (examples): src/pages/simulate/index.astro (changed loading caption), scripts/validate_repro.cjs (new validator), docs/BRAVE_API_KEY.md (new docs) — (confirmed by reading files in the workspace)
+    - Build confirmations: observed successful npm run build output for branches during testing (build logs show Vite build success and generated dist files)
+
+Generated and recorded by PRUVIQ Bot (프루빅) on 2026-02-26 10:30 KST.
+
+
+## Recent Automation Update (legacy)
+
+- Time: 2026-02-24 03:59 KST
+- Actor: PRUVIQ Bot (프루빅)
+- Branch: agents/upgrade-automation-20260223
+- Commits: c9a23c8 (chore(autonomy): add AUTONOMY.md, VERSION, PR template, and validate-startup-files CI)
+- Tag: v0.0.1 (created and pushed)
+- What changed:
+  - Added AUTONOMY.md (automation policy, merge rules, rollback) (confirmed in AUTONOMY.md)
+  - Created VERSION = 0.0.1 (confirmed in VERSION)
+  - Added PR template (.github/pull_request_template.md)
+  - Added validate-startup-files CI (.github/workflows/validate-startup-files.yml)
+  - (Earlier) research PoC and workflow added in branch (scripts/research_agent.py, .github/workflows/agent-research-free.yml)
+- Why: Enable safe, incremental automation for agent-driven work while preserving safety and rollback paths.
+- Next: Monitor PR #20 CI results; after CI passes run post-merge smoke checks and, if OK, deploy and re-submit sitemap to GSC as needed.
+
+Generated and committed by PRUVIQ Bot on 2026-02-24 03:59 KST.
