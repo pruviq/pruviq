@@ -290,3 +290,20 @@ Generated and committed by PRUVIQ Bot (프루빅) on 2026-02-27 00:00 KST.
     - Monitor PRs #61/#79/#80 for CI results and review feedback. If CI fails with reproducible errors I will diagnose and attempt fixes locally, then push fixes to the branch.
 
 Generated and committed by PRUVIQ Bot (프루빅) on 2026-02-27 08:11 KST.
+
+- cron:63c0583a-741f-4b76-9f53-861ab7456f81 (gh-issues-autofix)
+  - Time: 2026-02-27 10:14 KST
+  - Action: autonomously fixed failed PRs and progressed open issues (see details below)
+  - What I did:
+    1. Ensured repo was up-to-date: `git checkout main && git pull origin main` (confirmed).
+    2. PR #81 (branch: wip/data-updates-20260227T001157Z): removed stray empty file `docs/seo/SE` that was likely causing the SEO check to fail. Commit: bbeac1b (branch commit). Pushed to origin -> CI will re-run. Verified locally: `npm run build` succeeded (build summary: "Complete!").
+    3. PR #80 (branch: fix/issue-9-seo-meta-sitemap): local build passed; pushed an empty commit (04d8210) to retrigger CI.
+    4. PR #79 (branch: fix/issue-12-verified-strategies-manifest): closed automatically after JEPO auto-skip indicated 3 consecutive timeouts (closed and branch deleted). (Evidence: gh pr close output / PR comment.)
+    5. Issue #12 (P1-high: Verified strategies PoC): created a PoC manifest at `public/data/reproducible/bb-squeeze-short/manifest.json` (result_hash is a placeholder: "needs_verification"). Commit: b27d339. Opened PR #82 for review.
+       - Note: `public/data` is gitignored in local config; I used `git add -f` to add the PoC file so it is tracked for the PoC. Build verified locally (`npm run build` succeeded).
+    6. Issue #21 (BRAVE_API_KEY for research PoC): blocked — cannot provision secrets from this environment. Posted diagnostic comment referencing `docs/BRAVE_API_KEY.md` and `.github/workflows/research-poc.yml` and requested ops action to add the `BRAVE_API_KEY` secret.
+    7. Issue #9 and #8 already had open PRs (PR #80, PR #61) — I retriggered CI on them (empty commits) where appropriate.
+  - Result / Next steps:
+    - PRs updated: #81 (fix pushed), #80 (CI retriggered), #82 (opened for PoC), #61 (CI retriggered earlier). Monitor CI for failures.
+    - Blocker: issue #21 requires ops to provision BRAVE_API_KEY. Once available I will run the Research PoC and attach artifacts.
+
