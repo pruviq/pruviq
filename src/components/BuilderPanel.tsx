@@ -62,6 +62,7 @@ const runDisabledStyle = { background: COLORS.disabled, color: COLORS.disabledTe
 
 export default function BuilderPanel(props: Props) {
   const { t } = props;
+  const hasLookAhead = props.conditions.some((c) => c.shift === 0);
 
   return (
     <div class="border border-[--color-border] rounded-lg bg-[--color-bg-card] overflow-hidden flex flex-col h-auto md:h-[640px]">
@@ -132,6 +133,14 @@ export default function BuilderPanel(props: Props) {
               />
             ))}
           </div>
+          {/* Look-ahead bias warning */}
+          {hasLookAhead && (
+            <div class="mt-2 px-2.5 py-1.5 rounded bg-[--color-yellow]/10 border border-[--color-yellow]/20">
+              <span class="text-[10px] font-mono text-[--color-yellow]">
+                {t.lookAheadWarn || 'C = current candle (incomplete in live). P = previous candle (confirmed). Using C may cause look-ahead bias.'}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Parameters */}
