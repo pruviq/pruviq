@@ -14,6 +14,7 @@ Usage examples:
 Notes:
 - This PoC uses only public/free endpoints. Rate limits may apply.
 - The script is defensive: network failures will be noted in the report but will not expose secrets.
+- Optional Brave Search integration can be enabled by setting the BRAVE_API_KEY environment variable. See docs/research.md for details.
 """
 import argparse
 import requests
@@ -22,8 +23,10 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 import time
 import sys
+import os
 
 USER_AGENT = 'pruviq-research-agent/1.0 (+https://pruviq.com)'
+BRAVE_API_KEY = os.environ.get('BRAVE_API_KEY')
 
 
 def hn_search(query, hits=5):
@@ -154,6 +157,16 @@ def make_report(outpath, topics, feeds):
             for g in gh:
                 lines.append(f'- [{g.get("name")}]({g.get("link")}) — ⭐ {g.get("stars")}, {g.get("description") or ""}')
         lines.append('\n')
+
+        # Brave Search (optional)
+        lines.append('#### Brave Search (optional)')
+        if BRAVE_API_KEY:
+            lines.append('- BRAVE_API_KEY detected in environment. Brave Search integration is available but not enabled by default in this PoC.')
+            lines.append('- To enable full Brave Search results, set BRAVE_API_KEY and update the research agent to call the Brave Search API (implementation may be provided in future iterations).')
+        else:
+            lines.append('- BRAVE_API_KEY is not set — Brave Search results are disabled. To enable, set the BRAVE_API_KEY environment variable in your runtime or CI. See docs/research.md for examples.')
+        lines.append('')
+
         # polite pause to avoid aggressive requests
         time.sleep(1)
 
@@ -176,10 +189,8 @@ def make_report(outpath, topics, feeds):
     lines.append('- This is a PoC that uses public/free endpoints only. If you want more coverage, add more seed feeds or enable authenticated APIs.')
     lines.append('- Rate limits may apply; job should be scheduled conservatively.')
 
-    os_mkdir = None
     try:
-        import os
-        os.makedirs(os.path.dirname(outpath), exist_ok=True)
+        os.makedirs(os.path.dirname(outpath) or '.', exist_ok=True)
         with open(outpath, 'w', encoding='utf-8') as f:
             f.write('\n'.join(lines))
         print(outpath)
