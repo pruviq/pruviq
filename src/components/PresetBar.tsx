@@ -17,8 +17,8 @@ export default function PresetBar({ presets, activePreset, onSelectPreset, label
   if (presets.length === 0) return null;
 
   return (
-    <div class="px-3 py-2 border-b border-[--color-border]">
-      <div class="text-[10px] font-mono text-[--color-text-muted] uppercase mb-1.5">{label}</div>
+    <div class="px-3 py-2 border-b border-[--color-border]" style={{ background: `linear-gradient(135deg, ${COLORS.accentBg}, transparent)` }}>
+      <div class="text-[10px] font-mono uppercase mb-1.5" style={{ color: COLORS.accent }}>{label}</div>
       <div class="flex flex-wrap gap-1">
         <button
           onClick={() => onSelectPreset(null)}
