@@ -262,6 +262,7 @@ export default function OOSValidation({ lang = 'en', strategy = 'bb-squeeze', di
                 [t(lang, 'oos.win_rate', 'Win Rate'), `${fmt(result.oos.is_metrics.win_rate)}%`, `${fmt(result.oos.oos_metrics.win_rate)}%`],
                 [t(lang, 'oos.return', 'Return'), `${fmt(result.oos.is_metrics.total_return)}%`, `${fmt(result.oos.oos_metrics.total_return)}%`],
                 [t(lang, 'oos.pf', 'Profit Factor'), fmt(result.oos.is_metrics.profit_factor), fmt(result.oos.oos_metrics.profit_factor)],
+                [t(lang, 'oos.mdd', 'Max Drawdown'), `${fmt(result.oos.is_metrics.max_dd)}%`, `${fmt(result.oos.oos_metrics.max_dd)}%`],
               ].map(([label, isVal, oosVal]) => (
                 <div class="flex justify-between items-center text-sm">
                   <span class="text-[var(--color-text-muted)]">{label}</span>

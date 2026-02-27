@@ -61,8 +61,12 @@ export default function ConditionRow({ condition: c, availableFields, onUpdate, 
       <select
         value={c.shift}
         onChange={(e: any) => onUpdate(c.id, 'shift', parseInt(e.target.value))}
-        class="w-10 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]"
-        title={c.shift === 1 ? 'Previous candle (safe)' : 'Current candle (risky)'}
+        class={`w-10 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] ${
+          c.shift === 0
+            ? 'border-[--color-yellow] text-[--color-yellow]'
+            : 'border-[--color-border] text-[--color-text]'
+        }`}
+        title={c.shift === 1 ? 'Previous candle (safe)' : 'Current candle — look-ahead bias risk in live trading'}
       >
         <option value="1">P</option>
         <option value="0">C</option>

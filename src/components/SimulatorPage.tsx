@@ -49,7 +49,7 @@ const L = {
     prev: 'Prev',
     curr: 'Curr',
     remove: 'Remove',
-    avoidHours: 'Avoid Hours',
+    avoidHours: 'Avoid Hours (UTC)',
     short: 'SHORT',
     long: 'LONG',
     symbol: 'Symbol',
@@ -58,12 +58,13 @@ const L = {
     loading: 'Loading...',
     error: 'Error',
     apiDown: 'API unavailable. Using demo mode.',
-    disclaimer: 'Past performance does not guarantee future results. Simulations include estimated fees (0.04%) and slippage (0.02%). This is not financial advice.',
+    disclaimer: 'Past performance does not guarantee future results. Simulations include estimated fees (0.04%) and slippage (0.02%). Each coin is tested independently (no cross-coin position limits). This is not financial advice.',
     mobile: { chart: 'Chart', config: 'Settings', results: 'Results' },
     quickStart: 'New to backtesting?',
     quickStartDesc: 'Try our proven BB Squeeze SHORT strategy — pre-loaded and ready to run.',
     quickStartCta: 'Run BB Squeeze SHORT',
     quickStartDismiss: 'I\'ll build my own',
+    lookAheadWarn: 'C = current candle (incomplete in live). P = previous candle (confirmed). Using C may cause look-ahead bias.',
   },
   ko: {
     title: '전략 시뮬레이터',
@@ -98,7 +99,7 @@ const L = {
     prev: '이전',
     curr: '현재',
     remove: '삭제',
-    avoidHours: '제외 시간',
+    avoidHours: '제외 시간 (UTC)',
     short: 'SHORT',
     long: 'LONG',
     symbol: '심볼',
@@ -107,12 +108,13 @@ const L = {
     loading: '로딩 중...',
     error: '에러',
     apiDown: 'API 연결 불가. 데모 모드로 전환합니다.',
-    disclaimer: '과거 성과가 미래 수익을 보장하지 않습니다. 시뮬레이션에는 예상 수수료(0.04%)와 슬리피지(0.02%)가 포함됩니다. 이것은 투자 조언이 아닙니다.',
+    disclaimer: '과거 성과가 미래 수익을 보장하지 않습니다. 시뮬레이션에는 예상 수수료(0.04%)와 슬리피지(0.02%)가 포함됩니다. 각 코인은 독립 시뮬레이션됩니다(동시 포지션 제한 없음). 이것은 투자 조언이 아닙니다.',
     mobile: { chart: '차트', config: '설정', results: '결과' },
     quickStart: '백테스팅이 처음이신가요?',
     quickStartDesc: '검증된 BB Squeeze SHORT 전략을 바로 실행해보세요.',
     quickStartCta: 'BB Squeeze SHORT 실행',
     quickStartDismiss: '직접 만들기',
+    lookAheadWarn: 'C = 현재 캔들(실거래에서 미완성). P = 이전 캔들(확정됨). C 사용 시 look-ahead bias 위험이 있습니다.',
   },
 };
 
@@ -504,7 +506,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
 
       {/* Disclaimer */}
       <div class="mt-6 mb-8 text-center">
-        <p class="text-[--color-text-muted] text-[10px] max-w-lg mx-auto">
+        <p class="text-[--color-text-muted] text-[11px] max-w-lg mx-auto">
           {t.disclaimer}
         </p>
       </div>
