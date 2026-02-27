@@ -143,6 +143,17 @@ def fetch_coingecko_markets(max_retries: int = 2) -> list[dict]:
     return []
 
 
+def fetch_coingecko_coin_list() -> list[dict]:
+    """Fetch full coin list from CoinGecko (/coins/list) — used to improve symbol->id mapping."""
+    print("  Fetching CoinGecko coin list (/coins/list)...")
+    data = fetch_json(f"{CG_BASE}/coins/list")
+    if data and isinstance(data, list):
+        print(f"  Got {len(data)} coins from CoinGecko coin list")
+        return data
+    print("  WARN: CoinGecko /coins/list failed")
+    return []
+
+
 def build_coingecko_lookup(cg_coins: list[dict]) -> dict[str, dict]:
     """Build symbol→CoinGecko data lookup for merging into Binance-based list.
 
@@ -597,6 +608,28 @@ def main():
     metadata = load_coin_metadata()
     if metadata:
         print(f"  Loaded coin-metadata.json ({len(metadata)} cached names/logos)")
+
+    # 3b. Supplement metadata with CoinGecko /coins/list names (improve matching for non-top coins)
+    coin_list = fetch_coingecko_coin_list()
+    if coin_list:
+        # Build a quick symbol->name map from CoinGecko's /coins/list (note: symbols can be ambiguous)
+        coin_list_map: dict[str, str] = {}
+        for c in coin_list:
+            sym = (c.get("symbol") or "").upper()
+            name = c.get("name") or ""
+            if sym and name and sym not in coin_list_map:
+                coin_list_map[sym] = name
+
+        import re
+        added = 0
+        for s in our_symbols:
+            base = s[:-4] if s.endswith("USDT") else s
+            base_sym = re.sub(r"^[0-9]+", "", base)  # strip numeric multipliers like 1000
+            if base_sym and not metadata.get(s) and base_sym in coin_list_map:
+                metadata[s] = {"name": coin_list_map[base_sym], "image": ""}
+                added += 1
+        if added:
+            print(f"  Added {added} names to metadata from CoinGecko /coins/list (no images) — will improve matching")
 
     # 4. Fetch CoinGecko (SECONDARY — logos, market cap, sparklines)
     cg_coins = fetch_coingecko_markets()
