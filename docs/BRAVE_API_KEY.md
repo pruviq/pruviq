@@ -1,37 +1,52 @@
-BRAVE_API_KEY — provisioning and usage
+BRAVE_API_KEY — provisioning instructions
 
-Purpose
+Why this secret is needed
 
-The research agent PoC uses Brave Search API for automated web_search. The agent requires a BRAVE_API_KEY (a secret token) available as an environment variable at runtime.
+- The research PoC and certain automated agent tasks may call the Brave Search API for evidence-backed web searches. The service requires an API key provided via the environment variable BRAVE_API_KEY.
 
-Where to provision
+Where to add the secret
 
-1) GitHub Actions (recommended for CI runs):
-   - Repository > Settings > Secrets and variables > Actions > New repository secret
-   - Name: BRAVE_API_KEY
-   - Value: <your-brave-api-key>
+Option A — GitHub Actions repository secret (recommended)
+1. Go to the repository on GitHub: https://github.com/poong92/pruviq
+2. Settings → Secrets and variables → Actions → New repository secret
+3. Name: BRAVE_API_KEY
+4. Value: (paste the API key)
+5. Save
 
-2) OpenClaw Gateway / deployment environment (for scheduled/cron runs or gateway agents):
-   - Add BRAVE_API_KEY to the gateway configuration or environment variables used by the agent runner.
-   - Keep the secret scoped to the gateway/agent and avoid exposing it in logs.
+Notes:
+- This will make the secret available to GitHub Actions workflows as ${{ secrets.BRAVE_API_KEY }}.
+- Do NOT commit the key to the repo or any public file.
 
-How code expects it
+Option B — OpenClaw / Gateway environment (if using the agent runtime)
+- If you prefer the agent runtime to have the key directly (so jobs spawned by OpenClaw can read it), add it to the OpenClaw credentials store or gateway environment.
+- Two common locations used by the agent tooling:
+  - ~/.openclaw/openclaw.json → under skills.entries["gh-issues"].apiKey (only if the deployment expects it there)
+  - /data/.clawdbot/openclaw.json → same structure (used for system-wide secrets on the gateway host)
 
-- The research scripts expect BRAVE_API_KEY to be present in process.env.BRAVE_API_KEY (Node) or the environment where the agent runs. Example (Node.js):
+Example (do NOT paste actual secret into repo):
+{
+  "skills": {
+    "entries": {
+      "gh-issues": {
+        "apiKey": "<REDACTED_BRAVE_API_KEY>"
+      }
+    }
+  }
+}
 
-  const key = process.env.BRAVE_API_KEY;
-  if (!key) throw new Error('BRAVE_API_KEY is not set');
+Option C — Vault / external secret manager
+- You may prefer to store the key in an external vault (HashiCorp Vault, AWS Secrets Manager, etc.) and inject it into the runtime via your CI or deployment pipeline. Ensure the runtime exposes BRAVE_API_KEY to the job/container that runs the research PoC.
 
-- For curl-based quick tests, use: curl -H "Authorization: Bearer $BRAVE_API_KEY" "https://api.search.brave.com/v1/search?q=pruviq"
+Testing & Validation
+
+- After adding the secret to GitHub Actions, re-run the research PoC job or trigger the workflow that uses the key. The job should detect the variable ${{ secrets.BRAVE_API_KEY }} and succeed when the key is valid.
+- Locally (for ops/dev use), you can test with:
+  - export BRAVE_API_KEY="<your-key>"
+  - python3 scripts/research_agent.py --out reports/agent-research-test.md
 
 Security notes
 
-- Never commit the secret into the repository.
-- Use GitHub Actions secrets to rotate keys and limit exposure.
-- If using shared runner environments, scope access to only the jobs that need the key.
+- Treat BRAVE_API_KEY as sensitive. Rotate the key if it is accidentally exposed.
+- Limit secret access via fine-grained GitHub Teams/Permissions where possible.
 
-References
-
-- Brave Search API docs: https://search.brave.com/docs (verify the correct docs URL in your environment)
-
-If you'd like, I can also add a small CI workflow that runs the research PoC only if BRAVE_API_KEY is present in secrets (safe-no-op otherwise).
+If you want me to add a CI check that fails early when BRAVE_API_KEY is missing, I can open a follow-up PR that adds a lightweight workflow step to fail fast and provide a clear error message for maintainers.
