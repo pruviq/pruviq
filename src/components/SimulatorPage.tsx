@@ -58,6 +58,10 @@ const L = {
     error: 'Error',
     apiDown: 'API unavailable. Using demo mode.',
     mobile: { chart: 'Chart', config: 'Settings', results: 'Results' },
+    quickStart: 'New to backtesting?',
+    quickStartDesc: 'Try our proven BB Squeeze SHORT strategy — pre-loaded and ready to run.',
+    quickStartCta: 'Run BB Squeeze SHORT',
+    quickStartDismiss: 'I\'ll build my own',
   },
   ko: {
     title: '전략 시뮬레이터',
@@ -101,6 +105,10 @@ const L = {
     error: '에러',
     apiDown: 'API 연결 불가. 데모 모드로 전환합니다.',
     mobile: { chart: '차트', config: '설정', results: '결과' },
+    quickStart: '백테스팅이 처음이신가요?',
+    quickStartDesc: '검증된 BB Squeeze SHORT 전략을 바로 실행해보세요.',
+    quickStartCta: 'BB Squeeze SHORT 실행',
+    quickStartDismiss: '직접 만들기',
   },
 };
 
@@ -167,6 +175,9 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
 
   // Mobile tab
   const [mobileTab, setMobileTab] = useState<'chart' | 'config' | 'results'>('config');
+
+  // Quick Start banner
+  const [showQuickStart, setShowQuickStart] = useState(true);
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -393,6 +404,32 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
           </button>
         ))}
       </div>
+
+      {/* Quick Start Banner */}
+      {showQuickStart && !result && (
+        <div class="mb-3 border rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+          style={{ borderColor: COLORS.accent, background: `linear-gradient(135deg, ${COLORS.accentBg}, transparent)` }}>
+          <div>
+            <p class="font-mono text-sm font-bold" style={{ color: COLORS.accent }}>{t.quickStart}</p>
+            <p class="text-[--color-text-muted] text-xs mt-0.5">{t.quickStartDesc}</p>
+          </div>
+          <div class="flex gap-2 flex-shrink-0">
+            <button
+              onClick={() => { loadPreset('bb-squeeze-short'); setShowQuickStart(false); runBacktest(); }}
+              class="px-4 py-2 rounded font-mono text-xs font-bold transition-colors hover:opacity-90"
+              style={{ background: COLORS.accent, color: '#fff', boxShadow: `0 0 12px ${COLORS.accentGlow}` }}
+            >
+              {t.quickStartCta} &rarr;
+            </button>
+            <button
+              onClick={() => setShowQuickStart(false)}
+              class="px-3 py-2 rounded font-mono text-[10px] text-[--color-text-muted] border border-[--color-border] hover:text-[--color-text] transition-colors"
+            >
+              {t.quickStartDismiss}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main split layout */}
       <div class="flex flex-col md:flex-row gap-3">

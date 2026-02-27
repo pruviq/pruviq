@@ -306,16 +306,18 @@ export default function BuilderPanel(props: Props) {
           )}
           <button
             onClick={props.onRun}
-            disabled={props.isRunning}
+            disabled={props.isRunning || props.conditions.length === 0}
             class={`w-full py-2.5 rounded-lg font-mono text-sm font-bold transition-colors
-              ${props.isRunning ? 'cursor-wait' : 'hover:opacity-90'}`}
-            style={props.isRunning ? runDisabledStyle : runStyle}
+              ${props.isRunning || props.conditions.length === 0 ? 'cursor-not-allowed' : 'hover:opacity-90'}`}
+            style={props.isRunning || props.conditions.length === 0 ? runDisabledStyle : runStyle}
           >
             {props.isRunning ? (
               <span class="flex items-center justify-center gap-2">
                 <span class="spinner" />
                 {props.progressLabels[props.progressStep] || t.running}
               </span>
+            ) : props.conditions.length === 0 ? (
+              <span class="text-xs">{t.addCondition}</span>
             ) : t.run}
           </button>
         </div>
