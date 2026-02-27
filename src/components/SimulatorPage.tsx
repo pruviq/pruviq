@@ -269,6 +269,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
         const demoData = await fetch('/data/demo-backtest-result.json').then((r) => r.json());
         setResult({ ...demoData, _isDemo: true });
         setResultTab('summary');
+        setMobileTab('results');
       } catch { setError('Demo data load failed'); }
       finally { setIsRunning(false); }
       return;
@@ -323,6 +324,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
       const data: BacktestResult = await res.json();
       setResult(data);
       setResultTab('summary');
+      setMobileTab('results');
       setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
     } catch (e: any) {
       setError(e.message || 'Backtest failed');
