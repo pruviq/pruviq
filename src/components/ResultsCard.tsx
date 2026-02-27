@@ -41,6 +41,8 @@ const labels = {
     calmar: 'Calmar',
     riskMetrics: 'Risk-Adjusted',
     demoNote: 'DEMO · Pre-computed results for BB Squeeze SHORT',
+    breakeven: 'Break-even WR',
+    margin: 'Margin',
   },
   ko: {
     live: '현재 라이브 설정',
@@ -58,6 +60,8 @@ const labels = {
     calmar: '칼마',
     riskMetrics: '리스크 조정',
     demoNote: 'DEMO · BB Squeeze SHORT 사전 계산 결과',
+    breakeven: '손익분기 승률',
+    margin: '여유',
   },
 };
 
@@ -81,6 +85,13 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
   const pfColor = profitFactorColor(data.profit_factor);
   const retColor = signColor(data.total_return_pct);
 
+  // Break-even win rate: |avgLoss| / (|avgWin| + |avgLoss|)
+  const avgWin = Math.abs(data.avg_win_pct ?? 0);
+  const avgLoss = Math.abs(data.avg_loss_pct ?? 0);
+  const hasBreakeven = data.avg_win_pct !== undefined && data.avg_loss_pct !== undefined && avgLoss > 0 && avgWin > 0;
+  const breakevenWR = hasBreakeven ? (avgLoss / (avgWin + avgLoss)) * 100 : 0;
+  const wrMargin = data.win_rate - breakevenWR;
+
   return (
     <div>
       {isDefault && (
@@ -99,6 +110,16 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
         <MetricBox label={t.totalReturn} value={`${data.total_return_pct > 0 ? '+' : ''}${data.total_return_pct}%`} color={retColor} />
         <MetricBox label={t.maxDD} value={`${data.max_drawdown_pct}%`} color="var(--color-red)" />
       </div>
+
+      {/* Break-even win rate */}
+      {hasBreakeven && (
+        <div class="flex gap-3 text-[10px] font-mono text-[--color-text-muted] mb-3 px-1">
+          <span>{t.breakeven}: {breakevenWR.toFixed(1)}%</span>
+          <span style={{ color: wrMargin > 0 ? 'var(--color-accent)' : 'var(--color-red)' }}>
+            {t.margin}: {wrMargin > 0 ? '+' : ''}{wrMargin.toFixed(1)}%p
+          </span>
+        </div>
+      )}
 
       {(data.avg_win_pct !== undefined || data.avg_loss_pct !== undefined) && (
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">

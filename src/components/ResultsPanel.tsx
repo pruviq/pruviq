@@ -234,6 +234,11 @@ export default function ResultsPanel({ t, result, error, resultTab, setResultTab
               {result && result.max_drawdown_pct !== undefined && (
                 <div class="mt-2 font-mono text-xs text-[--color-text-muted]">
                   Max Drawdown: <span style={{ color: COLORS.red }}>{result.max_drawdown_pct.toFixed(1)}%</span>
+                  {result.max_drawdown_pct > 100 && (
+                    <span class="ml-1.5 text-[10px] opacity-70">
+                      ({lang === 'ko' ? '누적 % — 개별 코인 합산' : 'cumulative % — sum of per-coin trades'})
+                    </span>
+                  )}
                 </div>
               )}
             </div>
