@@ -60,14 +60,14 @@ const L = {
     apiDown: 'API unavailable. Using demo mode.',
     disclaimer: 'Past performance does not guarantee future results. This is not financial advice.',
     simNotes: [
-      'No duplicate entries — if a coin already has an open position, new signals for that coin are skipped until it closes.',
-      'Fees included — results are net of trading fees (0.04%/side) and funding (0.01%/8h).',
-      'Slippage not included — real fills may differ from simulated prices.',
+      'No duplicate entries - if a coin already has an open position, new signals for that coin are skipped until it closes.',
+      'Fees included - results are net of trading fees (0.04%/side) and funding (0.01%/8h).',
+      'Slippage not included - real fills may differ from simulated prices.',
     ],
     simNotesTitle: 'How it works',
     mobile: { chart: 'Chart', config: 'Settings', results: 'Results' },
     quickStart: 'New to backtesting?',
-    quickStartDesc: 'Try our proven BB Squeeze SHORT strategy — pre-loaded and ready to run.',
+    quickStartDesc: 'Try our proven BB Squeeze SHORT strategy - pre-loaded and ready to run.',
     quickStartCta: 'Run BB Squeeze SHORT',
     quickStartDismiss: 'I\'ll build my own',
     lookAheadWarn: 'C = current candle (incomplete in live). P = previous candle (confirmed). Using C may cause look-ahead bias.',
@@ -116,9 +116,9 @@ const L = {
     apiDown: 'API 연결 불가. 데모 모드로 전환합니다.',
     disclaimer: '과거 성과가 미래 수익을 보장하지 않습니다. 이것은 투자 조언이 아닙니다.',
     simNotes: [
-      '중복 진입 불가 — 코인에 열린 포지션이 있으면 청산될 때까지 새 신호는 무시됩니다.',
-      '수수료 포함 — 결과는 거래 수수료(0.04%/편도) + 펀딩(0.01%/8h) 차감 후 순수익입니다.',
-      '슬리피지 미포함 — 실제 체결가는 시뮬레이션과 다를 수 있습니다.',
+      '중복 진입 불가 - 코인에 열린 포지션이 있으면 청산될 때까지 새 신호는 무시됩니다.',
+      '수수료 포함 - 결과는 거래 수수료(0.04%/편도) + 펀딩(0.01%/8h) 차감 후 순수익입니다.',
+      '슬리피지 미포함 - 실제 체결가는 시뮬레이션과 다를 수 있습니다.',
     ],
     simNotesTitle: '시뮬레이션 안내',
     mobile: { chart: '차트', config: '설정', results: '결과' },
@@ -241,6 +241,43 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
           if (!cancelled) { const arr = Array.isArray(data) ? data : data.coins || []; setAllCoins(arr.map((c: any) => ({ symbol: c.symbol || c }))); }
         }
       } catch {}
+
+      // Parse URL query params to prefill simulator (Modify & Retry)
+      try {
+        if (typeof window !== 'undefined') {
+          const params = new URLSearchParams(window.location.search);
+          if (params.has('sl')) setSlPct(Number(params.get('sl')) || 0);
+          if (params.has('tp')) setTpPct(Number(params.get('tp')) || 0);
+          if (params.has('max')) setMaxBars(Number(params.get('max')) || 48);
+          if (params.has('dir')) setDirection(params.get('dir') === 'long' ? 'long' : 'short');
+          if (params.has('mode') && params.get('mode') === 'top' && params.has('top_n')) {
+            setCoinMode('top');
+            setTopN(Number(params.get('top_n')) || 50);
+          }
+          if (params.has('symbols')) {
+            setCoinMode('select');
+            const syms = (params.get('symbols') || '').split(',').map(s => s.trim()).filter(Boolean).map(s => s.toUpperCase());
+            setSelectedCoins(syms);
+          }
+          if (params.has('start_date')) setStartDate(params.get('start_date') || '');
+          if (params.has('end_date')) setEndDate(params.get('end_date') || '');
+          if (params.has('avoid')) {
+            const arr = (params.get('avoid') || '').split(',').map(x => Number(x)).filter(n => !Number.isNaN(n));
+            setAvoidHours(new Set(arr));
+          }
+          if (params.has('preset')) {
+            const p = params.get('preset');
+            if (p) {
+              // Try to load preset if available
+              try { loadPreset(p); setActivePreset(p); } catch(e) {}
+            }
+          }
+          if (params.has('indicators')) {
+            const inds = (params.get('indicators') || '').split(',').map(s => s.trim()).filter(Boolean);
+            if (inds.length > 0) setSelectedIndicators(new Set(inds));
+          }
+        }
+      } catch (e) {}
     }
 
     init();
@@ -281,7 +318,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
       }
       try {
         const demoData = await fetch('/data/demo-backtest-result.json').then((r) => r.json());
-        setResult({ ...demoData, _isDemo: true });
+        setResult({ ...demoData, _isDemo: true, _input: body });
         setResultTab('summary');
         setMobileTab('results');
       } catch { setError('Demo data load failed'); }
@@ -336,7 +373,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
       }
 
       const data: BacktestResult = await res.json();
-      setResult(data);
+      setResult({ ...data, _input: body });
       setResultTab('summary');
       setMobileTab('results');
       setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);

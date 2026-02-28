@@ -58,6 +58,7 @@ const isActive = (match: string) => basePath.startsWith(match);
 ---
 
 
+
 <!doctype html>
 <html lang={lang}>
   <head>
@@ -169,7 +170,7 @@ const isActive = (match: string) => basePath.startsWith(match);
             "name": "PRUVIQ에 실거래 검증이 있나요?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "네. BB Squeeze SHORT 전략이 $3,000 자본의 실제 바이낸스 선물 계좌에서 운영되고 있습니다. 손실을 포함한 모든 거래가 공개됩니다. 실거래 성과 페이지에서 38일 이상의 검증된 트레이딩 데이터와 전체 버전 히스토리를 확인할 수 있습니다."
+              "text": "네. One strategy (BB Squeeze SHORT) runs on a real Binance Futures account with $3,000 capital. Every trade is published publicly, including losses. The live performance page shows 38+ days of verified trading data with full version history."
             }
           }
         ] : [
@@ -216,65 +217,50 @@ const isActive = (match: string) => basePath.startsWith(match);
         ]
       })} />
     )}
-    <!-- JSON-LD Article (for blog posts) -->
-    {type === 'article' && date && (
-      <script type="application/ld+json" set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": title,
-        "description": description,
-        "datePublished": date,
-        "dateModified": date,
-        "author": { "@type": "Organization", "name": "PRUVIQ" },
-        "publisher": {
-          "@type": "Organization",
-          "name": "PRUVIQ",
-          "url": "https://pruviq.com"
-        },
-        "mainEntityOfPage": canonicalURL.href,
-        "articleSection": category || "education"
-      })} />
-    )}
+    <!-- End head -->
 </head>
   <body class="min-h-screen">
     <div id="page-loader"></div>
-    <nav class="fixed top-0 w-full z-50 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-md" role="navigation" aria-label="Main">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href={lang === 'ko' ? '/ko/' : '/'} class="flex items-center gap-2">
-          <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
-        </a>
-        <div class="hidden md:flex items-center gap-6 text-[0.8125rem]">
-          {navItems.map(item => (
-            <a href={item.href} class:list=[
-              'transition-colors',
-              isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted] hover:text-[--color-text]'
-            ]>{item.label}</a>
-          ))}
-          <a href={altPath} class="font-mono text-xs px-3 py-1.5 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
+    <a href="#main-content" class="sr-only focus:not-sr-only p-2 bg-[--color-bg] text-[--color-accent]">Skip to main content</a>
+    <header role="banner" aria-label="Site header">
+      <nav class="fixed top-0 w-full z-50 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-md" role="navigation" aria-label="Main">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <a href={lang === 'ko' ? '/ko/' : '/'} class="flex items-center gap-2">
+            <span class="text-[--color-accent] font-mono font-bold text-xl">PRUVIQ</span>
+          </a>
+          <div class="hidden md:flex items-center gap-6 text-[0.8125rem]">
+            {navItems.map(item => (
+              <a href={item.href} class:list=[
+                'transition-colors',
+                isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted] hover:text-[--color-text]'
+              ]>{item.label}</a>
+            ))}
+            <a href={altPath} class="font-mono text-xs px-3 py-1.5 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
+          </div>
+          <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]" aria-label="Toggle menu" aria-expanded="false">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
         </div>
-        <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]" aria-label="Toggle menu" aria-expanded="false">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-        </button>
-      </div>
-      <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
-        <div class="flex flex-col px-4 py-4 gap-1 text-sm">
-          {navItems.map(item => (
-            <a href={item.href} class:list=[
-              'min-h-[44px] flex items-center',
-              isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted]'
-            ]>{item.label}</a>
-          ))}
-          <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded text-[--color-text-muted] w-fit min-h-[44px] flex items-center">{t('nav.lang')}</a>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
+          <div class="flex flex-col px-4 py-4 gap-1 text-sm">
+            {navItems.map(item => (
+              <a href={item.href} class:list=[
+                'min-h-[44px] flex items-center',
+                isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted]'
+              ]>{item.label}</a>
+            ))}
+            <a href={altPath} class="font-mono text-xs px-2 py-1 border border-[--color-border] rounded text-[--color-text-muted] w-fit min-h-[44px] flex items-center">{t('nav.lang')}</a>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
 
-    <main class="pt-16">
+    <main id="main-content" class="pt-16" role="main" aria-label="Main content">
       <Breadcrumbs />
       <slot />
     </main>
 
-    <footer class="border-t border-[--color-border] mt-20">
+    <footer role="contentinfo" aria-label="Site footer" class="border-t border-[--color-border] mt-20">
       <div class="max-w-6xl mx-auto px-4 py-12">
         <!-- Brand + 3-column links -->
         <div class="flex flex-col md:flex-row gap-10 mb-10">

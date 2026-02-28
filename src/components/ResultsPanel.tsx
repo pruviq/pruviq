@@ -187,6 +187,30 @@ export default function ResultsPanel({ t, result, error, resultTab, setResultTab
               <button onClick={downloadCsv} class="px-3 py-1.5 text-xs font-mono bg-[--color-bg-tooltip] border border-[--color-border] rounded hover:border-[--color-accent] transition-colors hover:bg-[--color-bg-hover]">
                 {t.exportCsv}
               </button>
+              {/* Modify & Retry: prefill simulator with previous parameters */}
+              <button onClick={() => {
+                // Build query string from result input (if available) and navigate back to simulator with params
+                try {
+                  const inp: any = result as any;
+                  const body = (inp && inp._input) ? inp._input : null;
+                  if (!body) return;
+                  const params = new URLSearchParams();
+                  if (body.sl_pct !== undefined) params.set('sl', String(body.sl_pct));
+                  if (body.tp_pct !== undefined) params.set('tp', String(body.tp_pct));
+                  if (body.max_bars !== undefined) params.set('max', String(body.max_bars));
+                  if (body.direction) params.set('dir', body.direction);
+                  if (body.top_n !== undefined) { params.set('top_n', String(body.top_n)); params.set('mode', 'top'); }
+                  else if (body.symbols && Array.isArray(body.symbols)) { params.set('symbols', body.symbols.join(',')); params.set('mode', 'select'); }
+                  if (body.start_date) params.set('start_date', body.start_date);
+                  if (body.end_date) params.set('end_date', body.end_date);
+                  if (body.avoid_hours && Array.isArray(body.avoid_hours)) params.set('avoid', body.avoid_hours.join(','));
+                  // Navigate (force full load to allow init parsing)
+                  const base = window.location.pathname;
+                  window.location.href = base.split('?')[0] + '?' + params.toString();
+                } catch (e) { /* ignore */ }
+              }} class="px-3 py-1.5 text-xs font-mono bg-[--color-bg-tooltip] border border-[--color-border] rounded hover:border-[--color-accent] transition-colors hover:bg-[--color-bg-hover]">
+                {lang === 'ko' ? '파라미터 수정 및 재시도' : 'Modify & Retry'}
+              </button>
             </div>
           </div>
 
