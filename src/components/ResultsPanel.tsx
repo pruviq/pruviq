@@ -1,4 +1,4 @@
-/**
+/*
  * ResultsPanel.tsx - Backtest results display (summary, equity, trades)
  */
 import { useEffect, useRef, useState } from 'preact/hooks';
@@ -32,6 +32,9 @@ interface Props {
   setShowHistory?: (v: boolean) => void;
   onSelectHistory?: (idx: number) => void;
   onClearHistory?: () => void;
+  // Optional UI-provided date range (preferred when user filtered)
+  startDate?: string;
+  endDate?: string;
 }
 
 const tabActiveStyle = { color: COLORS.accent, borderColor: COLORS.accent, background: COLORS.accentBg };
@@ -39,6 +42,7 @@ const tabActiveStyle = { color: COLORS.accent, borderColor: COLORS.accent, backg
 export default function ResultsPanel({
   t, result, error, resultTab, setResultTab, activePreset, lang,
   onModifyRerun, onQuickAdjustRerun, onCopyLink, linkCopied,
+  startDate = '', endDate = '',
   slPct = 10, tpPct = 8, topN = 50, isRunning = false,
   history = [], showHistory = false, setShowHistory, onSelectHistory, onClearHistory,
 }: Props) {
@@ -47,6 +51,18 @@ export default function ResultsPanel({
   const equityInstanceRef = useRef<any>(null);
   const ddChartRef = useRef<HTMLDivElement>(null);
   const ddInstanceRef = useRef<any>(null);
+
+  // Use provided UI filter dates when available; otherwise fall back to result.data_range
+  const displayDataRange = (() => {
+    if (!result) return '';
+    if (startDate || endDate) {
+      const parts = (result.data_range || '').split(/\s+to\s+/);
+      const s = startDate || parts[0] || '';
+      const e = endDate || parts[1] || '';
+      return `${s} to ${e}`;
+    }
+    return result.data_range || '';
+  })();
 
   // Quick Adjust local state
   const [qaSl, setQaSl] = useState(slPct);
@@ -388,7 +404,7 @@ export default function ResultsPanel({
               )}
               <div class="mt-3 flex flex-wrap gap-3 text-[10px] text-[--color-text-muted] font-mono">
                 <span>{result.coins_used} coins</span>
-                <span>{result.data_range}</span>
+                <span>{displayDataRange}</span>
                 <span>{result.compute_time_ms}ms</span>
                 {result._isDemo && <span class="text-[--color-yellow]">DEMO</span>}
               </div>

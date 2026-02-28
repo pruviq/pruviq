@@ -610,6 +610,8 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
           onQuickAdjustRerun={(sl, tp, coins) => { setSlPct(sl); setTpPct(tp); setTopN(coins); setTimeout(runBacktest, 50); }}
           onCopyLink={copyLink}
           linkCopied={linkCopied}
+          startDate={startDate}
+          endDate={endDate}
           slPct={slPct}
           tpPct={tpPct}
           topN={topN}
