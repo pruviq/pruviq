@@ -1,0 +1,77 @@
+Loading data from /Users/openclaw/pruviq/data/futures...
+Loaded 549 coins in 2.8s
+Pre-computing indicators for all strategies...
+  bb-squeeze-short: 549 coins cached
+  bb-squeeze-long: 549 coins cached
+  momentum-long: 549 coins cached
+  atr-breakout: 549 coins cached
+  hv-squeeze: 549 coins cached
+Total build time: 9.9s
+Pre-computing coin stats...
+Coin stats cached for 549 coins
+Pre-fetching market data...
+Market cache initialized
+Background data refresh scheduled every 3600s
+Background market refresh scheduled every 900s
+INFO:     14.52.126.36:0 - "GET /strategies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63853 - "GET /coins HTTP/1.1" 200 OK
+INFO:     14.52.126.36:0 - "GET /market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63891 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63893 - "GET /strategies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63895 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63897 - "GET /ohlcv?symbol=BTCUSDT&interval=1h HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63909 - "GET /ohlcv/BTCUSDT?limit=3&timeframe=1H HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63915 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63920 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63922 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63924 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63926 - "GET /strategies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63928 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63930 - "GET /strategies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63934 - "GET /ohlcv/BTCUSDT?limit=100&timeframe=1H HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63943 - "GET /ohlcv/BTCUSDT HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63945 - "GET /ohlcv/BTCUSDT?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64008 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64654 - "POST /admin/refresh HTTP/1.1" 200 OK
+Loading data from /Users/openclaw/pruviq/data/futures...
+Loaded 549 coins in 2.7s
+Pre-computing indicators for all strategies...
+  bb-squeeze-short: 549 coins cached
+  bb-squeeze-long: 549 coins cached
+  momentum-long: 549 coins cached
+  atr-breakout: 549 coins cached
+  hv-squeeze: 549 coins cached
+Total build time: 9.9s
+Pre-computing coin stats...
+Coin stats cached for 549 coins
+Pre-fetching market data...
+Market cache initialized
+Background data refresh scheduled every 3600s
+Background market refresh scheduled every 900s
+INFO:     127.0.0.1:64773 - "GET /coins HTTP/1.1" 200 OK
+INFO:     14.52.126.36:0 - "GET /market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64914 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65051 - "GET /coins HTTP/1.1" 200 OK
+INFO:     14.52.126.36:0 - "GET /market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65213 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49432 - "POST /admin/refresh HTTP/1.1" 200 OK
+Loading data from /Users/openclaw/pruviq/data/futures...
+Loaded 549 coins in 2.7s
+Pre-computing indicators for all strategies...
+  bb-squeeze-short: 549 coins cached
+  bb-squeeze-long: 549 coins cached
+  momentum-long: 549 coins cached
+  atr-breakout: 549 coins cached
+  hv-squeeze: 549 coins cached
+Total build time: 9.9s
+Pre-computing coin stats...
+Coin stats cached for 549 coins
+Pre-fetching market data...
+Market cache initialized
+Background data refresh scheduled every 3600s
+Background market refresh scheduled every 900s
+INFO:     127.0.0.1:49548 - "GET /coins HTTP/1.1" 200 OK
+INFO:     14.52.126.36:0 - "GET /market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49691 - "GET /coins HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49828 - "GET /coins HTTP/1.1" 200 OK

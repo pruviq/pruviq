@@ -1,0 +1,4603 @@
+{
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.11.1"
+  },
+  "testRunner": {
+    "name": "axe"
+  },
+  "testEnvironment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/133.0.6943.16 Safari/537.36",
+    "windowWidth": 375,
+    "windowHeight": 812,
+    "orientationAngle": 0,
+    "orientationType": "portrait-primary"
+  },
+  "timestamp": "2026-03-01T16:27:52.027Z",
+  "url": "http://localhost:4321/simulate",
+  "toolOptions": {
+    "runOnly": {
+      "type": "tag",
+      "values": [
+        "wcag2aa"
+      ]
+    },
+    "reporter": "v1"
+  },
+  "inapplicable": [
+    {
+      "id": "valid-lang",
+      "impact": null,
+      "tags": [
+        "cat.language",
+        "wcag2aa",
+        "wcag312",
+        "TTv5",
+        "TT11.b",
+        "EN-301-549",
+        "EN-9.3.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-8.8.1"
+      ],
+      "description": "Ensure lang attributes have valid values",
+      "help": "lang attribute must have a valid value",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/valid-lang?application=axeAPI",
+      "nodes": []
+    }
+  ],
+  "passes": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "15.0pt (20px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "3:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-[--color-text]\">PRUV</span>",
+          "target": [
+            ".text-xl > span:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#00e676",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 11.86,
+                "fontSize": "15.0pt (20px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "3:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 11.86"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-[#00E676]\">IQ</span>",
+          "target": [
+            ".text-xl > .text-\\[\\#00E676\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span itemprop=\"name\">PRUVIQ</span>",
+          "target": [
+            "a[itemprop=\"item\"] > span[itemprop=\"name\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span itemprop=\"name\" class=\"text-[--color-text]\">Simulate</span>",
+          "target": [
+            "li[itemprop=\"itemListElement\"][itemtype=\"https://schema.org/ListItem\"][itemscope=\"\"]:nth-child(2) > span[itemprop=\"name\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"font-mono text-[--color-accent] text-sm mb-2 tracking-wider\">STRATEGY SIMULATOR</p>",
+          "target": [
+            ".mb-2"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "18.0pt (24px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "3:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<h1 class=\"text-2xl md:text-3xl font-bold\"> Build a Strategy. <span class=\"text-[--color-accent]\">Test It on 549+ Coins.</span> </h1>",
+          "target": [
+            "h1"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "18.0pt (24px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "3:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-[--color-accent]\">Test It on 549+ Coins.</span>",
+          "target": [
+            "h1 > .text-\\[--color-accent\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-[--color-text-muted] text-sm mt-2 max-w-2xl\">Pick indicators, set entry conditions, adjust risk parameters. Run a backtest on 2+ years of real data — or start from a preset.</p>",
+          "target": [
+            ".max-w-2xl"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/simulate?preset=bb-squeeze-short\" class=\"inline-flex items-center gap-2 bg-[--color-accent] text-[--color-bg] px-4 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim]\" title=\"Verified = backtested + live traded with real money on Binance Futures\">",
+          "target": [
+            ".inline-flex.bg-\\[--color-accent\\].text-\\[--color-bg\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/strategies\" class=\"inline-flex items-center gap-2 border border-[--color-border] text-[--color-text-muted] px-4 py-2 rounded text-sm hover:border-[--color-accent] hover:text-[--color-accent] transition-colors\">\nAll Strategies\n</a>",
+          "target": [
+            ".inline-flex.hover\\:border-\\[--color-accent\\].hover\\:text-\\[--color-accent\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"font-mono text-[--color-accent] text-lg font-bold shrink-0\">1</span>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(1) > .text-lg.shrink-0.text-\\[--color-accent\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-sm font-semibold\">Choose a preset or pick indicators</p>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(1) > div > .font-semibold.text-sm"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-xs text-[--color-text-muted]\">11+ indicators, AND/OR logic</p>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(1) > div > p:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"font-mono text-[--color-accent] text-lg font-bold shrink-0\">2</span>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(2) > .text-lg.shrink-0.text-\\[--color-accent\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-sm font-semibold\">Set entry conditions and risk</p>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(2) > div > .font-semibold.text-sm"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-xs text-[--color-text-muted]\">SL, TP, time filters, position size</p>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(2) > div > p:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"font-mono text-[--color-accent] text-lg font-bold shrink-0\">3</span>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(3) > .text-lg.shrink-0.text-\\[--color-accent\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-sm font-semibold\">Run backtest on 549+ coins</p>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(3) > div > .font-semibold.text-sm"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-xs text-[--color-text-muted]\">Results in seconds, fees included</p>",
+          "target": [
+            ".py-3.bg-\\[--color-bg-card\\].rounded-lg:nth-child(3) > div > p:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#a3a3a3",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 7.84,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.84"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-xs text-[--color-text-muted] opacity-70\">No code. No account. No cost. Results include realistic fees and slippage.</p>",
+          "target": [
+            ".opacity-70"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-2.5 text-xs font-mono uppercase tracking-wider transition-colors\n              text-[--color-text-muted] hover:text-[--color-text]\">Chart</button>",
+          "target": [
+            ".py-2\\.5.tracking-wider.uppercase:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#3b82f6",
+                "bgColor": "#111c2d",
+                "contrastRatio": 4.65,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 4.65"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-2.5 text-xs font-mono uppercase tracking-wider transition-colors\n              font-bold border-b-2\" style=\"color: rgb(59, 130, 246); border-color: rgb(59, 130, 246); background: rgba(59, 130, 246, 0.15);\">Settings</button>",
+          "target": [
+            ".border-b-2"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-2.5 text-xs font-mono uppercase tracking-wider transition-colors\n              text-[--color-text-muted] hover:text-[--color-text]\">Results</button>",
+          "target": [
+            ".py-2\\.5.tracking-wider.uppercase:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "messageKey": "hidden"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is hidden"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"text\" placeholder=\"Symbol...\" class=\"w-20 px-2 py-1 text-xs font-mono bg-[--color-bg-tooltip] border border-[--color-border] rounded outline-none focus:border-[--color-accent] hidden sm:block\">",
+          "target": [
+            ".w-20"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"font-mono text-sm text-[--color-accent] tracking-wider font-bold\">STRATEGY BUILDER</span>",
+          "target": [
+            ".justify-between.items-center.flex > .tracking-wider.text-\\[--color-accent\\].text-sm"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-[--color-text-muted] text-xs font-mono\">549 coins</span>",
+          "target": [
+            ".flex-shrink-0.border-b.py-2 > .justify-between.items-center.flex > span:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"text-xs font-mono text-[--color-text-muted] uppercase mb-1\">Indicators</div>",
+          "target": [
+            ".border-b.py-2.px-4:nth-child(2) > .mb-1.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">ATR</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(5)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">Historical Volatility</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(6)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">RSI</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(7)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">MACD</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(8)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">Stochastic</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(9)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">ADX</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(10)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">Price Action</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(11)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-mono text-[--color-text-muted] uppercase\">Entry Conditions</span>",
+          "target": [
+            ".mb-1.justify-between.items-center > .uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"text-xs font-mono text-[--color-accent] hover:underline\">+ Add Condition</button>",
+          "target": [
+            ".mb-1.justify-between.items-center > .hover\\:underline.text-\\[--color-accent\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"text-[--color-text-muted] hover:text-[--color-red] px-1\" title=\"Remove\">x</button>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(1) > .hover\\:text-\\[--color-red\\].px-1[title=\"Remove\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" step=\"any\" class=\"w-16 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(2) > .w-16.px-1\\.5[step=\"any\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"text-[--color-text-muted] hover:text-[--color-red] px-1\" title=\"Remove\">x</button>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(2) > .hover\\:text-\\[--color-red\\].px-1[title=\"Remove\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" step=\"any\" class=\"w-16 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(3) > .w-16.px-1\\.5[step=\"any\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"text-[--color-text-muted] hover:text-[--color-red] px-1\" title=\"Remove\">x</button>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(3) > .hover\\:text-\\[--color-red\\].px-1[title=\"Remove\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" step=\"any\" class=\"w-16 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(4) > .w-16.px-1\\.5[step=\"any\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"text-[--color-text-muted] hover:text-[--color-red] px-1\" title=\"Remove\">x</button>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(4) > .hover\\:text-\\[--color-red\\].px-1[title=\"Remove\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"text-[--color-text-muted] hover:text-[--color-red] px-1\" title=\"Remove\">x</button>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(5) > .hover\\:text-\\[--color-red\\].px-1[title=\"Remove\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"text-xs font-mono text-[--color-text-muted] uppercase mb-1\">Parameters</div>",
+          "target": [
+            ".border-b.py-2.px-4:nth-child(4) > .mb-1.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Timeframe</label>",
+          "target": [
+            ".col-span-3 > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:text-[--color-text]\">2H</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:text-[--color-text]\">4H</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:text-[--color-text]\">6H</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(4)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:text-[--color-text]\">12H</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(5)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:text-[--color-text]\">1D</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(6)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:text-[--color-text]\">1W</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(7)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Direction</label>",
+          "target": [
+            "div:nth-child(2) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded transition-colors border bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30\">LONG</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/30.flex-1.py-1"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Stop Loss %</label>",
+          "target": [
+            "div:nth-child(3) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" min=\"1\" max=\"50\" step=\"0.5\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "div:nth-child(3) > input[max=\"50\"][step=\"0.5\"][min=\"1\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Take Profit %</label>",
+          "target": [
+            "div:nth-child(4) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" min=\"1\" max=\"50\" step=\"0.5\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "div:nth-child(4) > input[max=\"50\"][step=\"0.5\"][min=\"1\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Max Hold (h)</label>",
+          "target": [
+            "div:nth-child(5) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" min=\"1\" max=\"168\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "input[max=\"168\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Per Coin $</label>",
+          "target": [
+            "div:nth-child(6) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" min=\"1\" max=\"10000\" step=\"10\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "input[max=\"10000\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Leverage</label>",
+          "target": [
+            "div:nth-child(7) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"number\" min=\"1\" max=\"125\" step=\"1\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "input[max=\"125\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">Start</label>",
+          "target": [
+            "div:nth-child(8) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"date\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "div:nth-child(8) > .w-full.mt-0\\.5[type=\"date\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label class=\"text-[10px] text-[--color-text-muted]\">End</label>",
+          "target": [
+            "div:nth-child(9) > label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#111111",
+                "contrastRatio": 14.99,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 14.99"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"date\" class=\"w-full mt-0.5 px-2 py-1 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            "div:nth-child(9) > .w-full.mt-0\\.5[type=\"date\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"text-xs font-mono text-[--color-text-muted] uppercase mb-1\">Coins</div>",
+          "target": [
+            ".border-b.py-2.px-4:nth-child(5) > .mb-1.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">Top N</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20\">Select...</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/20.py-0\\.5.px-2\\.5:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span>Avoid Hours (UTC)</span>",
+          "target": [
+            "details[open=\"\"] > summary > span:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">0</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">1</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">4</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(5)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">5</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(6)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">6</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(7)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">7</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(8)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">8</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(9)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">9</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(10)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">11</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(12)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">12</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(13)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">13</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(14)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">14</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(15)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">15</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(16)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">16</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(17)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">17</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(18)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">18</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(19)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-red]/20\">19</button>",
+          "target": [
+            ".hover\\:border-\\[--color-red\\]\\/20.w-8.h-8:nth-child(20)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<summary class=\"text-[11px] font-mono text-[--color-text-muted] cursor-pointer select-none hover:text-[--color-accent] transition-colors\">How it works <span class=\"opacity-50 group-open:rotate-90 inline-block transition-transform\">▶</span></summary>",
+          "target": [
+            ".group > summary"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#8d8d8d",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 5.96,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 5.96"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-[--color-text-muted] text-[10px] text-center opacity-60\">Past performance does not guarantee future results. This is not financial advice.</p>",
+          "target": [
+            ".text-center.opacity-60.text-\\[10px\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-[--color-text]\">PRUV</span>",
+          "target": [
+            ".text-lg.tracking-wider.font-bold > span:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#00e676",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 11.86,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 11.86"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-[#00E676]\">IQ</span>",
+          "target": [
+            ".text-lg.tracking-wider.font-bold > .text-\\[\\#00E676\\]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-[--color-text-muted] text-sm mt-2\">Don't believe. Verify.</p>",
+          "target": [
+            ".md\\:w-1\\/3 > .mt-2.text-sm"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3\">Product</p>",
+          "target": [
+            "div:nth-child(1) > .mb-3.tracking-wider.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/market\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Market</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][href$=\"market\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/simulate\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Simulate</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][href$=\"simulate\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/strategies\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Strategies</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][href$=\"strategies\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/coins\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Coins</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][href$=\"coins\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/fees\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Save on Fees</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][href$=\"fees\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3\">Resources</p>",
+          "target": [
+            "div:nth-child(2) > .mb-3.tracking-wider.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/learn\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Learn</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][href$=\"learn\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/blog\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Blog</a>",
+          "target": [
+            "a[href$=\"blog\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/about\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">About</a>",
+          "target": [
+            "a[href$=\"about\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/changelog\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Changelog</a>",
+          "target": [
+            "a[href$=\"changelog\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/methodology\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Methodology</a>",
+          "target": [
+            "a[href$=\"methodology\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/api\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">API</a>",
+          "target": [
+            "a[href$=\"api\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/compare/tradingview\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">vs TradingView</a>",
+          "target": [
+            "a[href$=\"tradingview\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"https://t.me/PRUVIQ\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Telegram</a>",
+          "target": [
+            "a[href$=\"PRUVIQ\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"https://x.com/pruviq_com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Twitter / X</a>",
+          "target": [
+            "a[href$=\"pruviq_com\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"https://github.com/poong92/pruviq\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">GitHub</a>",
+          "target": [
+            ".hover\\:text-\\[--color-text\\][rel=\"noopener noreferrer\"][target=\"_blank\"]:nth-child(10)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3\">Legal</p>",
+          "target": [
+            "div:nth-child(3) > .mb-3.tracking-wider.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/privacy\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Privacy</a>",
+          "target": [
+            "a[href$=\"privacy\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/terms\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">Terms</a>",
+          "target": [
+            "a[href$=\"terms\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"mailto:pruviq@gmail.com\" class=\"text-[--color-text-muted] hover:text-[--color-text] transition-colors\">pruviq@gmail.com</a>",
+          "target": [
+            "a[href$=\"mailto:pruviq@gmail.com\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p>Not financial advice. Past performance does not guarantee future results.</p>",
+          "target": [
+            ".pt-6 > p"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p>This site contains affiliate links. <a href=\"/fees\" class=\"text-[--color-accent] hover:underline\">Details</a></p>",
+          "target": [
+            ".gap-4.flex-wrap.items-center > p"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"/fees\" class=\"text-[--color-accent] hover:underline\">Details</a>",
+          "target": [
+            ".hover\\:underline.text-\\[--color-accent\\][href$=\"fees\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 15.71,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 15.71"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span>© 2026 PRUVIQ</span>",
+          "target": [
+            ".gap-4.flex-wrap.items-center > span"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meta-viewport",
+      "impact": null,
+      "tags": [
+        "cat.sensory-and-visual-cues",
+        "wcag2aa",
+        "wcag144",
+        "EN-301-549",
+        "EN-9.1.4.4",
+        "ACT",
+        "RGAAv4",
+        "RGAA-10.4.2"
+      ],
+      "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+      "help": "Zooming and scaling must not be disabled",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/meta-viewport?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "meta-viewport",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "moderate",
+              "message": "<meta> tag does not disable zooming on mobile devices"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+          "target": [
+            "meta[name=\"viewport\"]"
+          ]
+        }
+      ]
+    }
+  ],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "bold",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"mb-3 border rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3\" style=\"border-color: rgb(59, 130, 246); background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".p-4"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<p class=\"font-mono text-sm font-bold\" style=\"color: rgb(59, 130, 246);\">New to backtesting?</p>",
+          "target": [
+            ".p-4 > div:nth-child(1) > .text-sm"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"mb-3 border rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3\" style=\"border-color: rgb(59, 130, 246); background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".p-4"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<p class=\"text-[--color-text-muted] text-xs mt-0.5\">Try our proven BB Squeeze SHORT strategy — pre-loaded and ready to run.</p>",
+          "target": [
+            ".p-4 > div:nth-child(1) > .mt-0\\.5"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"mb-3 border rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3\" style=\"border-color: rgb(59, 130, 246); background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".p-4"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-3 py-2 rounded font-mono text-[10px] text-[--color-text-muted] border border-[--color-border] hover:text-[--color-text] transition-colors\">I'll build my own</button>",
+          "target": [
+            ".px-3.text-\\[10px\\].py-2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"px-4 py-2 border-b border-[--color-border]\" style=\"background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".flex-1 > .border-b.py-2.px-4:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<div class=\"text-xs font-mono uppercase mb-1 flex items-center gap-1.5\" style=\"color: rgb(59, 130, 246);\">Presets</div>",
+          "target": [
+            ".mb-1.gap-1\\.5.uppercase"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"px-4 py-2 border-b border-[--color-border]\" style=\"background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".flex-1 > .border-b.py-2.px-4:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n            bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30 hover:text-[--color-text]\">Custom</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/30.px-2\\.5.py-1:nth-child(1)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"px-4 py-2 border-b border-[--color-border]\" style=\"background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".flex-1 > .border-b.py-2.px-4:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n              bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30 hover:text-[--color-text]\">BB Squeeze LONG</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/30.px-2\\.5.py-1:nth-child(3)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"px-4 py-2 border-b border-[--color-border]\" style=\"background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".flex-1 > .border-b.py-2.px-4:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n              bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30 hover:text-[--color-text]\">RSI Reversal LONG</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/30.px-2\\.5.py-1:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"px-4 py-2 border-b border-[--color-border]\" style=\"background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".flex-1 > .border-b.py-2.px-4:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n              bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30 hover:text-[--color-text]\">MACD Momentum LONG</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/30.px-2\\.5.py-1:nth-child(5)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgGradient",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"px-4 py-2 border-b border-[--color-border]\" style=\"background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent);\">",
+                  "target": [
+                    ".flex-1 > .border-b.py-2.px-4:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background gradient"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n              bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30 hover:text-[--color-text]\">Stochastic Overbought SHORT</button>",
+          "target": [
+            ".hover\\:border-\\[--color-accent\\]\\/30.px-2\\.5.py-1:nth-child(6)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Bollinger Band Squeeze detected\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(1) > .min-w-0.px-1\\.5"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Bollinger Band Squeeze detected\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(1) > .min-w-0.px-1\\.5"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(1) > .w-12:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(1) > .w-12:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-14 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\"><option value=\"true\">true</option><option value=\"false\">false</option></select>",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(1) > .w-14"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-14 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\"><option value=\"true\">true</option><option value=\"false\">false</option></select>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(1) > .w-14"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(1) > .w-12:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(1) > .w-12:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"BB width expansion rate (%)\">",
+                  "target": [
+                    ".min-w-0.px-1\\.5[title=\"BB width expansion rate (%)\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"BB width expansion rate (%)\">",
+          "target": [
+            ".min-w-0.px-1\\.5[title=\"BB width expansion rate (%)\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(2) > .w-12:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(2) > .w-12:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(2) > .w-12:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(2) > .w-12:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Fast EMA value\">",
+                  "target": [
+                    ".min-w-0.px-1\\.5[title=\"Fast EMA value\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Fast EMA value\">",
+          "target": [
+            ".min-w-0.px-1\\.5[title=\"Fast EMA value\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(3) > .w-12:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(3) > .w-12:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(3) > .w-12:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(3) > .w-12:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Volume ratio vs average\">",
+                  "target": [
+                    ".min-w-0.px-1\\.5[title=\"Volume ratio vs average\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Volume ratio vs average\">",
+          "target": [
+            ".min-w-0.px-1\\.5[title=\"Volume ratio vs average\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(4) > .w-12:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(4) > .w-12:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(4) > .w-12:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(4) > .w-12:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Bearish candle pattern\">",
+                  "target": [
+                    ".min-w-0.px-1\\.5[title=\"Bearish candle pattern\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"flex-1 min-w-0 px-1.5 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\" title=\"Bearish candle pattern\">",
+          "target": [
+            ".min-w-0.px-1\\.5[title=\"Bearish candle pattern\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(5) > .w-12:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(5) > .w-12:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-14 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\"><option value=\"true\">true</option><option value=\"false\">false</option></select>",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(5) > .w-14"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-14 px-1 py-1.5 bg-[--color-bg-tooltip] border border-[--color-border] rounded font-mono text-xs text-[--color-text] outline-none focus:border-[--color-accent]\"><option value=\"true\">true</option><option value=\"false\">false</option></select>",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(5) > .w-14"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "bgImage",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+                  "target": [
+                    ".gap-1\\.5.items-center.flex:nth-child(5) > .w-12:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined due to a background image"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<select class=\"w-12 px-1 py-1.5 bg-[--color-bg-tooltip] border rounded font-mono text-xs outline-none focus:border-[--color-accent] border-[--color-border] text-[--color-text]\" title=\"Previous candle (confirmed/safe for live trading)\">",
+          "target": [
+            ".gap-1\\.5.items-center.flex:nth-child(5) > .w-12:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "shortTextContent",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">2</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(3)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element content is too short to determine if it is actual text content"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">2</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(3)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "shortTextContent",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">3</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element content is too short to determine if it is actual text content"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">3</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+        }
+      ]
+    }
+  ],
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-4 py-2 rounded font-mono text-xs font-bold transition-colors hover:opacity-90\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 12px;\">Run BB Squeeze SHORT →</button>",
+                  "target": [
+                    ".flex-shrink-0.gap-2.flex > .hover\\:opacity-90.py-2.font-bold"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-4 py-2 rounded font-mono text-xs font-bold transition-colors hover:opacity-90\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 12px;\">Run BB Squeeze SHORT →</button>",
+          "target": [
+            ".flex-shrink-0.gap-2.flex > .hover\\:opacity-90.py-2.font-bold"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n              font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.4) 0px 0px 12px;\">BB Squeeze SHORT</button>",
+                  "target": [
+                    ".px-2\\.5.font-bold.py-1"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-1 text-xs font-mono rounded transition-colors border\n              font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.4) 0px 0px 12px;\">BB Squeeze SHORT</button>",
+          "target": [
+            ".px-2\\.5.font-bold.py-1"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">Bollinger Bands</button>",
+                  "target": [
+                    ".flex-wrap.gap-1.flex > .py-0\\.5.px-2\\.5.font-bold:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">Bollinger Bands</button>",
+          "target": [
+            ".flex-wrap.gap-1.flex > .py-0\\.5.px-2\\.5.font-bold:nth-child(1)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">EMA Trend</button>",
+                  "target": [
+                    ".py-0\\.5.px-2\\.5.font-bold:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">EMA Trend</button>",
+          "target": [
+            ".py-0\\.5.px-2\\.5.font-bold:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">Volume Analysis</button>",
+                  "target": [
+                    ".py-0\\.5.px-2\\.5.font-bold:nth-child(3)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">Volume Analysis</button>",
+          "target": [
+            ".py-0\\.5.px-2\\.5.font-bold:nth-child(3)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">Candle Pattern</button>",
+                  "target": [
+                    ".py-0\\.5.px-2\\.5.font-bold:nth-child(4)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">Candle Pattern</button>",
+          "target": [
+            ".py-0\\.5.px-2\\.5.font-bold:nth-child(4)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      \" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px; font-weight: bold;\">1H</button>",
+                  "target": [
+                    ".cursor-pointer.flex-1.py-1:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer\n                      \" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px; font-weight: bold;\">1H</button>",
+          "target": [
+            ".cursor-pointer.flex-1.py-1:nth-child(1)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded transition-colors border font-bold\" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.4) 0px 0px 12px;\">SHORT</button>",
+                  "target": [
+                    ".flex-1.font-bold.py-1"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"flex-1 py-1 text-xs font-mono rounded transition-colors border font-bold\" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.4) 0px 0px 12px;\">SHORT</button>",
+          "target": [
+            ".flex-1.font-bold.py-1"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">All Coins</button>",
+                  "target": [
+                    ".mb-1\\.5 > .py-0\\.5.px-2\\.5.font-bold"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"px-2.5 py-0.5 text-xs font-mono rounded transition-colors border\n                  font-bold\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); border-color: rgb(59, 130, 246); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 8px;\">All Coins</button>",
+          "target": [
+            ".mb-1\\.5 > .py-0\\.5.px-2\\.5.font-bold"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#787878",
+                "bgColor": "#0a0a0a",
+                "contrastRatio": 4.48,
+                "fontSize": "7.5pt (10px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<body class=\"min-h-screen\">",
+                  "target": [
+                    "body"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 4.48 (foreground color: #787878, background color: #0a0a0a, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"text-[10px] opacity-50\">7h selected</span>",
+          "target": [
+            ".opacity-50.text-\\[10px\\]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.48 (foreground color: #787878, background color: #0a0a0a, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">10</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(11)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">10</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(11)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">20</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(21)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">20</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(21)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">21</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(22)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">21</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(22)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">22</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(23)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">22</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(23)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#ef4444",
+                "contrastRatio": 3.76,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">23</button>",
+                  "target": [
+                    ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(24)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-8 h-8 sm:w-[26px] sm:h-[22px] text-xs sm:text-[10px] font-mono rounded transition-colors border\n                    \" style=\"background: rgb(239, 68, 68); color: rgb(255, 255, 255); border-color: rgb(239, 68, 68); box-shadow: rgba(239, 68, 68, 0.3) 0px 0px 6px;\">23</button>",
+          "target": [
+            ".w-8.h-8.sm\\:w-\\[26px\\]:nth-child(24)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #ffffff, background color: #ef4444, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#ffffff",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 3.67,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"w-full py-2 rounded-lg font-mono text-sm font-bold transition-colors\n              hover:opacity-90\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 20px;\">Simulate on 549 Coins</button>",
+                  "target": [
+                    ".hover\\:opacity-90.rounded-lg.w-full"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 10.5pt (14px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button class=\"w-full py-2 rounded-lg font-mono text-sm font-bold transition-colors\n              hover:opacity-90\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 20px;\">Simulate on 549 Coins</button>",
+          "target": [
+            ".hover\\:opacity-90.rounded-lg.w-full"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.67 (foreground color: #ffffff, background color: #3b82f6, font size: 10.5pt (14px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#e5e5e5",
+                "bgColor": "#3b82f6",
+                "contrastRatio": 2.91,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button class=\"px-4 py-2 rounded font-mono text-xs font-bold transition-colors hover:opacity-90\" style=\"background: rgb(59, 130, 246); color: rgb(255, 255, 255); box-shadow: rgba(59, 130, 246, 0.3) 0px 0px 12px;\">Run BB Squeeze SHORT →</button>",
+                  "target": [
+                    ".flex-shrink-0.gap-2.flex > .hover\\:opacity-90.py-2.font-bold"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 2.91 (foreground color: #e5e5e5, background color: #3b82f6, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"/simulate\" class=\"bg-[--color-accent] text-[--color-bg] px-6 py-2 rounded font-semibold text-sm hover:bg-[--color-accent-dim] whitespace-nowrap shrink-0\"> Start Backtesting Free →\n</a>",
+          "target": [
+            ".px-6"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.91 (foreground color: #e5e5e5, background color: #3b82f6, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    }
+  ]
+}
