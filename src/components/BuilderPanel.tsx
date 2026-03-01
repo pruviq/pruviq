@@ -186,10 +186,10 @@ export default function BuilderPanel(props: Props) {
                   <button
                     key={tf}
                     onClick={() => props.setTimeframe(tf)}
-                    class={`px-2 py-0.5 text-xs font-mono rounded border transition-colors
+                    class={`flex-1 py-1 text-xs font-mono rounded border transition-colors cursor-pointer
                       ${props.timeframe === tf
-                        ? 'bg-[--color-accent]/20 text-[--color-accent] border-[--color-accent]/40 font-bold'
-                        : 'bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/20'}`}
+                        ? 'bg-[--color-accent]/20 text-[--color-accent] border-[--color-accent]/50 font-bold'
+                        : 'bg-[--color-bg-tooltip] text-[--color-text-muted] border-[--color-border] hover:border-[--color-accent]/30 hover:text-[--color-text]'}`}
                   >
                     {tf}
                   </button>
