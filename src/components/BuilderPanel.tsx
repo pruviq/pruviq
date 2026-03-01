@@ -67,7 +67,7 @@ const coinActiveStyle = { background: COLORS.accent, color: '#fff', borderColor:
 const shortActiveStyle = { background: COLORS.red, color: '#fff', borderColor: COLORS.red, boxShadow: `0 0 12px ${COLORS.redGlowStrong}` };
 const longActiveStyle = { background: COLORS.green, color: '#fff', borderColor: COLORS.green, boxShadow: `0 0 12px ${COLORS.greenGlow}` };
 const avoidActiveStyle = { background: COLORS.red, color: '#fff', borderColor: COLORS.red, boxShadow: `0 0 6px ${COLORS.redGlow}` };
-const tfActiveStyle = { background: 'rgba(59,130,246,0.15)', color: COLORS.accent, borderColor: COLORS.accent, fontWeight: 'bold' as const };
+const tfActiveStyle = { background: COLORS.accent, color: '#fff', borderColor: COLORS.accent, boxShadow: `0 0 8px ${COLORS.accentGlow}`, fontWeight: 'bold' as const };
 const runStyle = { background: COLORS.accent, color: '#fff', boxShadow: `0 0 20px ${COLORS.accentGlow}` };
 const runDisabledStyle = { background: COLORS.disabled, color: COLORS.disabledText };
 
