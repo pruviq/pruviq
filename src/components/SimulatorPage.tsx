@@ -430,16 +430,21 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
       return cond;
     });
 
+    // Convert max_bars (user thinks in hours) to the target timeframe's bar count
+    const tfHours: Record<string, number> = { '1H': 1, '2H': 2, '4H': 4, '6H': 6, '12H': 12, '1D': 24, '1W': 168 };
+    const hoursPerBar = tfHours[timeframe] || 1;
+    const adjustedMaxBars = Math.max(6, Math.round(maxBars / hoursPerBar));
+
     const body: Record<string, any> = {
       name: 'Custom Strategy',
       direction,
       timeframe,
       indicators: indicatorConfigs,
       entry: { type: 'AND', conditions: entryConditions },
-      avoid_hours: Array.from(avoidHours).sort((a, b) => a - b),
+      avoid_hours: hoursPerBar >= 24 ? [] : Array.from(avoidHours).sort((a, b) => a - b),
       sl_pct: slPct,
       tp_pct: tpPct,
-      max_bars: maxBars,
+      max_bars: adjustedMaxBars,
       per_coin_usdt: perCoinUsdt,
       leverage,
     };
