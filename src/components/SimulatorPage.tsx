@@ -703,12 +703,12 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
         {t.simNotes && (
           <details class="mb-3 group">
             <summary class="text-[11px] font-mono text-[--color-text-muted] cursor-pointer select-none hover:text-[--color-accent] transition-colors">
-              {t.simNotesTitle} <span class="opacity-50 group-open:rotate-90 inline-block transition-transform">\u25B6</span>
+              {t.simNotesTitle} <span class="opacity-50 group-open:rotate-90 inline-block transition-transform">{'▶'}</span>
             </summary>
             <ul class="mt-2 space-y-1.5 text-[11px] text-[--color-text-muted] list-none pl-0">
               {t.simNotes.map((note: string, i: number) => (
                 <li key={i} class="flex gap-2">
-                  <span class="text-[--color-accent] opacity-60 shrink-0">\u2022</span>
+                  <span class="text-[--color-accent] opacity-60 shrink-0">{'•'}</span>
                   <span>{note}</span>
                 </li>
               ))}
