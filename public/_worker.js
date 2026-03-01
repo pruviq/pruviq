@@ -7,6 +7,12 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // /sitemap.xml → /sitemap-index.xml (Astro generates sitemap-index.xml)
+    if (url.pathname === '/sitemap.xml') {
+      url.pathname = '/sitemap-index.xml';
+      return Response.redirect(url.toString(), 301);
+    }
+
     // Redirect /coins/UPPERCASE paths to lowercase (301)
     if (/^\/(?:ko\/)?coins\/[^/]*[A-Z]/.test(url.pathname)) {
       url.pathname = url.pathname.toLowerCase();
