@@ -276,20 +276,25 @@ const isActive = (match: string) => basePath.startsWith(match);
     <div id="page-loader"></div>
     <header>
     <nav class="fixed top-0 w-full z-50 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-md" role="navigation" aria-label="Main">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="max-w-6xl mx-auto px-4 h-16 grid grid-cols-[auto_1fr_auto] items-center">
+        <!-- 1열: Logo (좌측) -->
         <a href={lang === 'ko' ? '/ko/' : '/'} class="flex items-center gap-2">
-          <span class="relative inline-flex items-center justify-center w-7 h-7 bg-gradient-to-br from-[#5cff9f] via-[#33ff88] to-[#00b85c] rounded-[5px] font-mono font-extrabold text-[0.65rem] text-[--color-bg] leading-none tracking-tight shadow-[0_0_12px_rgba(0,230,118,0.25)]" aria-hidden="true">IQ<span class="absolute -top-1 -right-1 w-3 h-3 bg-[#2a2f4e] rounded-full flex items-center justify-center"><span class="w-2 h-2 bg-[--color-accent] rounded-full"></span></span></span>
-          <span class="font-mono font-semibold text-xl tracking-wider"><span class="text-[--color-text]">PRUV</span><span class="text-[--color-accent]">IQ</span></span>
+          <img src="/favicon.svg" alt="PRUVIQ" width="28" height="28" class="w-7 h-7" />
+          <span class="font-mono font-bold text-xl tracking-wider"><span class="text-[--color-text]">PRUV</span><span class="text-[#00E676]">IQ</span></span>
         </a>
-        <div class="hidden md:flex items-center gap-6 text-[0.8125rem]">
+        <!-- 2열: Nav (정중앙, 데스크톱 only) -->
+        <div class="hidden md:flex items-center justify-center gap-8 text-sm">
           {navItems.map(item => (
             <a href={item.href} aria-current={isActive(item.match) ? "page" : undefined} class={`transition-colors ${isActive(item.match) ? 'text-[--color-accent] font-medium' : 'text-[--color-text-muted] hover:text-[--color-text]'}`}>{item.label}</a>
           ))}
-          <a href={altPath} class="font-mono text-xs px-3 py-1.5 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
         </div>
-        <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-        </button>
+        <!-- 3열: Lang + Mobile hamburger (우측) -->
+        <div class="flex items-center justify-end gap-3">
+          <a href={altPath} class="hidden md:inline-flex font-mono text-xs px-3 py-1.5 border border-[--color-border] rounded hover:border-[--color-accent] hover:text-[--color-accent] text-[--color-text-muted] transition-colors">{t('nav.lang')}</a>
+          <button id="mobile-menu-btn" class="md:hidden text-[--color-text-muted]" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+        </div>
       </div>
       <div id="mobile-menu" class="hidden md:hidden border-t border-[--color-border] bg-[--color-bg]">
         <div class="flex flex-col px-4 py-4 gap-1 text-sm">
@@ -302,7 +307,7 @@ const isActive = (match: string) => basePath.startsWith(match);
     </nav>
     </header>
 
-    <main id="main-content" role="main" aria-label="Page content" class="pt-16">
+    <main id="main-content" role="main" aria-label="Page content" class="pt-16 pb-16">
       {!basePath.startsWith('/404') && <Breadcrumbs />}
       <slot />
     </main>
@@ -313,8 +318,8 @@ const isActive = (match: string) => basePath.startsWith(match);
         <div class="flex flex-col md:flex-row gap-10 mb-10">
           <div class="md:w-1/3">
             <span class="flex items-center gap-1.5">
-              <span class="relative inline-flex items-center justify-center w-6 h-6 bg-gradient-to-br from-[#5cff9f] via-[#33ff88] to-[#00b85c] rounded-[4px] font-mono font-extrabold text-[0.55rem] text-[--color-bg] leading-none tracking-tight shadow-[0_0_10px_rgba(0,230,118,0.2)]" aria-hidden="true">IQ<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#2a2f4e] rounded-full flex items-center justify-center"><span class="w-1.5 h-1.5 bg-[--color-accent] rounded-full"></span></span></span>
-              <span class="font-mono font-semibold text-lg tracking-wider"><span class="text-[--color-text]">PRUV</span><span class="text-[--color-accent]">IQ</span></span>
+              <img src="/favicon.svg" alt="PRUVIQ" width="24" height="24" class="w-6 h-6" />
+              <span class="font-mono font-bold text-lg tracking-wider"><span class="text-[--color-text]">PRUV</span><span class="text-[#00E676]">IQ</span></span>
             </span>
             <p class="text-[--color-text-muted] text-sm mt-2">{t('footer.tagline')}</p>
           </div>
