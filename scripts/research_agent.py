@@ -22,8 +22,10 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 import time
 import sys
+import os
 
 USER_AGENT = 'pruviq-research-agent/1.0 (+https://pruviq.com)'
+BRAVE_API_KEY = os.environ.get('BRAVE_API_KEY', '')
 
 
 def hn_search(query, hits=5):
@@ -99,6 +101,22 @@ def fetch_feeds(feed_urls, max_items=5):
     return results
 
 
+def brave_search(query, hits=5):
+    """
+    Placeholder for Brave Search integration.
+
+    If BRAVE_API_KEY is not set, this function returns an error dict. If set,
+    the integration is optional and may be implemented later. Do not assume
+    any specific API endpoint here — the function intentionally avoids making
+    a network request unless an implementation is provided.
+    """
+    if not BRAVE_API_KEY:
+        return {'error': 'BRAVE_API_KEY not set'}
+    # Brave integration not implemented in PoC. Return a placeholder indicating
+    # the feature is available but disabled until an implementation is added.
+    return {'error': 'Brave Search integration enabled via BRAVE_API_KEY but not implemented in this PoC. Please implement brave_search() to call the Brave Search API.'}
+
+
 def make_report(outpath, topics, feeds):
     lines = []
     now = datetime.utcnow().isoformat() + 'Z'
@@ -154,6 +172,17 @@ def make_report(outpath, topics, feeds):
             for g in gh:
                 lines.append(f'- [{g.get("name")}]({g.get("link")}) — ⭐ {g.get("stars")}, {g.get("description") or ""}')
         lines.append('\n')
+
+        # Brave Search (optional)
+        lines.append('#### Brave Search (optional)')
+        brave_res = brave_search(topic)
+        if isinstance(brave_res, dict) and brave_res.get('error'):
+            lines.append(f'- Brave Search: {brave_res.get("error")}')
+        else:
+            # Placeholder: format results if implemented later
+            lines.append('- Brave Search: results available (integration not implemented in PoC)')
+        lines.append('\n')
+
         # polite pause to avoid aggressive requests
         time.sleep(1)
 
@@ -174,6 +203,7 @@ def make_report(outpath, topics, feeds):
     lines.append('---')
     lines.append('Notes:')
     lines.append('- This is a PoC that uses public/free endpoints only. If you want more coverage, add more seed feeds or enable authenticated APIs.')
+    lines.append('- Brave Search integration is optional. Set the BRAVE_API_KEY environment variable to enable Brave-related checks; the PoC will display a note until integration is implemented.')
     lines.append('- Rate limits may apply; job should be scheduled conservatively.')
 
     os_mkdir = None
