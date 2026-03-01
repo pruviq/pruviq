@@ -9,6 +9,8 @@
 /performance /simulate 301
 /performance/* /simulate 301
 
+/sitemap.xml /sitemap-index.xml 301
+
 # KO equivalents
 /ko/builder /ko/simulate 301
 /ko/builder/* /ko/simulate 301
