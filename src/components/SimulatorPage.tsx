@@ -430,16 +430,21 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
       return cond;
     });
 
+    // Convert max_bars (user thinks in hours) to the target timeframe's bar count
+    const tfHours: Record<string, number> = { '1H': 1, '2H': 2, '4H': 4, '6H': 6, '12H': 12, '1D': 24, '1W': 168 };
+    const hoursPerBar = tfHours[timeframe] || 1;
+    const adjustedMaxBars = Math.max(6, Math.round(maxBars / hoursPerBar));
+
     const body: Record<string, any> = {
       name: 'Custom Strategy',
       direction,
       timeframe,
       indicators: indicatorConfigs,
       entry: { type: 'AND', conditions: entryConditions },
-      avoid_hours: Array.from(avoidHours).sort((a, b) => a - b),
+      avoid_hours: hoursPerBar >= 24 ? [] : Array.from(avoidHours).sort((a, b) => a - b),
       sl_pct: slPct,
       tp_pct: tpPct,
-      max_bars: maxBars,
+      max_bars: adjustedMaxBars,
       per_coin_usdt: perCoinUsdt,
       leverage,
     };
@@ -703,12 +708,12 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
         {t.simNotes && (
           <details class="mb-3 group">
             <summary class="text-[11px] font-mono text-[--color-text-muted] cursor-pointer select-none hover:text-[--color-accent] transition-colors">
-              {t.simNotesTitle} <span class="opacity-50 group-open:rotate-90 inline-block transition-transform">\u25B6</span>
+              {t.simNotesTitle} <span class="opacity-50 group-open:rotate-90 inline-block transition-transform">{'▶'}</span>
             </summary>
             <ul class="mt-2 space-y-1.5 text-[11px] text-[--color-text-muted] list-none pl-0">
               {t.simNotes.map((note: string, i: number) => (
                 <li key={i} class="flex gap-2">
-                  <span class="text-[--color-accent] opacity-60 shrink-0">\u2022</span>
+                  <span class="text-[--color-accent] opacity-60 shrink-0">{'•'}</span>
                   <span>{note}</span>
                 </li>
               ))}
