@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 
@@ -8,6 +7,15 @@ const outWebp = path.resolve(process.cwd(), 'public', 'og-image.webp');
 const outAvif = path.resolve(process.cwd(), 'public', 'og-image.avif');
 
 (async () => {
+  let sharp;
+  try {
+    const mod = await import('sharp');
+    sharp = mod.default || mod;
+  } catch (e) {
+    console.warn('Optional dependency "sharp" is not installed. Skipping image conversion.');
+    process.exit(0);
+  }
+
   try {
     if (!fs.existsSync(input)) {
       console.error('Input file not found:', input);
