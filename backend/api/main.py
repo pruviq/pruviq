@@ -57,7 +57,7 @@ from src.strategies.bb_squeeze import BBSqueezeStrategy
 from src.strategies.registry import STRATEGY_REGISTRY, get_strategy, get_all_strategies
 
 # Config
-VERSION = "0.1.0"
+VERSION = "0.3.0"
 DATA_DIR = Path(os.getenv(
     "PRUVIQ_DATA_DIR",
     str(Path(__file__).parent.parent.parent.parent / "autotrader" / "data" / "futures")
@@ -1456,7 +1456,7 @@ async def get_macro():
     return MacroResponse(**data)
 
 
-# --- Strategy Builder Endpoints (v1.1) ---
+# --- Strategy Builder Endpoints ---
 
 from src.engine.condition_engine import (
     ConditionEngine, validate_strategy_json,

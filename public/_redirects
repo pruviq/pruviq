@@ -1,4 +1,4 @@
-# PRUVIQ v1.5 redirects — legacy pages only
+# Legacy redirect rules
 # 규칙: dist/에 콘텐츠 페이지가 존재하면 여기에 넣지 말 것
 # 검증: bash scripts/qa-redirects.sh
 # 참고: 코인 대소문자 리다이렉트는 _worker.js에서 처리 (Cloudflare 100개 제한)
