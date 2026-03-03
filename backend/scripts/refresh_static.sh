@@ -15,7 +15,7 @@ LOCK_FILE="/tmp/pruviq-refresh.lock"
 LOG_FILE="/tmp/pruviq-refresh.log"
 
 # Telegram alerting (loaded from jepo's env)
-source /Users/jepo/.secrets.env 2>/dev/null || true
+source /Users/openclaw/.config/telegram.env 2>/dev/null || true
 TG_TOKEN="${TELEGRAM_TOKEN:-}"
 TG_CHAT="${TELEGRAM_CHAT_ID:-}"
 
