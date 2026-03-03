@@ -1,5 +1,36 @@
 # MEMORY.md - PRUVIQ Project Knowledge
 
+Last updated: 2026-03-04 06:19 KST
+
+## CRON RUN LOGS
+
+- cron:gh-issues-autofix
+  - Time: 2026-03-04 06:19 KST
+  - Action requested: autonomous gh-issues-autofix cron run (fix failed PRs and triage open issues)
+  - What I did:
+    1. `cd /Users/openclaw/pruviq && git checkout main && git pull origin main` — synchronized local main with origin (fast-forward where applicable).
+    2. Listed open PRs with `gh pr list` and inspected status checks. No failing PRs required fixes in this run. Open PRs observed: #159 (fix/issue-153-generated-data-branch), #150 (fix/issue-132-convert-og-image).
+    3. Fetched open issues (`gh issue list --state open`) and prioritized by label (P0 > P1 > P2). Notable issues handled in this run:
+       - Issue #137 (P0-critical): Cloudflare Workers builds failing for PRs #136 and #135 — the check-runs reference external Cloudflare Dashboard logs which are not accessible from this environment. I posted a diagnostic comment requesting a maintainer with Cloudflare access to inspect the external build logs or paste them here. (Comment: https://github.com/pruviq/pruviq/issues/137#issuecomment-3993606191)
+       - Issue #153 (P1-high): A branch `fix/issue-153-generated-data-branch` and PR #159 already exist for this issue — skipped here (PR: https://github.com/pruviq/pruviq/pull/159).
+       - Issue #132 (P1-high): Already has an open PR (#150) — skipped (PR: https://github.com/pruviq/pruviq/pull/150).
+       - Issue #21 (P1-high): Research PoC needs BRAVE_API_KEY. This is a secret and not present in this environment. I posted a diagnostic comment explaining how to provision the key and asked ops to add it so the research agent can run. (Comment: https://github.com/pruviq/pruviq/issues/21#issuecomment-3993606853)
+    4. No code changes were applied in this run — both actionable items requiring code changes were already covered by existing PRs or blocked by external access/secrets.
+  - Result:
+    - PRs: No new PRs created. Existing PRs #159 and #150 remain open and will be re-run by CI as needed.
+    - Blocked issues:
+      - #137 — Blocked by Cloudflare Dashboard access/logs (maintainer action required).
+      - #21 — Blocked by missing BRAVE_API_KEY secret (ops action required).
+  - Next steps:
+    - A maintainer with Cloudflare access should inspect the external build logs linked by the failing check-run(s) for PRs #136/#135 and either re-run the builds or paste logs for analysis.
+    - Ops should provision BRAVE_API_KEY in OpenClaw/CI secrets so the research agent can run. Once provided I will run the research PoC and open fixes/PRs as appropriate.
+  - Evidence:
+    - PRs: https://github.com/pruviq/pruviq/pull/159, https://github.com/pruviq/pruviq/pull/150
+    - Issue comments posted: https://github.com/pruviq/pruviq/issues/137#issuecomment-3993606191, https://github.com/pruviq/pruviq/issues/21#issuecomment-3993606853
+
+
+# MEMORY.md - PRUVIQ Project Knowledge
+
 Last updated: 2026-03-04 02:19 KST
 
 ## Project Overview
