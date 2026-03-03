@@ -17,7 +17,7 @@ def test_health():
     assert r.status_code == 200
     data = r.json()
     assert data["status"] == "ok"
-    assert data["version"] == "0.1.0"
+    assert data["version"] == "0.3.0"
     assert isinstance(data["coins_loaded"], int)
 
 

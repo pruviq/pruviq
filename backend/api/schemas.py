@@ -270,7 +270,7 @@ class CompareResponse(BaseModel):
     coins_used: int
     data_range: str
     strategies: List[StrategyResult]
-# --- Strategy Builder (v1.1) ---
+# --- Strategy Builder ---
 
 class ConditionItem(BaseModel):
     """A single condition or nested group."""

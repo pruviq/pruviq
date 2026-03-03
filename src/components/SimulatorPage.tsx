@@ -1,5 +1,5 @@
 /**
- * SimulatorPage.tsx - PRUVIQ Strategy Simulator v1.1
+ * SimulatorPage.tsx - PRUVIQ Strategy Simulator
  *
  * Layout: 70:30 split (chart left, conditions right), both 640px
  * Below: Backtest results with CSV/Excel download
