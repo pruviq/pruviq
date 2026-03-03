@@ -30,14 +30,14 @@ P3: SEO meta 태그 누락 페이지 보완
 
 ---
 
-# PRUVIQ v1.5.0
+# PRUVIQ v0.3.0
 
 "Don't Believe. Verify." — 무료 크립토 전략 시뮬레이션 + 시장 컨텍스트 플랫폼
 
 ## 프로젝트 상태
 
 ```
-버전: v1.5.0
+버전: v0.3.0
 Phase: 프로덕션 안정화
 시작일: 2026-02-14
 상태: P0/P1/MEDIUM 전부 해결 + 전체 검증 PASS
@@ -223,13 +223,13 @@ pruviq/
 
 ## 변경 이력
 
-### v1.5.0 (2026-02-19) — 현재
+### v0.1.2 (2026-02-19)
 - **P0/P1/MEDIUM 전부 해결** — 6-Agent 감사에서 발견된 이슈 100% 클리어
 - **리다이렉트 충돌 수정** — _redirects가 Coins/Blog 콘텐츠 페이지를 가리는 버그 해결
 - **QA 자동화** — qa-redirects.sh 스크립트 + CLAUDE.md QA 규칙 추가
 - **전체 검증 PASS** — 3-Layer 검증 (Live URL 12/12 + Source 8/8 + Dist 12/12)
 
-### v1.4.0 (2026-02-19)
+### v0.1.1 (2026-02-19)
 - **Sprint 1 P0 수정 완료**
   - GSC 등록 + sitemap 제출 완료
   - API URL 중앙화 (src/config/api.ts 단일 소스)
