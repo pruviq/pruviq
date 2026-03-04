@@ -35,5 +35,5 @@ data/
 !src/data/
 !public/data/
 # Ignore generated cache files (CoinGecko coin-list etc.)
-public/data/cache/
+data_cache/
 test-results/
