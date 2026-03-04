@@ -233,15 +233,18 @@ export default function PerformanceDashboard({ lang = 'en' }: { lang?: 'en' | 'k
       chart.timeScale().fitContent();
       chartRef.current = chart;
 
-      const ro = new ResizeObserver(entries => {
-        for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
-      });
-      ro.observe(chartContainerRef.current);
-      return () => ro.disconnect();
+      let ro: ResizeObserver | null = null;
+      if (chartContainerRef.current) {
+        ro = new ResizeObserver(entries => {
+          for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width });
+        });
+        ro.observe(chartContainerRef.current);
+      }
     });
 
     return () => {
       disposed = true;
+      if (ro) ro.disconnect();
       if (chartRef.current) { chartRef.current.remove(); chartRef.current = null; }
     };
   }, [data]);

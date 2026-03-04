@@ -265,15 +265,18 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       chartRef.current = chart;
       chart.timeScale().fitContent();
 
-      const ro = new ResizeObserver(entries => {
-        for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width, height: entry.contentRect.height });
-      });
-      ro.observe(chartContainerRef.current);
-      return () => ro.disconnect();
+      let ro: ResizeObserver | null = null;
+      if (chartContainerRef.current) {
+        ro = new ResizeObserver(entries => {
+          for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width, height: entry.contentRect.height });
+        });
+        ro.observe(chartContainerRef.current);
+      }
     });
 
     return () => {
       disposed = true;
+      if (ro) ro.disconnect();
       if (chartRef.current) { chartRef.current.remove(); chartRef.current = null; }
     };
   }, [ohlcv]);
