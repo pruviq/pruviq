@@ -1,5 +1,5 @@
 /**
- * SimulatorPage.tsx - PRUVIQ Strategy Simulator v1.1
+ * SimulatorPage.tsx - PRUVIQ Strategy Simulator
  *
  * Layout: 70:30 split (chart left, conditions right), both 640px
  * Below: Backtest results with CSV/Excel download
@@ -187,7 +187,11 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
   const [endDate, setEndDate] = useState('');
 
   // Coin selection
-  const [coinMode, setCoinMode] = useState<'all' | 'top' | 'select'>('all');
+  const [coinMode, setCoinModeRaw] = useState<'all' | 'top' | 'select'>('all');
+  const setCoinMode = (mode: 'all' | 'top' | 'select') => {
+    setCoinModeRaw(mode);
+    if (mode === 'all') setSelectedCoins([]);
+  };
   const [topN, setTopN] = useState(50);
   const [selectedCoins, setSelectedCoins] = useState<string[]>([]);
   const [coinSearch, setCoinSearch] = useState('');
@@ -451,7 +455,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
 
     if (coinMode === 'top') body.top_n = topN;
     else if (coinMode === 'select' && selectedCoins.length > 0) body.symbols = selectedCoins;
-    else if (coinsLoaded > 0) body.top_n = coinsLoaded;
+    // 'all' mode: don't send top_n → backend defaults to all coins
 
     if (startDate) body.start_date = startDate;
     if (endDate) body.end_date = endDate;
@@ -642,6 +646,7 @@ export default function SimulatorPage({ lang = 'en' }: Props) {
           <BuilderPanel
             t={t}
             coinsLoaded={currentCoinCount}
+            totalCoins={coinsLoaded}
             demoMode={demoMode}
             availableIndicators={availableIndicators}
             selectedIndicators={selectedIndicators}

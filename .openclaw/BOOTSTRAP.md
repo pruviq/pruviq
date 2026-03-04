@@ -255,7 +255,7 @@ Forbidden (Security Boundary):
 
 ---
 
-## 7. CURRENT STATE (v0.2.0)
+## 7. CURRENT STATE (v0.3.0)
 
 Audit Results (6-agent audit, 2026-02-18):
 - Trust signals: 4/10 (needs work)
