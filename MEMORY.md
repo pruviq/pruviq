@@ -21,3 +21,25 @@ Notes / next steps:
 - If you want the backed-up local files restored or merged, tell me where to apply them; I left them in /tmp/pruviq_untracked_backup_20260305_0239/.
 
 — 프루빅
+
+
+2026-03-05 06:02 KST — i18n completeness check (cron: i18n-fix)
+
+What I did:
+- Read SOUL.md and MEMORY.md (confirmed).
+- Compared src/i18n/en.ts and src/i18n/ko.ts: both contain 578 translation keys and there are no missing keys in ko.ts compared to en.ts (confirmed by extracting keys from both files and comparing). (confirmed in src/i18n/en.ts and src/i18n/ko.ts)
+- Scanned src/pages/ for corresponding Korean pages under src/pages/ko. I considered both direct file matches and the alternative index form (e.g., src/pages/404.astro ↔ src/pages/ko/404/index.astro). All EN pages have KO equivalents. (confirmed via a file-existence script against src/pages and src/pages/ko)
+- No missing translations or KO pages needed to be added.
+- Ran `npm run build` to verify the site still builds: build succeeded — [build] 2446 page(s) built and Complete. (from npm run build output)
+- No source changes were required; nothing to commit.
+
+Evidence / sources:
+- Key counts: 578 keys in en.ts and 578 keys in ko.ts (extracted from files).
+- Page check: script verified every file under src/pages has a matching path under src/pages/ko (either same filename or a folder index). 
+- Build output: "[build] 2446 page(s) built in 40.94s" and "[build] Complete!" (npm run build output)
+
+Result:
+- i18n verification completed: no missing translation keys and no missing Korean pages.
+- MEMORY.md updated with this record.
+
+— 프루빅
