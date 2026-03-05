@@ -181,6 +181,8 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
     for (const bar of ohlcv) map.set(bar.t, bar);
     ohlcvMapRef.current = map;
 
+    let ro: ResizeObserver | null = null;
+
     import('lightweight-charts').then(({ createChart, CandlestickSeries, LineSeries, HistogramSeries }) => {
       if (disposed || !chartContainerRef.current) return;
 
@@ -265,7 +267,6 @@ export default function CoinChart({ symbol, lang = 'en' }: { symbol: string; lan
       chartRef.current = chart;
       chart.timeScale().fitContent();
 
-      let ro: ResizeObserver | null = null;
       if (chartContainerRef.current) {
         ro = new ResizeObserver(entries => {
           for (const entry of entries) chart.applyOptions({ width: entry.contentRect.width, height: entry.contentRect.height });
