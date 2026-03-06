@@ -139,3 +139,39 @@ Time: 0.484s Size: 57,218 bytes HTTP: 200 TTFB: 0.450s
     7. Updated MEMORY.md with this run summary and evidence (this entry).
   - Result: Diagnostic comments posted to issues #21, #184, #185, #196, #197. Build verification passed locally. Blockers recorded above.
 
+- cron: strategic-review (autonomous run)
+  - Time: 2026-03-06 22:02 KST
+  - Actions performed:
+    1. git pull origin main (confirmed up-to-date).
+    2. Reviewed recent git history, open issues, and PRs (`git log --oneline -20`, `gh issue list`, `gh pr list`).
+    3. Identified top 3 highest-impact improvements needed now:
+       - P0: API uptime / availability (api.pruviq.com returning intermittent 5xx responses) — operational/ops work required.
+       - P1: Backend security fixes (unauthenticated admin endpoint #184, rate-limiter memory leak #185) — backend changes required.
+       - P1: Improve UX for site-hosted API paths (proxy /api/*) — implementable in Cloudflare Pages worker.
+    4. Actions taken:
+       - Implemented worker proxy for /api/* in `public/_worker.js` to forward requests to https://api.pruviq.com (preserves exact /api docs page). File updated, committed on branch `fix/api-proxy-worker-2026-03-06`, pushed to origin.
+       - Ran `npm run build` locally — build completed successfully ("2450 page(s) built").
+       - Opened PR: https://github.com/pruviq/pruviq/pull/203 (fix(worker): proxy /api/* to https://api.pruviq.com).
+       - Created consolidated P0 issue for API downtime: https://github.com/pruviq/pruviq/issues/204 (labels: P0-critical, uptime-monitor).
+       - Escalated backend security issues: added labels `P1-high` and `security` to issues #184 and #185 and left diagnostic comments with remediation suggestions.
+    5. Local verification: site builds and basic checks passed.
+  - Result: PR #203 opened; issue #204 created (P0); issues #184 and #185 labeled P1-high/security and annotated. Some items remain blocked by external access (Cloudflare/origin logs, repository secrets, backend deployment).
+
+- Pending Tasks (updated priorities):
+  1. P0: api-pruviq.com uptime (issue #204) — ops/Cloudflare/backend owners must triage logs, rollback, or fix origin. Blocker: Cloudflare/origin access.
+  2. P1: Backend security fixes (issues #184, #185) — require backend PRs and deploy; recommend short-term patches: add auth to /admin endpoints; prune rate_limits dict; long-term: move rate-limiter to Redis or TTLCache.
+  3. P1: Provision BRAVE_API_KEY repository secret (issue #21) — maintainer must add secret for research PoC to run.
+  4. P2: Cloudflare Workers builds for PRs (issue #137) — maintainers with Cloudflare access should review failing builds and logs.
+  5. P2: Convert remaining images to WebP/AVIF in CI (optional perf improvement) — add `sharp` to devDependencies and enable `scripts/render-assets.mjs` in CI to generate webp/avif.
+
+- What I changed in this session:
+  - Created branch `fix/api-proxy-worker-2026-03-06`, updated `public/_worker.js` to proxy /api/* → https://api.pruviq.com, committed and pushed.
+  - Opened PR: https://github.com/pruviq/pruviq/pull/203
+  - Created issue: https://github.com/pruviq/pruviq/issues/204 (P0-critical: API downtime)
+  - Added labels `P1-high` and `security` to issues #184 and #185 for escalation.
+
+- Next steps (for human/maintainer):
+  - Ops: triage issue #204 with Cloudflare/worker/origin logs and act (rollback/restore/service fix).
+  - Backend maintainers: implement and deploy fixes for #184 and #185 (auth on admin endpoints, rate-limiter hardening).
+  - Repository admin: add BRAVE_API_KEY to repository secrets so research workflows can run (issue #21).
+
