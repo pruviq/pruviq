@@ -1,7 +1,7 @@
 /**
  * Cloudflare Pages Advanced Mode Worker
  * - Handles case-insensitive coin URL redirects (e.g. /coins/BTCUSDT/ → /coins/btcusdt/)
- * - Proxies /api/* requests (except exact /api) to https://api.pruviq.com
+ * - Proxies /api/* requests (only when there is a path after /api) to https://api.pruviq.com
  * - Passes all other requests through to static assets
  */
 export default {
@@ -14,23 +14,33 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
-    // Proxy /api/* (but do not proxy the docs page at /api)
-    if (url.pathname.startsWith('/api/')) {
-      // Construct target URL on the API host
-      const targetUrl = new URL(url.pathname + url.search, 'https://api.pruviq.com');
+    // Proxy /api/* (but do not proxy the docs page at /api or /api/)
+    if (/^\/api\/.+/.test(url.pathname)) {
+      // Strip the leading /api prefix so https://api.pruviq.com/coins/stats is targeted
+      const pathAfterApi = url.pathname.replace(/^\/api/, '');
+      const targetUrl = new URL(pathAfterApi + url.search, 'https://api.pruviq.com');
 
-      // Forward the incoming request to the API host
+      const headers = new Headers(request.headers);
+      // Remove host header so fetch sets the correct host for the API origin
+      headers.delete('host');
+
       const apiReqInit = {
         method: request.method,
-        headers: new Headers(request.headers),
+        headers,
         body: request.body,
-        redirect: 'follow'
+        // Do not follow redirects server-side — return redirects to the client
+        redirect: 'manual'
       };
-      // Remove host header so fetch sets the correct host
-      apiReqInit.headers.delete('host');
 
-      const resp = await fetch(targetUrl.toString(), apiReqInit);
-      return resp;
+      try {
+        const resp = await fetch(targetUrl.toString(), apiReqInit);
+        return resp;
+      } catch (err) {
+        return new Response(JSON.stringify({ error: 'API unavailable' }), {
+          status: 502,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
     }
 
     // Redirect /coins/UPPERCASE paths to lowercase (301)
