@@ -496,6 +496,14 @@ export const ko: Record<TranslationKey, string> = {
   'methodology.metric_sortino': '소르티노 비율 — 샤프와 유사하지만 하방 변동성만 고려합니다.',
   'methodology.metric_calmar': '칼마 비율 — 총 수익률을 최대 드로다운으로 나눈 값. 위험 단위당 수익을 측정합니다.',
   'methodology.metrics_coming': '고급 지표(샤프, 소르티노, 칼마 비율)는 모든 시뮬레이션에서 계산되며, 시뮬레이터 결과에서 확인 가능합니다.',
+  'methodology.advanced_title': '위험 조정 지표',
+
+  'methodology.validation_title': '강건성 검증',
+  'methodology.validation_desc': '숫자만으로는 오해를 불러올 수 있습니다. 전략 성과가 실제인지 단순한 노이즈인지 검증하기 위해 두 가지 추가 방법을 적용합니다:',
+  'methodology.oos_label': '표본 외 테스트 (OOS)',
+  'methodology.oos_desc': '데이터를 학습 구간(In-Sample)과 테스트 구간(Out-of-Sample)으로 분리합니다. 전략은 학습에 사용하지 않은 데이터에서도 일관된 성과를 보여야 검증된 것으로 인정됩니다. 2024년, 2025년, 2026년을 독립적으로 테스트합니다.',
+  'methodology.mc_label': '몬테카를로 시뮬레이션',
+  'methodology.mc_desc': '전략당 1,000회 이상의 무작위 시뮬레이션을 실행합니다 — 거래 순서를 섞고 통계적 노이즈를 적용합니다. 최악의 시나리오, 신뢰 구간, 수익이 운 좋은 순서에 의존하는지 여부를 밝혀냅니다.',
 
   'methodology.not_modeled_title': '모델링하지 않는 것',
   'methodology.not_modeled_desc': '투명성은 빈틈을 보여주는 것입니다. 다음 요소들은 백테스트에 포함되지 않습니다:',
