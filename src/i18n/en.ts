@@ -494,6 +494,14 @@ export const en = {
   'methodology.metric_sortino': 'Sortino Ratio — Like Sharpe, but only penalizes downside volatility.',
   'methodology.metric_calmar': 'Calmar Ratio — Total return divided by max drawdown. Measures return per unit of risk.',
   'methodology.metrics_coming': 'Advanced metrics (Sharpe, Sortino, Calmar) are calculated for every simulation and displayed in simulator results.',
+  'methodology.advanced_title': 'Risk-Adjusted Metrics',
+
+  'methodology.validation_title': 'Robustness Validation',
+  'methodology.validation_desc': 'Numbers alone can be misleading. We apply two additional validation methods to test whether strategy performance is real or just noise:',
+  'methodology.oos_label': 'Out-of-Sample Testing (OOS)',
+  'methodology.oos_desc': 'Data is split into in-sample (training) and out-of-sample (testing) periods. A strategy must perform consistently on unseen data to be considered validated. We test across 2024, 2025, and 2026 independently.',
+  'methodology.mc_label': 'Monte Carlo Simulation',
+  'methodology.mc_desc': 'We run 1,000+ randomized simulations per strategy — shuffling trade order and applying statistical noise. This reveals worst-case scenarios, confidence intervals, and whether returns depend on lucky sequencing.',
 
   'methodology.not_modeled_title': 'What We Don\'t Model',
   'methodology.not_modeled_desc': 'Transparency means showing the gaps. These factors are not included in our backtests:',
