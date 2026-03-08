@@ -320,6 +320,16 @@ class BacktestRequest(BaseModel):
     leverage: int = Field(default=5, ge=1, le=125, description="Leverage multiplier")
 
 
+class MonthlyStat(BaseModel):
+    """Per-month performance breakdown."""
+    month: str  # "YYYY-MM"
+    trades: int
+    wins: int
+    win_rate: float
+    total_return_pct: float
+    profit_factor: float
+
+
 class YearlyStat(BaseModel):
     """Per-year performance breakdown."""
     year: int
@@ -393,10 +403,19 @@ class BacktestResponse(BaseModel):
     # Warnings
     warnings: List[str] = []
 
+    # Walk-forward consistency (OOS/IS metric ratio, ideal=1.0)
+    walk_forward_consistency: float = 0.0
+    walk_forward_details: str = ""
+
+    # Trade duration stats
+    avg_bars_held: float = 0.0
+    median_bars_held: float = 0.0
+
     # Validation info
     is_valid: bool
     validation_errors: List[str] = []
     yearly_stats: List["YearlyStat"] = []
+    monthly_stats: List["MonthlyStat"] = []
     compute_time_ms: int = 0
 
 

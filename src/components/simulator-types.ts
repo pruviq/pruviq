@@ -25,6 +25,11 @@ export interface TradeItem {
   pnl_usd: number; exit_reason: string; bars_held: number;
 }
 
+export interface MonthlyStat {
+  month: string; trades: number; wins: number; win_rate: number;
+  total_return_pct: number; profit_factor: number;
+}
+
 export interface YearlyStat {
   year: number; trades: number; wins: number; win_rate: number;
   total_return_pct: number; profit_factor: number;
@@ -67,6 +72,12 @@ export interface BacktestResult {
   grade_details?: string;
   warnings?: string[];
   edge_p_value?: number;
+  // 9.5 phase 3
+  walk_forward_consistency?: number;
+  walk_forward_details?: string;
+  avg_bars_held?: number;
+  median_bars_held?: number;
+  monthly_stats?: MonthlyStat[];
 }
 
 export interface PresetItem {

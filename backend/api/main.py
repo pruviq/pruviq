@@ -1755,7 +1755,7 @@ from src.engine.condition_engine import (
 )
 from src.engine.indicator_pipeline import get_available_indicators, INDICATOR_REGISTRY
 from api.schemas import (
-    BacktestRequest, BacktestResponse, PresetListItem, IndicatorInfo, YearlyStat,
+    BacktestRequest, BacktestResponse, PresetListItem, IndicatorInfo, YearlyStat, MonthlyStat,
 )
 
 
@@ -2058,6 +2058,39 @@ async def run_backtest(req: BacktestRequest):
 
     total_funding = sum(t.get('funding_pct', 0) for t in all_trades)
 
+    # --- Monthly stats ---
+    from collections import defaultdict as _dd
+    monthly = _dd(lambda: {"wins": 0, "losses": 0, "gross_profit": 0.0, "gross_loss": 0.0, "total_pnl": 0.0})
+    for tr in all_trades:
+        month_key = tr["time"][:7]  # "YYYY-MM"
+        m = monthly[month_key]
+        m["total_pnl"] += tr["pnl_pct"]
+        if tr["pnl_pct"] > 0:
+            m["wins"] += 1
+            m["gross_profit"] += tr["pnl_pct"]
+        else:
+            m["losses"] += 1
+            m["gross_loss"] += abs(tr["pnl_pct"])
+
+    monthly_stats = []
+    for month_key in sorted(monthly.keys()):
+        m = monthly[month_key]
+        mtotal = m["wins"] + m["losses"]
+        monthly_stats.append(MonthlyStat(
+            month=month_key,
+            trades=mtotal,
+            wins=m["wins"],
+            win_rate=round(m["wins"] / mtotal * 100, 1) if mtotal > 0 else 0,
+            total_return_pct=round(m["total_pnl"], 2),
+            profit_factor=round(m["gross_profit"] / max(m["gross_loss"], 0.001), 2),
+        ))
+
+    # --- Trade duration stats ---
+    bars_list = [t["bars_held"] for t in all_trades]
+    avg_bars_held = round(sum(bars_list) / len(bars_list), 1) if bars_list else 0.0
+    sorted_bars = sorted(bars_list)
+    median_bars_held = float(sorted_bars[len(sorted_bars) // 2]) if sorted_bars else 0.0
+
     # --- Additional risk metrics ---
     win_rate_dec = len(wins) / len(all_trades) if all_trades else 0
     expectancy = round(win_rate_dec * avg_win + (1 - win_rate_dec) * avg_loss, 4)
@@ -2138,6 +2171,30 @@ async def run_backtest(req: BacktestRequest):
     if edge_p_value > 0.05 and len(all_trades) >= 30:
         warnings.append(f"Strategy edge not statistically significant (p={edge_p_value:.3f}). Win rate may not be reliably above break-even.")
 
+    # --- Walk-forward consistency (split trades 50/50 by time) ---
+    walk_forward_consistency = 0.0
+    walk_forward_details = ""
+    if len(all_trades) >= 40:
+        mid = len(all_trades) // 2
+        is_half = all_trades[:mid]
+        oos_half = all_trades[mid:]
+        def _half_metrics(tlist):
+            w = [t for t in tlist if t["pnl_pct"] > 0]
+            l = [t for t in tlist if t["pnl_pct"] <= 0]
+            _wr = len(w) / len(tlist) * 100 if tlist else 0
+            gp = sum(t["pnl_pct"] for t in w) if w else 0
+            gl = abs(sum(t["pnl_pct"] for t in l)) if l else 0.001
+            _pf = gp / gl if gl > 0 else 0
+            return _wr, _pf
+        is_wr, is_pf = _half_metrics(is_half)
+        oos_wr, oos_pf = _half_metrics(oos_half)
+        wr_ratio = min(oos_wr / max(is_wr, 0.01), 2.0)
+        pf_ratio = min(oos_pf / max(is_pf, 0.01), 2.0)
+        walk_forward_consistency = round((wr_ratio + pf_ratio) / 2, 2)
+        walk_forward_details = f"IS: WR={is_wr:.1f}% PF={is_pf:.2f} | OOS: WR={oos_wr:.1f}% PF={oos_pf:.2f}"
+        if walk_forward_consistency < 0.7:
+            warnings.append(f"Walk-forward degradation detected ({walk_forward_consistency:.2f}). OOS performance significantly worse than IS.")
+
     compute_ms = int((time.time() - t_start) * 1000)
 
     # Build trade items for response (cap at 500)
@@ -2205,6 +2262,11 @@ async def run_backtest(req: BacktestRequest):
         grade_details=grade_details,
         edge_p_value=edge_p_value,
         warnings=warnings,
+        walk_forward_consistency=walk_forward_consistency,
+        walk_forward_details=walk_forward_details,
+        avg_bars_held=avg_bars_held,
+        median_bars_held=median_bars_held,
+        monthly_stats=monthly_stats,
     )
 
     # Cache the result

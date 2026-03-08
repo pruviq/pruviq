@@ -34,6 +34,10 @@ interface ResultsData {
   grade_details?: string;
   warnings?: string[];
   edge_p_value?: number;
+  walk_forward_consistency?: number;
+  walk_forward_details?: string;
+  avg_bars_held?: number;
+  median_bars_held?: number;
 }
 
 interface ResultsCardProps {
@@ -76,6 +80,11 @@ const labels = {
     payoffRatio: 'Payoff Ratio',
     btcBenchmark: 'vs BTC Hold',
     advancedMetrics: 'Advanced Metrics',
+    walkForward: 'Walk-Forward',
+    avgHold: 'Avg Hold',
+    medHold: 'Med Hold',
+    bars: 'bars',
+    tradeDuration: 'Trade Duration',
   },
   ko: {
     live: '현재 라이브 설정',
@@ -109,6 +118,11 @@ const labels = {
     payoffRatio: '보상 비율',
     btcBenchmark: 'BTC 보유 대비',
     advancedMetrics: '고급 지표',
+    walkForward: '워크포워드',
+    avgHold: '평균 보유',
+    medHold: '중간값 보유',
+    bars: '봉',
+    tradeDuration: '보유 기간',
   },
 };
 
@@ -238,6 +252,30 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
               </span>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Walk-Forward Consistency */}
+      {data.walk_forward_consistency != null && data.walk_forward_consistency > 0 && (
+        <div class="mb-3 px-3 py-2 rounded-lg bg-[--color-bg-tooltip] border border-[--color-border] flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-[10px] text-[--color-text-muted] uppercase">{t.walkForward}</span>
+            <span class={`inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold ${
+              data.walk_forward_consistency >= 0.85 ? 'text-[--color-green] bg-[--color-green]/10' :
+              data.walk_forward_consistency >= 0.7 ? 'text-[--color-accent] bg-[--color-accent]/10' :
+              'text-[--color-red] bg-[--color-red]/10'
+            }`}>
+              {data.walk_forward_consistency.toFixed(2)}
+            </span>
+            <span class="font-mono text-[10px]" style={{ color: data.walk_forward_consistency >= 0.85 ? 'var(--color-green)' : data.walk_forward_consistency >= 0.7 ? 'var(--color-accent)' : 'var(--color-red)' }}>
+              {data.walk_forward_consistency >= 0.85 ? (lang === 'ko' ? '안정적' : 'Stable') :
+               data.walk_forward_consistency >= 0.7 ? (lang === 'ko' ? '보통' : 'Moderate') :
+               (lang === 'ko' ? '과적합 위험' : 'Overfit risk')}
+            </span>
+          </div>
+          {data.walk_forward_details && (
+            <span class="font-mono text-[9px] text-[--color-text-muted] hidden md:inline">{data.walk_forward_details}</span>
+          )}
         </div>
       )}
 
@@ -418,8 +456,13 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
         </div>
       )}
 
-      <div class="font-mono text-xs text-[--color-text-muted] mb-3">
-        {data.total_trades.toLocaleString()} {t.trades}
+      <div class="flex items-center justify-between font-mono text-xs text-[--color-text-muted] mb-3">
+        <span>{data.total_trades.toLocaleString()} {t.trades}</span>
+        {data.avg_bars_held != null && data.avg_bars_held > 0 && (
+          <span class="text-[10px]">
+            {t.avgHold}: {data.avg_bars_held}h · {t.medHold}: {data.median_bars_held ?? 0}h
+          </span>
+        )}
       </div>
 
       {/* Exit reason bar */}

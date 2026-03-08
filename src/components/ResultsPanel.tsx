@@ -422,6 +422,36 @@ export default function ResultsPanel({
                   </div>
                 </div>
               )}
+              {result.monthly_stats && result.monthly_stats.length > 0 && (
+                <div class="mt-4">
+                  <div class="text-[10px] font-mono text-[--color-text-muted] uppercase mb-2">Monthly Returns</div>
+                  <div class="overflow-x-auto">
+                    <div class="flex gap-1 min-w-max">
+                      {result.monthly_stats.map((m) => {
+                        const maxRet = Math.max(...result.monthly_stats!.map(x => Math.abs(x.total_return_pct)), 1);
+                        const barH = Math.min(Math.abs(m.total_return_pct) / maxRet * 40, 40);
+                        return (
+                          <div key={m.month} class="flex flex-col items-center w-7" title={`${m.month}: ${m.trades} trades, WR ${m.win_rate}%, PF ${m.profit_factor}`}>
+                            <div class="relative h-10 w-4 flex items-end justify-center">
+                              <div
+                                class="w-full rounded-sm"
+                                style={{
+                                  height: `${barH}px`,
+                                  backgroundColor: m.total_return_pct >= 0 ? 'var(--color-green)' : 'var(--color-red)',
+                                  opacity: 0.7,
+                                }}
+                              />
+                            </div>
+                            <span class="text-[7px] font-mono text-[--color-text-muted] mt-0.5 rotate-[-45deg] origin-top-left translate-x-[6px]">
+                              {m.month.slice(2)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
               <div class="mt-3 flex flex-wrap gap-3 text-[10px] text-[--color-text-muted] font-mono">
                 <span>{result.coins_used} coins</span>
                 <span>{result.data_range}</span>
