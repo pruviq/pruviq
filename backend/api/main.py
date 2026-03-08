@@ -1921,9 +1921,12 @@ async def run_backtest(req: BacktestRequest):
         # Calculate USD PnL per trade
         position_size = getattr(req, 'per_coin_usd', 60.0) * getattr(req, 'leverage', 5)
         for trade in trades:
+            # Skip trades with invalid timestamps
+            if not trade.entry_time or str(trade.entry_time).startswith("NaT"):
+                continue
             trade.pnl_usd = round(position_size * (trade.pnl_pct / 100), 4)
             all_trades.append({
-                "time": trade.entry_time,
+                "time": str(trade.entry_time),
                 "pnl_pct": trade.pnl_pct,
                 "pnl_usd": trade.pnl_usd,
                 "exit_reason": trade.exit_reason,
@@ -1940,6 +1943,8 @@ async def run_backtest(req: BacktestRequest):
     # Sort coin_results by total_return descending
     coin_results.sort(key=lambda x: x.total_return_pct, reverse=True)
 
+    # Filter out trades with invalid timestamps (NaT from pandas)
+    all_trades = [t for t in all_trades if t.get("time") and not str(t["time"]).startswith("NaT")]
     all_trades.sort(key=lambda t: t["time"])
 
     # --- Concurrent position limit (matches live: max 100) ---
