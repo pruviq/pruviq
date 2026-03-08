@@ -2098,20 +2098,18 @@ async def run_backtest(req: BacktestRequest):
         dsr_haircut_pct = round((1 - deflated_sharpe / bt_sharpe) * 100, 1) if bt_sharpe > 0 else 100.0
         dsr_haircut_pct = max(0, min(100, dsr_haircut_pct))
 
-    # --- Monte Carlo Permutation Test ---
+    # --- Monte Carlo Sign-Flip Test ---
     mc_p_value = 1.0
     mc_percentile = 50.0
     trade_pnls = [t["pnl_pct"] for t in all_trades]
     if len(trade_pnls) >= 10:
         rng = np.random.RandomState(42)
-        original_return = sum(trade_pnls)
-        mc_returns = []
-        n_sims = min(1000, max(200, len(trade_pnls) * 5))
         pnl_arr = np.array(trade_pnls)
-        for _ in range(n_sims):
-            shuffled = rng.permutation(pnl_arr)
-            mc_returns.append(float(np.sum(shuffled)))  # sum for simple total
-        mc_returns = np.array(mc_returns)
+        original_return = float(np.sum(pnl_arr))
+        n_sims = min(1000, max(200, len(trade_pnls) * 5))
+        # Sign-flip: randomly negate each trade's PnL to test if direction matters
+        signs = rng.choice([-1, 1], size=(n_sims, len(pnl_arr)))
+        mc_returns = np.sum(signs * pnl_arr, axis=1)
         mc_percentile = round(float(np.mean(mc_returns <= original_return) * 100), 1)
         # One-sided p-value: how likely to see this return or better by chance
         mc_p_value = round(float(np.mean(mc_returns >= original_return)), 4)
@@ -2256,6 +2254,24 @@ async def run_backtest(req: BacktestRequest):
         else:
             jensens_alpha = round(total_return - btc_hold_return_pct, 2)
 
+    # --- Statistical significance (binomial test) — must run before grade ---
+    hasBreakeven = abs(avg_win) > 0 and abs(avg_loss) > 0
+    edge_p_value = 1.0
+    if len(all_trades) >= 10 and hasBreakeven:
+        try:
+            from scipy.stats import binomtest
+            be_wr = abs(avg_loss) / (abs(avg_win) + abs(avg_loss)) if (abs(avg_win) + abs(avg_loss)) > 0 else 0.5
+            result_binom = binomtest(len(wins), len(all_trades), be_wr, alternative='greater')
+            edge_p_value = round(result_binom.pvalue, 4)
+        except ImportError:
+            n = len(all_trades)
+            be_wr_val = abs(avg_loss) / (abs(avg_win) + abs(avg_loss)) if (abs(avg_win) + abs(avg_loss)) > 0 else 0.5
+            observed_wr = len(wins) / n
+            z = (observed_wr - be_wr_val) / max((be_wr_val * (1 - be_wr_val) / n) ** 0.5, 1e-9)
+            edge_p_value = round(max(0, min(1, 0.5 * (1 - min(abs(z), 6) / 6))), 4) if z > 0 else 1.0
+        except Exception:
+            pass
+
     # --- Strategy grade (7 dimensions, max 16 points) ---
     pf = round(gross_profit / gross_loss, 2) if gross_loss > 0 else 0
     wr = round(len(wins) / len(all_trades) * 100, 2) if all_trades else 0
@@ -2293,24 +2309,6 @@ async def run_backtest(req: BacktestRequest):
     else: strategy_grade = "F"
 
     grade_details = f"PF={pf} WR={wr}% MDD={mdd}% RF={recovery_factor} Sharpe={bt_sharpe} E={expectancy} Edge={grade_score}/16"
-
-    # --- Statistical significance (binomial test) — must run before grade ---
-    hasBreakeven = abs(avg_win) > 0 and abs(avg_loss) > 0
-    edge_p_value = 1.0
-    if len(all_trades) >= 10 and hasBreakeven:
-        try:
-            from scipy.stats import binomtest
-            be_wr = abs(avg_loss) / (abs(avg_win) + abs(avg_loss)) if (abs(avg_win) + abs(avg_loss)) > 0 else 0.5
-            result_binom = binomtest(len(wins), len(all_trades), be_wr, alternative='greater')
-            edge_p_value = round(result_binom.pvalue, 4)
-        except ImportError:
-            n = len(all_trades)
-            be_wr_val = abs(avg_loss) / (abs(avg_win) + abs(avg_loss)) if (abs(avg_win) + abs(avg_loss)) > 0 else 0.5
-            observed_wr = len(wins) / n
-            z = (observed_wr - be_wr_val) / max((be_wr_val * (1 - be_wr_val) / n) ** 0.5, 1e-9)
-            edge_p_value = round(max(0, min(1, 0.5 * (1 - min(abs(z), 6) / 6))), 4) if z > 0 else 1.0
-        except Exception:
-            pass
 
     # --- Warnings ---
     warnings = []
