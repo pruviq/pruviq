@@ -412,6 +412,8 @@ class BacktestResponse(BaseModel):
     avg_bars_held: float = 0.0
     median_bars_held: float = 0.0
     positions_skipped: int = 0  # trades skipped due to concurrent position limit
+    pnl_distribution: List[int] = []  # histogram: count of trades in each 1% PnL bucket [-10..+10]
+    pnl_buckets: List[str] = []       # bucket labels
 
     # Validation info
     is_valid: bool

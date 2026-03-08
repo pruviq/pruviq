@@ -78,6 +78,9 @@ export interface BacktestResult {
   avg_bars_held?: number;
   median_bars_held?: number;
   monthly_stats?: MonthlyStat[];
+  positions_skipped?: number;
+  pnl_distribution?: number[];
+  pnl_buckets?: string[];
 }
 
 export interface PresetItem {

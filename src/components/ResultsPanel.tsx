@@ -452,11 +452,42 @@ export default function ResultsPanel({
                   </div>
                 </div>
               )}
+              {result.pnl_distribution && result.pnl_distribution.length > 0 && result.pnl_buckets && (
+                <div class="mt-4">
+                  <div class="text-[10px] font-mono text-[--color-text-muted] uppercase mb-2">PnL Distribution</div>
+                  <div class="flex items-end gap-px h-16">
+                    {result.pnl_distribution.map((count, i) => {
+                      const maxCount = Math.max(...result.pnl_distribution!, 1);
+                      const h = count > 0 ? Math.max((count / maxCount) * 100, 4) : 0;
+                      const isNeg = i < 10;
+                      const isZero = i === 10;
+                      return (
+                        <div
+                          key={i}
+                          class="flex-1 rounded-t-sm transition-all"
+                          style={{
+                            height: `${h}%`,
+                            backgroundColor: isZero ? 'var(--color-text-muted)' : isNeg ? 'var(--color-red)' : 'var(--color-green)',
+                            opacity: count > 0 ? 0.7 : 0.1,
+                          }}
+                          title={`${result.pnl_buckets![i]}: ${count} trades`}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div class="flex justify-between text-[8px] font-mono text-[--color-text-muted] mt-0.5">
+                    <span>-10%</span><span>0%</span><span>+10%</span>
+                  </div>
+                </div>
+              )}
               <div class="mt-3 flex flex-wrap gap-3 text-[10px] text-[--color-text-muted] font-mono">
                 <span>{result.coins_used} coins</span>
                 <span>{result.data_range}</span>
                 <span>{result.compute_time_ms}ms</span>
                 {result._isDemo && <span class="text-[--color-yellow]">DEMO</span>}
+                {result.positions_skipped != null && result.positions_skipped > 0 && (
+                  <span class="text-[--color-yellow]">{result.positions_skipped} skipped (max {100} concurrent)</span>
+                )}
               </div>
             </div>
           )}

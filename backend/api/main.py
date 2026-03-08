@@ -2132,6 +2132,14 @@ async def run_backtest(req: BacktestRequest):
     sorted_bars = sorted(bars_list)
     median_bars_held = float(sorted_bars[len(sorted_bars) // 2]) if sorted_bars else 0.0
 
+    # --- PnL distribution histogram (1% buckets from -10% to +10%) ---
+    pnl_buckets = [f"{i}%" for i in range(-10, 11)]
+    pnl_distribution = [0] * 21  # 21 buckets: -10 to +10
+    for t in all_trades:
+        bucket = int(round(t["pnl_pct"]))
+        bucket = max(-10, min(10, bucket))  # clamp
+        pnl_distribution[bucket + 10] += 1
+
     # --- Additional risk metrics ---
     win_rate_dec = len(wins) / len(all_trades) if all_trades else 0
     expectancy = round(win_rate_dec * avg_win + (1 - win_rate_dec) * avg_loss, 4)
@@ -2319,6 +2327,8 @@ async def run_backtest(req: BacktestRequest):
         median_bars_held=median_bars_held,
         monthly_stats=monthly_stats,
         positions_skipped=skipped,
+        pnl_distribution=pnl_distribution,
+        pnl_buckets=pnl_buckets,
     )
 
     # Cache the result
