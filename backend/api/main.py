@@ -2066,7 +2066,10 @@ async def run_backtest(req: BacktestRequest):
         dr_down = daily_returns[daily_returns < 0]
         dr_down_std = float(np.std(dr_down, ddof=1)) if len(dr_down) >= 2 else 0.0
         bt_sortino = round(dr_avg / dr_down_std * np.sqrt(365), 2) if dr_down_std > 0 else 0.0
-        bt_calmar = round(total_return / max_dd, 2) if max_dd > 0 else 0.0
+        # Calmar = annualized return / MDD
+        n_days = len(daily_pnl)
+        ann_return = total_return * (365 / max(n_days, 1)) if n_days > 0 else total_return
+        bt_calmar = round(ann_return / max_dd, 2) if max_dd > 0 else 0.0
         # VaR and CVaR (95% confidence, daily)
         var_95 = round(float(np.percentile(daily_returns, 5)), 4)
         tail = daily_returns[daily_returns <= var_95]
@@ -2216,27 +2219,34 @@ async def run_backtest(req: BacktestRequest):
 
     # Jensen's Alpha: strategy excess return vs benchmark (BTC), risk-adjusted
     # Alpha = R_strategy - [Rf + Beta * (R_market - Rf)]
-    # Simplified: Alpha = R_strategy - R_benchmark (beta approximated as 1 for crypto)
     if btc_hold_return_pct != 0 and len(all_trades) >= 10:
-        # Use daily returns correlation if available
         if len(daily_returns) >= 10:
             try:
                 btc_data = data_manager.get_symbols(["BTCUSDT"])
                 if btc_data:
                     _, btc_df = btc_data[0]
                     btc_df = filter_df_by_date(btc_df, getattr(req, 'start_date', None), getattr(req, 'end_date', None))
-                    btc_daily = btc_df.groupby(btc_df.index.date if hasattr(btc_df.index, 'date') else pd.to_datetime(btc_df['timestamp']).dt.date)['close'].last().pct_change().dropna() * 100
-                    # Align dates
+                    # Build BTC daily return dict: "YYYY-MM-DD" → pct_change
+                    btc_closes = {}
+                    for _, row in btc_df.iterrows():
+                        ts = str(row.get('timestamp', ''))[:10] if 'timestamp' in row.index else str(row.name)[:10]
+                        btc_closes[ts] = float(row['close'])
+                    btc_dates = sorted(btc_closes.keys())
+                    btc_daily_dict = {}
+                    for i in range(1, len(btc_dates)):
+                        prev_c = btc_closes[btc_dates[i-1]]
+                        curr_c = btc_closes[btc_dates[i]]
+                        if prev_c > 0:
+                            btc_daily_dict[btc_dates[i]] = (curr_c - prev_c) / prev_c * 100
+                    # Align strategy + BTC daily returns
                     strat_daily_dict = dict(daily_pnl)
-                    common_dates = sorted(set(str(d) for d in btc_daily.index) & set(strat_daily_dict.keys()))
-                    if len(common_dates) >= 10:
-                        s_ret = np.array([strat_daily_dict.get(d, 0) for d in common_dates])
-                        b_ret = np.array([float(btc_daily.loc[btc_daily.index.astype(str) == d].iloc[0]) if len(btc_daily.loc[btc_daily.index.astype(str) == d]) > 0 else 0 for d in common_dates])
-                        # Beta via regression
+                    common = sorted(set(strat_daily_dict.keys()) & set(btc_daily_dict.keys()))
+                    if len(common) >= 10:
+                        s_ret = np.array([strat_daily_dict[d] for d in common])
+                        b_ret = np.array([btc_daily_dict[d] for d in common])
                         if np.std(b_ret) > 0:
                             beta = float(np.cov(s_ret, b_ret)[0, 1] / np.var(b_ret))
-                            rf = 0  # crypto risk-free ≈ 0
-                            jensens_alpha = round(float(np.mean(s_ret) - (rf + beta * np.mean(b_ret))), 4)
+                            jensens_alpha = round(float(np.mean(s_ret) - beta * np.mean(b_ret)), 4)
                         else:
                             jensens_alpha = round(total_return - btc_hold_return_pct, 2)
                     else:
