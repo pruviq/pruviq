@@ -20,6 +20,7 @@ export const STATIC_DATA = {
 
 // Max age (ms) before static data is considered stale and API is preferred
 const STALE_THRESHOLD_MS = 30 * 60 * 1000; // 30 minutes
+const VERY_STALE_THRESHOLD_MS = 60 * 60 * 1000; // 1 hour — switch to API-first
 
 function isStale(data: any): boolean {
   if (!data?.generated) return false;
@@ -27,13 +28,20 @@ function isStale(data: any): boolean {
   return age > STALE_THRESHOLD_MS;
 }
 
+function isVeryStale(data: any): boolean {
+  if (!data?.generated) return false;
+  const age = Date.now() - new Date(data.generated).getTime();
+  return age > VERY_STALE_THRESHOLD_MS;
+}
+
 // Static-first fetch: try CDN/static first (fast, no API limits),
-// fall back to API if static is unavailable or stale
+// fall back to API if static is unavailable or stale.
+// When data is very stale (>1h), switch to API-first to avoid serving old data.
 export async function fetchWithFallback(
   apiPath: string,
   staticPath: string,
 ): Promise<any> {
-  // 1. Try static data first (CDN, always available, updated every 15 min)
+  // 1. Try static data first (CDN, always available)
   let staticData: any = null;
   try {
     const res = await fetch(staticPath);
@@ -45,15 +53,18 @@ export async function fetchWithFallback(
   // 2. If static is fresh, use it
   if (staticData && !isStale(staticData)) return staticData;
 
-  // 3. Static is missing or stale — try API for fresh data
+  // 3. If very stale (>1h), use API-first with longer timeout
+  const timeout = staticData && isVeryStale(staticData) ? 8000 : 5000;
+
+  // 4. Static is missing or stale — try API for fresh data
   try {
     const res = await fetch(`${API_BASE_URL}${apiPath}`, {
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(timeout),
     });
     if (!res.ok) throw new Error(`API ${res.status}`);
     return await res.json();
   } catch {
-    // 4. API failed — return stale static data if we have it (better than nothing)
+    // 5. API failed — return stale static data if we have it (better than nothing)
     if (staticData) return staticData;
     throw new Error(`Data unavailable: ${staticPath}`);
   }

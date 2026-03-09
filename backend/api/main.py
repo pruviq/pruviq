@@ -136,7 +136,7 @@ async def _background_refresh():
 
 
 async def _background_market_refresh():
-    """Fetch CoinGecko + news every 60s. Runs independently of user requests."""
+    """Fetch CoinGecko + news every 5min. Runs independently of user requests."""
     global _market_cache, _news_cache
     consecutive_failures = 0
     while True:
@@ -1196,7 +1196,7 @@ except ImportError:
 import requests as http_requests
 from email.utils import parsedate_to_datetime
 
-MARKET_REFRESH_INTERVAL = 900  # seconds — background fetch every 15min (matches static CDN refresh)
+MARKET_REFRESH_INTERVAL = 300  # seconds — background fetch every 5min for faster recovery
 _market_cache: Optional[dict] = None
 
 
@@ -1486,13 +1486,22 @@ def _build_news() -> dict:
 
 @app.get("/market", response_model=MarketOverview)
 async def get_market():
-    """Get market overview with BTC/ETH prices, Fear & Greed, top movers, funding rates.
-    Data is refreshed every 60s by background task — no on-demand CoinGecko calls.
+    """Get market overview. Background task refreshes every 5min.
+    If cache is very stale (>30min), attempt on-demand refresh.
     """
     global _market_cache
     if _market_cache is not None:
-        return MarketOverview(**_market_cache)
-    # First request before background task has run — fetch once
+        cache_age_s = (datetime.now(timezone.utc) - datetime.fromisoformat(_market_cache["generated"])).total_seconds()
+        if cache_age_s <= 1800:  # fresh enough (<30min)
+            return MarketOverview(**_market_cache)
+        # Cache is stale — try on-demand refresh, fall back to stale cache
+        try:
+            data = await asyncio.to_thread(_build_market_overview)
+            _market_cache = data
+            return MarketOverview(**data)
+        except Exception:
+            return MarketOverview(**_market_cache)
+    # First request before background task has run
     data = await asyncio.to_thread(_build_market_overview)
     _market_cache = data
     return MarketOverview(**data)
