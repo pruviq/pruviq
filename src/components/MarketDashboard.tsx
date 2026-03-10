@@ -269,7 +269,7 @@ export default function MarketDashboard({
   // Live "updated X ago" counter (based on live price generated timestamp)
   const [refreshAgo, setRefreshAgo] = useState("");
   const [isDataStale, setIsDataStale] = useState(false);
-  const [isDataVerySale, setIsDataVerySale] = useState(false);
+  const [isDataVeryStale, setIsDataVerySale] = useState(false);
   useEffect(() => {
     if (!generated) return;
     const genTime = new Date(generated).getTime();
@@ -374,12 +374,12 @@ export default function MarketDashboard({
           {/* Staleness warning */}
           {isDataStale && (
             <div
-              class={`mb-4 px-4 py-2.5 rounded-lg border text-center ${isDataVerySale ? "border-red-500/30 bg-red-500/10" : "border-yellow-500/30 bg-yellow-500/10"}`}
+              class={`mb-4 px-4 py-2.5 rounded-lg border text-center ${isDataVeryStale ? "border-red-500/30 bg-red-500/10" : "border-yellow-500/30 bg-yellow-500/10"}`}
             >
               <span
-                class={`text-xs font-mono ${isDataVerySale ? "text-red-400" : "text-yellow-400"}`}
+                class={`text-xs font-mono ${isDataVeryStale ? "text-red-400" : "text-yellow-400"}`}
               >
-                ⚠ {isDataVerySale ? l.staleWarningSevere : l.staleWarning} (
+                ⚠ {isDataVeryStale ? l.staleWarningSevere : l.staleWarning} (
                 {refreshAgo})
               </span>
             </div>
