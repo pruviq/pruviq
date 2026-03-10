@@ -323,6 +323,22 @@ class BacktestRequest(BaseModel):
     compounding: bool = Field(default=False, description="True = reinvest profits (compound), False = fixed position size (simple)")
 
 
+class RegimeMetrics(BaseModel):
+    """Performance metrics for a single market regime."""
+    trades: int
+    win_rate: float
+    total_return: float
+    profit_factor: float
+    avg_pnl: float
+
+
+class RegimePerformance(BaseModel):
+    """Strategy performance split by BTC market regime."""
+    bull: RegimeMetrics
+    bear: RegimeMetrics
+    sideways: RegimeMetrics
+
+
 class MonthlyStat(BaseModel):
     """Per-month performance breakdown."""
     month: str  # "YYYY-MM"
@@ -431,6 +447,9 @@ class BacktestResponse(BaseModel):
     positions_skipped: int = 0  # trades skipped due to concurrent position limit
     pnl_distribution: List[int] = []  # histogram: count of trades in each 1% PnL bucket [-10..+10]
     pnl_buckets: List[str] = []       # bucket labels
+
+    # Market regime performance split
+    regime_performance: Optional["RegimePerformance"] = None
 
     # Validation info
     is_valid: bool

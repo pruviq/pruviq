@@ -207,8 +207,8 @@ const metricDescriptions = {
     avgLoss: 'Average percentage loss on losing trades',
     rr: 'Risk-Reward ratio — average win divided by average loss',
     maxConsec: 'Longest streak of consecutive losing trades',
-    sharpe: 'Risk-adjusted return (excess return / volatility). > 1.0 is good, > 2.0 is excellent',
-    sortino: 'Like Sharpe but only penalizes downside volatility. > 1.5 is good, > 3.0 is excellent',
+    sharpe: 'Risk-adjusted return (excess return / volatility). Annualized with \u221A365 (daily returns). > 1.0 is good, > 2.0 is excellent',
+    sortino: 'Like Sharpe but only penalizes downside volatility. Annualized with \u221A365 (daily returns). > 1.5 is good, > 3.0 is excellent',
     calmar: 'Annual return divided by max drawdown. > 1.0 is good, > 3.0 is excellent',
     breakeven: 'Minimum win rate needed to break even, given the average win/loss sizes',
     margin: 'How far above the break-even win rate the actual win rate is',
@@ -225,8 +225,8 @@ const metricDescriptions = {
     avgLoss: '손실 거래의 평균 손실률',
     rr: '리스크-보상 비율 — 평균 수익 / 평균 손실',
     maxConsec: '가장 긴 연속 손실 거래 수',
-    sharpe: '위험 조정 수익률 (초과수익 / 변동성). > 1.0 양호, > 2.0 우수',
-    sortino: '샤프와 유사하나 하방 변동성만 반영. > 1.5 양호, > 3.0 우수',
+    sharpe: '위험 조정 수익률 (초과수익 / 변동성). \u221A365로 연환산 (일별 수익률). > 1.0 양호, > 2.0 우수',
+    sortino: '샤프와 유사하나 하방 변동성만 반영. \u221A365로 연환산 (일별 수익률). > 1.5 양호, > 3.0 우수',
     calmar: '연간 수익률 / 최대 드로다운. > 1.0 양호, > 3.0 우수',
     breakeven: '평균 손익 규모 기준 손익분기에 필요한 최소 승률',
     margin: '실제 승률이 손익분기 승률보다 얼마나 높은지',
@@ -354,7 +354,7 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
 
       <div class="grid grid-cols-2 gap-2 mb-3">
         <MetricBox label={t.winRate} value={`${data.win_rate}%`} color={wrColor} description={desc.winRate} />
-        <MetricBox label={t.pf} value={`${data.profit_factor}`} color={pfColor} description={desc.pf} />
+        <MetricBox label={t.pf} value={data.profit_factor >= 999 ? '∞' : `${data.profit_factor}`} color={pfColor} description={desc.pf} />
         <MetricBox label={t.totalReturn} value={`${data.total_return_pct > 0 ? '+' : ''}${data.total_return_pct}%`} color={retColor} description={desc.totalReturn} />
         <MetricBox label={t.maxDD} value={`${data.max_drawdown_pct}%`} color="var(--color-red)" description={desc.maxDD} />
       </div>
@@ -451,13 +451,13 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
       {(data.sharpe_ratio !== undefined && data.sharpe_ratio !== 0) && (
         <div class="grid grid-cols-3 gap-2 mb-3">
           <MetricBox
-            label={t.sharpe}
+            label={`${t.sharpe} (\u221A365)`}
             value={`${(data.sharpe_ratio ?? 0).toFixed(2)}`}
             color={(data.sharpe_ratio ?? 0) > 1 ? 'var(--color-accent)' : 'var(--color-text-muted)'}
             description={desc.sharpe}
           />
           <MetricBox
-            label={t.sortino}
+            label={`${t.sortino} (\u221A365)`}
             value={`${(data.sortino_ratio ?? 0).toFixed(2)}`}
             color={(data.sortino_ratio ?? 0) > 1.5 ? 'var(--color-accent)' : 'var(--color-text-muted)'}
             description={desc.sortino}
@@ -594,6 +594,13 @@ export default function ResultsCard({ data, isDefault, lang = 'en', isDemo = fal
         <span class="text-[--color-accent]">TP {tpPct.toFixed(0)}%</span>
         <span class="text-[--color-red]">SL {slPct.toFixed(0)}%</span>
         <span class="text-[--color-text-muted]">TO {toPct.toFixed(0)}%</span>
+      </div>
+
+      {/* Survivorship bias disclosure */}
+      <div class="mt-3 font-mono text-[9px] text-[--color-text-muted] opacity-60 leading-relaxed">
+        {lang === 'ko'
+          ? '현재 상장된 자산만을 기준으로 한 결과입니다. 상장폐지된 코인은 제외됩니다 (생존자 편향).'
+          : 'Results based on currently listed assets only. Delisted coins are excluded (survivorship bias).'}
       </div>
     </div>
   );

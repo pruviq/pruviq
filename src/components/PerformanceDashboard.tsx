@@ -5,6 +5,7 @@ import {
   formatDate,
   formatDateFull,
   formatReasonLabel,
+  formatPF,
   winRateColor,
   profitFactorColor,
   signColor,
@@ -420,7 +421,7 @@ export default function PerformanceDashboard({
         />
         <MetricCard
           label={t.pf}
-          value={s.profit_factor.toFixed(2)}
+          value={formatPF(s.profit_factor)}
           color={pfColor}
         />
         <MetricCard
