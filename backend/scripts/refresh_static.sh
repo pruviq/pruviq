@@ -100,11 +100,15 @@ if [ -f "$MARKET_JSON" ]; then
     fi
 fi
 
-# --- Step 1: Fetch data ---
+# --- Step 1: Fetch data (with 1 retry on failure) ---
 log "Running refresh_static.py..."
 if ! python3 backend/scripts/refresh_static.py 2>&1; then
-    send_alert "ERROR" "refresh_static.py failed"
-    exit 1
+    log "First attempt failed, retrying in 30s..."
+    sleep 30
+    if ! python3 backend/scripts/refresh_static.py 2>&1; then
+        send_alert "ERROR" "refresh_static.py failed (2 attempts)"
+        exit 1
+    fi
 fi
 
 # Post-run staleness check: if market.json is STILL old after a successful run, alert
@@ -134,7 +138,29 @@ fi
 
 # --- Step 2: Build + deploy to Cloudflare Workers (ALWAYS from local files) ---
 log "Building site..."
+BUILD_OK=false
 if npm run build 2>&1 | tail -3; then
+    BUILD_OK=true
+else
+    log "Full build failed — attempting data-only deploy with cached dist/"
+    send_alert "WARN" "npm build failed — trying data-only deploy"
+    # If dist/ exists from a previous successful build, update just the data files
+    if [ -d "$REPO_DIR/dist/data" ]; then
+        for f in $DATA_FILES; do
+            src="$REPO_DIR/$f"
+            dst="$REPO_DIR/dist/${f#public/}"
+            if [ -f "$src" ]; then
+                cp "$src" "$dst" 2>/dev/null && log "Copied $f → dist/"
+            fi
+        done
+        BUILD_OK=true
+    else
+        send_alert "ERROR" "npm build failed and no cached dist/ — cannot deploy"
+        exit 1
+    fi
+fi
+
+if [ "$BUILD_OK" = true ]; then
     log "Deploying to Cloudflare..."
     if npx wrangler deploy 2>&1 | tail -5; then
         log "Deployed to Cloudflare Workers"
@@ -143,10 +169,6 @@ if npm run build 2>&1 | tail -3; then
         send_alert "ERROR" "CF Workers deploy failed"
         exit 1
     fi
-else
-    log "Build failed"
-    send_alert "ERROR" "npm build failed"
-    exit 1
 fi
 
 # --- Step 3: Git commit to generated-data branch (non-blocking) ---

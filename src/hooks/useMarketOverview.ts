@@ -1,11 +1,5 @@
 import { useState, useEffect, useRef } from "preact/hooks";
-import {
-  STATIC_DATA,
-  fetchWithFallback,
-  fetchLiveFirst,
-  dataAgeMs,
-  isVeryStale,
-} from "../config/api";
+import { STATIC_DATA, fetchLiveFirst, dataAgeMs } from "../config/api";
 
 type MarketData = {
   btc_price: number;
@@ -31,11 +25,9 @@ export function useMarketOverview() {
   const intervalRef = useRef<number | null>(null);
 
   const fetchMarket = () => {
-    // When current data is very stale (>1h), use API-first to recover faster
-    const fetcher =
-      market && isVeryStale(market)
-        ? fetchLiveFirst("/market", STATIC_DATA.market)
-        : fetchWithFallback("/market", STATIC_DATA.market);
+    // Always try API first: static data is baked at build time and often stale.
+    // fetchLiveFirst falls back to static if API is unavailable.
+    const fetcher = fetchLiveFirst("/market", STATIC_DATA.market);
     fetcher
       .then((d: MarketData) => {
         setMarket(d);
