@@ -14,6 +14,8 @@ import { test, expect, type Page } from '@playwright/test';
  */
 
 const API_BASE = process.env.API_URL || 'https://api.pruviq.com';
+// Skip slow backtest tests in CI — production API too slow from GitHub runners
+const skipInCI = !!process.env.CI;
 
 // ─── Helpers ──────────────────────────────────────────────────
 
@@ -333,9 +335,6 @@ test.describe('Simulator — Expert Parameter Controls', () => {
 // ═══════════════════════════════════════════════════════════════
 
 test.describe('Simulator — Backtest & Results', () => {
-  // Skip backtest UI tests in CI — production API is too slow from GitHub runners
-  const skipInCI = !!process.env.CI;
-
   test('Run backtest → verify ALL result metrics', async ({ page }) => {
     test.skip(skipInCI, 'Skipped in CI — production API too slow from GitHub runners');
     test.setTimeout(120000);
