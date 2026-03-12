@@ -390,6 +390,7 @@ export const en = {
   'about.contact_desc': 'Questions, feedback, or partnership inquiries:',
   'about.contact_email': 'contact@pruviq.com',
   'about.contact_telegram': 'Telegram Community',
+  'about.explore_desc': 'Ready to test strategies? Try our simulator or browse verified strategies.',
 
   // Performance page static fallback
   'perf.tag': 'BACKTEST RESULTS',
@@ -721,6 +722,8 @@ export const en = {
   'api.example_js': 'JavaScript',
   'api.sdk_title': 'Coming Soon',
   'api.sdk_desc': 'Python SDK and WebSocket feed are in development. Follow us on X for updates.',
+  'api.request_body': 'Request Body',
+  'api.params_label': 'Params:',
   'footer.api': 'API',
   'footer.compare': 'vs TradingView',
 
@@ -907,6 +910,35 @@ export const en = {
 
   // Learn Card
   'learn.read': 'Read',
+
+  // Coin Detail Page
+  'coin_detail.header_desc': 'BB Squeeze SHORT strategy simulation for {name}. Analyze 2+ years of historical data with entry/exit signals, equity curve, and per-trade breakdown.',
+  'coin_detail.simulate_coin': 'Simulate {coin}',
+  'coin_detail.all_strategies': 'All strategies',
+  'coin_detail.all_coins': 'All coins',
+  'coin_detail.strategy_overview': 'Strategy overview',
+  'coin_detail.direction': 'DIRECTION',
+  'coin_detail.short_only': 'SHORT ONLY',
+  'coin_detail.sl_tp': 'STOP-LOSS / TAKE-PROFIT',
+  'coin_detail.max_hold': 'MAX HOLD',
+  'coin_detail.max_hold_val': '48 hours',
+  'coin_detail.data_period': 'DATA PERIOD',
+  'coin_detail.data_period_val': '2+ years (1H)',
+  'coin_detail.strategy_desc': 'The BB Squeeze strategy identifies periods of low volatility (Bollinger Band compression) on {name}. When the bands expand and price breaks downward, a short position is entered. The strategy has been validated across 549 coins with out-of-sample testing and Monte Carlo simulation.',
+  'coin_detail.faq_title': 'FAQ',
+  'coin_detail.faq_q1': 'What is the BB Squeeze SHORT strategy for {name}?',
+  'coin_detail.faq_a1': 'The BB Squeeze SHORT strategy detects Bollinger Band compression on {display} and enters a short position when a downward breakout occurs. It uses a 10% stop-loss and 8% take-profit with up to 48-hour holding periods.',
+  'coin_detail.faq_q2': 'How reliable is the {name} backtest?',
+  'coin_detail.faq_a2': 'PRUVIQ backtests use 2+ years of 1-hour OHLCV data from Binance Futures. All results are out-of-sample tested with Monte Carlo validation (10,000 iterations). No look-ahead bias — only completed candles are used for signals.',
+  'coin_detail.faq_q3': 'Is it free to simulate {name}?',
+  'coin_detail.faq_a3': 'Yes. PRUVIQ is 100% free. You can simulate the BB Squeeze strategy on any supported coin, adjust parameters, and view detailed equity curves and trade logs — no account required.',
+
+  // Strategy Detail Page
+  'strategy_detail.simulate_this': 'Simulate This Strategy',
+  'strategy_detail.english_only': 'This content is available in English only.',
+
+  // Simulate Page
+  'simulate.all_strategies': 'All Strategies',
 } as const;
 
 export type TranslationKey = keyof typeof en;
