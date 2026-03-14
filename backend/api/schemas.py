@@ -350,7 +350,7 @@ class BacktestRequest(BaseModel):
     @field_validator('avoid_hours')
     @classmethod
     def validate_avoid_hours(cls, v):
-        if v:
+        if v is not None:
             if any(h < 0 or h > 23 for h in v):
                 raise ValueError("avoid_hours values must be 0-23")
             if len(v) >= 24:
