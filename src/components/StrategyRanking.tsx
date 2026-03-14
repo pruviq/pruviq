@@ -68,6 +68,8 @@ const rankingLabels = {
     wr50Label: "Strategies with WR 50%+:",
     totalUnit: "total",
     simCta: "Test in Simulator",
+    lowSampleWarning: (n: number) =>
+      `${n} strategies have low sample counts (< 100 trades) — treat results with caution.`,
   },
   ko: {
     loadFail: "데이터 로드 실패",
@@ -80,6 +82,8 @@ const rankingLabels = {
     wr50Label: "WR 50%+ 전략:",
     totalUnit: "개",
     simCta: "시뮬레이터에서 직접 확인",
+    lowSampleWarning: (n: number) =>
+      `일부 전략은 샘플 수가 부족합니다 (< 100건): ${n}개`,
   },
 };
 
