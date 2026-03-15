@@ -72,6 +72,8 @@ export default function OnboardingTour({ lang = "en" }: Props) {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
+    // Skip tour in automated test environments (Playwright sets navigator.webdriver)
+    if (typeof navigator !== "undefined" && navigator.webdriver) return;
     try {
       const done = localStorage.getItem(TOUR_DONE_KEY);
       if (!done) {
@@ -248,6 +250,7 @@ export default function OnboardingTour({ lang = "en" }: Props) {
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
           <button
             onClick={dismiss}
+            data-testid="tour-skip"
             style={{
               flex: "0 0 auto",
               padding: "6px 12px",
