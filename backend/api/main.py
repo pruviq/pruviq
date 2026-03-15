@@ -429,7 +429,9 @@ def filter_df_by_date(df: pd.DataFrame, start_date=None, end_date=None) -> pd.Da
             raise HTTPException(400, f"Invalid start_date '{start_date}'. Use YYYY-MM-DD format.")
     if end_date:
         try:
-            mask &= ts <= pd.Timestamp(end_date) + pd.Timedelta(days=1)
+            # Include all 1H candles on end_date (up to and including 23:00) but
+            # exclude the midnight candle of the next day (off-by-one fix).
+            mask &= ts <= pd.Timestamp(end_date) + pd.Timedelta(hours=23)
         except ValueError:
             raise HTTPException(400, f"Invalid end_date '{end_date}'. Use YYYY-MM-DD format.")
     filtered = df[mask].copy()
@@ -822,10 +824,16 @@ async def simulate(req: SimulationRequest):
     else:
         sharpe, sortino, calmar = 0.0, 0.0, 0.0
 
-    # Use actual date range if tracked, otherwise fallback to data_manager
-    data_range = data_manager.data_range()
+    # Use actual date range: actual candle range > requested range > full dataset range
     if actual_date_min and actual_date_max:
         data_range = f"{actual_date_min} ~ {actual_date_max}"
+    elif req.start_date or req.end_date:
+        # Filtered but no trades found (e.g. future date) — show requested window
+        start_label = req.start_date or data_manager.data_range().split(" ~ ")[0]
+        end_label = req.end_date or data_manager.data_range().split(" ~ ")[-1]
+        data_range = f"{start_label} ~ {end_label} (no data)"
+    else:
+        data_range = data_manager.data_range()
 
     resp_data = {
         "strategy": req.strategy,
