@@ -1004,6 +1004,7 @@ export const ko: Record<TranslationKey, string> = {
   "compare_table.tv_free": "$14.95/월~",
   "compare_table.qc_nocode": "Python/C#",
   "compare_table.qc_coins": "제한적",
+  "compare_table.qc_free": "무료 플랜 (제한적)",
   "compare_table.qc_verification": "모의만",
   "compare_table.pruviq_free": "100% 무료",
   "compare_table.pruviq_verification": "전체 공개",
@@ -1030,6 +1031,17 @@ export const ko: Record<TranslationKey, string> = {
   "trust.stat_datapoints": "처리된 데이터 포인트",
   "trust.stat_live_days": "백테스트 코인 수",
   "trust.stat_strategies": "테스트된 전략 (4개 실패)",
+
+  // Homepage misc
+  "home.social_simulations": "12,847회 시뮬레이션 실행",
+  "home.social_simulations_note": "(2026년 3월 기준)",
+  "home.trust_documented": "문서화된 전략",
+  "home.trust_verified_active": "검증 완료 및 활성",
+  "home.trust_oos_label": "OOS 검증 전략",
+  "home.cta_survives": "살아남는 전략 보기",
+  "home.cta_test_yourself": "직접 테스트 — 무료",
+  "home.quotes_heading": "트레이더들의 이야기",
+  "home.ranking_shortcut": "오늘의 상위 전략",
 
   // TradingView comparison page
   "meta.vs_tv_title": "PRUVIQ vs 트레이딩뷰 - 무료 크립토 백테스팅 비교",
@@ -1248,6 +1260,9 @@ export const ko: Record<TranslationKey, string> = {
   // Coins page
   "coins.explore_next":
     "관심 있는 코인을 찾으셨나요? 전략에서 테스트해 보세요.",
+  "coins.noscript_title": "코인 목록을 보려면 JavaScript가 필요합니다.",
+  "coins.noscript_desc":
+    "549개 이상의 코인을 탐색하려면 JavaScript를 활성화하세요. 인기 코인:",
 
   // Changelog context callout
   "changelog.context_title": "여기서 추적하는 버전은?",
@@ -1267,41 +1282,6 @@ export const ko: Record<TranslationKey, string> = {
   "meta.terms_tag": "이용약관",
   "meta.terms_heading": "이용약관",
   "meta.terms_updated": "최종 수정일: 2026년 3월 1일",
-
-  // Performance: Metrics table labels
-  "perf.tbl_header_metric": "지표",
-  "perf.tbl_header_value": "값",
-  "perf.tbl_sl": "손절 (SL)",
-  "perf.tbl_tp": "익절 (TP)",
-  "perf.tbl_hold": "최대 보유 시간",
-  "perf.tbl_hold_val": "48시간",
-  "perf.tbl_sl_rate": "SL 비율",
-  "perf.tbl_tp_rate": "TP 비율",
-  "perf.tbl_mdd": "최대 손실폭 (MDD)",
-  "perf.tbl_breakeven": "손익분기 승률",
-  "perf.tbl_safety": "안전 마진",
-
-  // Daily Ranking page
-  "ranking.tag": "DAILY RANKING",
-  "ranking.title": "오늘의 전략 랭킹",
-  "ranking.date_label": "{date} 기준 · PRUVIQ 시뮬레이터 백테스트 결과",
-  "ranking.desc":
-    "수익팩터(PF) 기준으로 오늘 가장 성과가 좋은 전략과 나쁜 전략을 확인하세요. 샘플 수가 100건 미만인 전략은 통계적 신뢰도가 낮습니다.",
-  "ranking.open_sim": "시뮬레이터 열기",
-  "ranking.strategy_lib": "전략 라이브러리",
-  "ranking.leaderboard": "리더보드",
-  "ranking.disclaimer_note": "참고:",
-  "ranking.disclaimer_text":
-    "이 랭킹은 과거 데이터 백테스트 기반입니다. 미래 수익을 보장하지 않으며, 샘플 수 부족(< 100건) 전략은 과적합 가능성이 높습니다.",
-  "ranking.footer_text":
-    "마음에 드는 전략을 시뮬레이터에서 직접 파라미터 조정해보세요.",
-  "ranking.try_sim": "시뮬레이터에서 직접 확인",
-  "ranking.live_perf": "실거래 성과",
-
-  // Strategies: Simulator Presets section
-  "strategies.presets_title": "시뮬레이터 프리셋 전체 ({count}종)",
-  "strategies.presets_desc":
-    "아래 전략을 클릭하면 시뮬레이터에서 바로 파라미터가 적용됩니다. 549개 코인 동시 테스트.",
 
   // Ranking component inline strings (QW6)
   "ranking.card_wr": "승률",
