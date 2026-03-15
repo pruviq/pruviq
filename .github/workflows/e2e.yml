@@ -7,27 +7,28 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write
 
 jobs:
   e2e:
     name: Playwright E2E
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
+    # Self-hosted Mac Mini M4 runner — CI = 로컬 환경 완전 일치.
+    # 실패 = 로컬에서 100% 재현 가능 → JEPO e2e-autofix 에이전트가 정확하게 수정.
+    runs-on: [self-hosted, macOS, arm64]
+    timeout-minutes: 20
     steps:
     - uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '22'
+    - name: Use Node 22
+      run: |
+        node --version
+        npm --version
 
     - name: Install dependencies
       run: npm ci
 
-    - name: Install test dependencies
-      run: npm install -D @playwright/test axe-core
-
     - name: Install Chromium
-      run: npx playwright install --with-deps chromium
+      run: npx playwright install chromium
 
     - name: Check i18n key completeness
       run: npx tsx scripts/check-i18n-keys.ts
@@ -35,8 +36,6 @@ jobs:
     - name: Build site
       run: npm run build
 
-    # Root cause fix: verify production API is reachable before running API-dependent tests.
-    # Distinguishes "API down" (infrastructure) from "test logic flaky" (code bug).
     - name: Check API health
       run: |
         echo "Checking api.pruviq.com reachability..."
@@ -50,19 +49,19 @@ jobs:
           echo "Attempt $i: HTTP $STATUS — retrying in 10s..."
           sleep 10
         done
-        echo "::warning::API unreachable after 60s — API-dependent tests will skip via skipInCI"
+        echo "::warning::API unreachable after 60s — API-dependent tests will skip"
 
     - name: Run E2E tests
       id: e2e
       run: |
         npx playwright test tests/e2e/ \
-          --timeout 90000 \
-          --workers 1 \
-          --retries 2
-      # timeout 90s/test (was 30s — prevents false fails from slow GitHub→DO API latency)
-      # workers 1 — prevents race conditions on single preview server port
-      # retries 2 — absorbs transient network hiccups and Preact hydration timing jitter
-      timeout-minutes: 32
+          --timeout 60000 \
+          --workers 2 \
+          --retries 1
+      # Self-hosted M4: timeout 60s (이전 90s는 GitHub→DO 레이턴시 보정용, 불필요)
+      # workers 2 (M4 Pro 성능 활용)
+      # retries 1 (진짜 flaky는 self-hosted에서도 재현됨, 1회로 충분)
+      timeout-minutes: 15
       env:
         CI: true
 
@@ -83,35 +82,109 @@ jobs:
         retention-days: 1
         if-no-files-found: ignore
 
-    - name: Post failure feedback to PR
+    - name: Extract failing test names
+      if: failure() && github.event_name == 'pull_request'
+      id: failing_tests
+      run: |
+        FAILING=""
+        if [ -f playwright-report/results.json ]; then
+          FAILING=$(node -e "
+            const r = require('./playwright-report/results.json');
+            const fails = [];
+            (r.suites || []).forEach(s => {
+              (s.specs || []).forEach(sp => {
+                if (sp.tests && sp.tests.some(t => t.status !== 'expected')) {
+                  fails.push((s.title ? s.title + ' > ' : '') + sp.title);
+                }
+              });
+            });
+            console.log(fails.slice(0, 20).join('\n'));
+          " 2>/dev/null || echo "(could not parse results)")
+        fi
+        echo "FAILING_TESTS<<EOF" >> "$GITHUB_OUTPUT"
+        echo "$FAILING" >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"
+
+    - name: Create or update e2e-fix issue
       if: failure() && github.event_name == 'pull_request'
       uses: actions/github-script@v7
+      env:
+        FAILING_TESTS: ${{ steps.failing_tests.outputs.FAILING_TESTS }}
       with:
         script: |
-          const fs = require('fs');
           const prNumber = context.payload.pull_request.number;
           const branch = context.payload.pull_request.head.ref;
           const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+          const failingTests = process.env.FAILING_TESTS || '(see CI log)';
+          const prTitle = context.payload.pull_request.title;
 
-          // Check retry count from existing comments
-          const comments = await github.rest.issues.listComments({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: prNumber,
+          for (const label of [
+            { name: 'e2e-fix', color: 'e11d48', description: 'E2E test failure — auto-fix eligible' },
+            { name: 'claude-auto', color: '6366f1', description: 'Auto-fix by JEPO Claude agent' },
+          ]) {
+            await github.rest.issues.getLabel({
+              owner: context.repo.owner, repo: context.repo.repo, name: label.name
+            }).catch(() => github.rest.issues.createLabel({
+              owner: context.repo.owner, repo: context.repo.repo, ...label
+            }).catch(() => {}));
+          }
+
+          const existing = await github.rest.issues.listForRepo({
+            owner: context.repo.owner, repo: context.repo.repo,
+            labels: 'e2e-fix', state: 'open',
           });
-          const botFailComments = comments.data.filter(c =>
-            c.body && c.body.includes('[E2E-AUTOFIX]')
+          const matchingIssue = existing.data.find(i =>
+            i.title.includes(`PR #${prNumber}`) || i.body?.includes(`Branch: \`${branch}\``)
           );
-          const retryCount = botFailComments.length + 1;
 
-          // Note: auto-close disabled — retryCount tracked for info only
-          const body = `[E2E-AUTOFIX] Attempt #${retryCount} — E2E tests failed.\n\nBranch: \`${branch}\`\nRun: ${runUrl}\n\nCheck the [workflow log](${runUrl}) for details.`;
+          const bold = (s) => `**${s}**`;
+          const issueBody = [
+            '## E2E Test Failure (Self-hosted Mac Mini)',
+            '',
+            `${bold('PR:')} #${prNumber} — ${prTitle}`,
+            `${bold('Branch:')} \`${branch}\``,
+            `${bold('Run:')} ${runUrl}`,
+            `${bold('Runner:')} self-hosted macOS arm64 — 로컬과 동일 환경, 재현 가능`,
+            '',
+            '## Failing Tests',
+            '```',
+            failingTests,
+            '```',
+            '',
+            '## 재현 방법',
+            '```bash',
+            `cd ~/pruviq && git fetch origin && git checkout ${branch}`,
+            'npm ci && npm run build',
+            'npx playwright test tests/e2e/ --timeout 60000 --workers 2',
+            '```',
+            '',
+            '*JEPO e2e-autofix agent가 20분 이내 재현 → 수정 → 검증 → PR 생성합니다.*',
+          ].join('\n');
+
+          if (matchingIssue) {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: matchingIssue.number,
+              body: `[E2E-AUTOFIX] New failure.\nRun: ${runUrl}\n\`\`\`\n${failingTests}\n\`\`\``,
+            });
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: matchingIssue.number, name: 'in-progress',
+            }).catch(() => {});
+          } else {
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `[e2e-fix] E2E failed on PR #${prNumber} (${branch})`,
+              body: issueBody,
+              labels: ['e2e-fix', 'claude-auto'],
+            });
+            console.log(`Created issue #${issue.data.number}: ${issue.data.html_url}`);
+          }
 
           await github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
+            owner: context.repo.owner, repo: context.repo.repo,
             issue_number: prNumber,
-            body: body,
+            body: `[E2E-AUTOFIX] Tests failed. JEPO agent가 20분 이내 재현·수정 예정.\n\nRun: ${runUrl}`,
           });
 
     - name: Notify failure via Telegram
@@ -119,15 +192,13 @@ jobs:
       env:
         TOKEN: ${{ secrets.PRUVIQ_TELEGRAM_TOKEN }}
         CHAT_ID: ${{ secrets.PRUVIQ_TELEGRAM_CHAT_ID }}
+        PR_NUM: ${{ github.event.pull_request.number }}
+        BRANCH: ${{ github.event.pull_request.head.ref }}
+        RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
       run: |
         [ -z "$TOKEN" ] || [ -z "$CHAT_ID" ] && exit 0
-        PR_NUM="${{ github.event.pull_request.number }}"
-        PR_TITLE="${{ github.event.pull_request.title }}"
-        BRANCH="${{ github.event.pull_request.head.ref }}"
-        RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        MSG="E2E FAIL: PR #${PR_NUM} (${BRANCH})
-        ${PR_TITLE}
+        MSG="E2E FAIL (self-hosted): PR #${PR_NUM} (${BRANCH})
         Log: ${RUN_URL}
-        OpenClaw autofix will retry within 1 hour."
+        JEPO autofix 20분 이내 수정 예정"
         curl -sf -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
           -d chat_id="${CHAT_ID}" -d text="${MSG}" || true
