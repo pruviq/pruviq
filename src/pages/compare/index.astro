@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/index';
+
+const t = useTranslations('en');
+
+const comparisons = [
+  {
+    slug: 'tradingview',
+    name: 'TradingView',
+    desc: 'Script-free backtesting vs paid Pine Script',
+    badge: 'Most Popular',
+  },
+  {
+    slug: 'coinrule',
+    name: 'Coinrule',
+    desc: 'Free unlimited backtest vs $29+/mo rule builder',
+    badge: null,
+  },
+  {
+    slug: 'cryptohopper',
+    name: 'Cryptohopper',
+    desc: '549 coins free vs limited bot subscription',
+    badge: null,
+  },
+  {
+    slug: '3commas',
+    name: '3Commas',
+    desc: 'Transparent results vs closed strategy marketplace',
+    badge: null,
+  },
+  {
+    slug: 'gainium',
+    name: 'Gainium',
+    desc: 'No signup required vs mandatory account creation',
+    badge: null,
+  },
+  {
+    slug: 'streak',
+    name: 'Streak',
+    desc: 'Crypto-native 549 coins vs stock-focused platform',
+    badge: null,
+  },
+];
+---
+
+<Layout title="PRUVIQ vs Alternatives — Free Crypto Backtesting Comparison" description="Compare PRUVIQ with TradingView, Coinrule, 3Commas, Cryptohopper, Gainium, and Streak. Free, no signup, 549 coins.">
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-4">
+      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">COMPARISON</p>
+      <h1 class="text-3xl md:text-5xl font-bold mb-4">
+        PRUVIQ vs Alternatives
+        <span class="block text-lg md:text-2xl font-normal text-[--color-text-muted] mt-2">
+          Free backtesting. No signup. 549 coins. See how we compare.
+        </span>
+      </h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
+        {comparisons.map((c) => (
+          <a
+            href={`/compare/${c.slug}`}
+            class="group relative border border-[--color-border] rounded-lg p-6 hover:border-[--color-accent] transition-colors"
+          >
+            {c.badge && (
+              <span class="absolute top-4 right-4 text-xs font-mono bg-[--color-accent] text-black px-2 py-0.5 rounded">
+                {c.badge}
+              </span>
+            )}
+            <h2 class="text-lg font-bold mb-1 group-hover:text-[--color-accent] transition-colors">
+              PRUVIQ vs {c.name}
+            </h2>
+            <p class="text-sm text-[--color-text-muted]">{c.desc}</p>
+          </a>
+        ))}
+      </div>
+      <p class="mt-10 text-sm text-[--color-text-muted] font-mono">
+        All comparisons use real backtest data. <a href="/simulate" class="text-[--color-accent] hover:underline">Try it yourself →</a>
+      </p>
+    </div>
+  </section>
+</Layout>
