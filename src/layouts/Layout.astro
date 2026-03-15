@@ -385,7 +385,31 @@ for (let i = 0; i < breadcrumbSegments.length; i++) {
         </a>
         <!-- 2열: Nav (정중앙, 데스크톱 only) -->
         <div class="hidden md:flex items-center justify-center gap-8 text-sm">
-          {navItems.map(item => (
+          {navItems.map(item => item.match === '/strategies' ? (
+            <div class="relative group">
+              <a href={item.href} aria-current={isActive(item.match) ? "page" : undefined}
+                 class="transition-colors flex items-center gap-1"
+                 style={isActive(item.match) ? 'color:var(--color-accent);font-weight:500' : 'color:var(--color-text-muted)'}>
+                {item.label}
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" class="opacity-50 transition-transform group-hover:rotate-180" aria-hidden="true"><path d="M2 3.5l3 3 3-3"/></svg>
+              </a>
+              <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden group-hover:block z-50">
+                <div class="bg-[--color-bg] border border-[--color-border] rounded-lg shadow-xl py-1.5 min-w-[160px]">
+                  <a href={rankingPath} class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--color-text-muted] hover:text-[--color-accent] hover:bg-[--color-bg-subtle] transition-colors">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[--color-accent] animate-pulse shrink-0"></span>
+                    Daily Ranking
+                  </a>
+                  <a href={leaderboardPath} class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--color-text-muted] hover:text-[--color-accent] hover:bg-[--color-bg-subtle] transition-colors pl-[26px]">
+                    Leaderboard
+                  </a>
+                  <div class="border-t border-[--color-border] my-1"></div>
+                  <a href={lang === 'ko' ? '/ko/compare' : '/compare'} class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--color-text-muted] hover:text-[--color-accent] hover:bg-[--color-bg-subtle] transition-colors pl-[26px]">
+                    Compare Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+          ) : (
             <a href={item.href} aria-current={isActive(item.match) ? "page" : undefined} class="transition-colors" style={isActive(item.match) ? 'color:var(--color-accent);font-weight:500' : 'color:var(--color-text-muted)'}>{item.label}</a>
           ))}
         </div>
@@ -445,7 +469,7 @@ for (let i = 0; i < breadcrumbSegments.length; i++) {
             </span>
             <p class="text-[--color-text-muted] text-sm mt-2">{t('footer.tagline')}</p>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 md:w-2/3 text-sm">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 md:w-2/3 text-sm">
             <div>
               <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">{t('footer.col_product')}</p>
               <div class="flex flex-col gap-2">
@@ -466,14 +490,19 @@ for (let i = 0; i < breadcrumbSegments.length; i++) {
                 <a href={changelogPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.changelog')}</a>
                 <a href={methodologyPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.methodology')}</a>
                 <a href={apiPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">{t('footer.api')}</a>
+                <a href="https://x.com/pruviq" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">X / Twitter</a>
+                <a href="https://github.com/pruviq/pruviq" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">GitHub</a>
+              </div>
+            </div>
+            <div>
+              <p class="font-mono text-[--color-text-muted] text-xs uppercase tracking-wider mb-3">Compare</p>
+              <div class="flex flex-col gap-2">
                 <a href={compareTvPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">vs TradingView</a>
                 <a href={compareCoinrulePath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">vs Coinrule</a>
                 <a href={compareCryptohopperPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">vs Cryptohopper</a>
                 <a href={compare3commasPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">vs 3Commas</a>
                 <a href={compareGainiumPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">vs Gainium</a>
                 <a href={compareStreakPath} class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">vs Streak</a>
-                <a href="https://x.com/pruviq" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">X / Twitter</a>
-                <a href="https://github.com/pruviq/pruviq" target="_blank" rel="noopener noreferrer" class="text-[--color-text-muted] hover:text-[--color-text] transition-colors">GitHub</a>
               </div>
             </div>
             <div>

@@ -74,6 +74,15 @@ jobs:
         path: playwright-report/
         retention-days: 14
 
+    - name: Upload visual snapshots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: visual-snapshots-${{ github.event.pull_request.number || github.run_id }}
+        path: playwright-report/screenshots/
+        retention-days: 1
+        if-no-files-found: ignore
+
     - name: Post failure feedback to PR
       if: failure() && github.event_name == 'pull_request'
       uses: actions/github-script@v7
