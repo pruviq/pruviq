@@ -13,10 +13,7 @@ const today = new Date().toLocaleDateString('ko-KR', {
 });
 ---
 
-<Layout
-  title="오늘의 전략 랭킹 | PRUVIQ"
-  description="PRUVIQ 시뮬레이터 기반 오늘의 암호화폐 전략 랭킹. 수익팩터·승률 기준 Best/Worst 전략과 이번 주 최강 전략을 확인하세요."
->
+<Layout title={t('meta.ranking_title')} description={t('meta.ranking_desc')}>
   <section class="py-12">
     <div class="max-w-5xl mx-auto px-4">
 

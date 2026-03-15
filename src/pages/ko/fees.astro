@@ -38,9 +38,14 @@ const exchangeCards: Record<string, { tagLabel: string; description: string }> =
       <p class="text-[--color-text-muted] text-lg mb-4 max-w-2xl">
         {t('fees.desc')}
       </p>
-      <p class="text-[--color-text-muted] text-xs">
+      <p class="text-[--color-text-muted] text-xs mb-4">
         {t('fees.disclosure')}
       </p>
+      <!-- Savings example callout -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[--color-up]/30 bg-[--color-up]/5 text-[--color-up] font-mono text-sm">
+        <span class="font-bold">&#9650;</span>
+        <span>{t('fees.savings_callout')}</span>
+      </div>
     </div>
   </section>
 

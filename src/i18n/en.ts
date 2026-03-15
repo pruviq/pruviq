@@ -1161,6 +1161,11 @@ export const en = {
   "meta.leaderboard_title": "Weekly Strategy Leaderboard - PRUVIQ",
   "meta.leaderboard_desc":
     "See this week's best and worst performing crypto trading strategies. Updated weekly with real backtest data.",
+  "meta.ranking_title": "Daily Strategy Ranking | PRUVIQ",
+  "meta.ranking_desc":
+    "Today's top and worst crypto trading strategies based on PRUVIQ backtests. Ranked by Profit Factor and Win Rate. Updated daily.",
+  "fees.savings_callout":
+    "Trade $10,000/month? Save ~$144/year with Binance VIP discount via PRUVIQ.",
   "nav.leaderboard": "Leaderboard",
 
   // Metric explanation tooltips
