@@ -411,6 +411,10 @@ export const ko: Record<TranslationKey, string> = {
   "market.top_gainers": "상승 TOP 10",
   "market.top_losers": "하락 TOP 10",
   "market.latest_news": "최신 뉴스",
+  "market.noscript_title":
+    "실시간 시장 데이터를 표시하려면 JavaScript가 필요합니다.",
+  "market.noscript_desc":
+    "시장 가격은 JavaScript가 필요합니다. 라이브 암호화폐 데이터를 보려면 JavaScript를 활성화하세요.",
   "market.loading": "시장 데이터 로딩 중...",
   "market.error": "시장 데이터 로딩 실패.",
   "market.news_loading": "뉴스 로딩 중...",
