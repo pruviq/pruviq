@@ -7,9 +7,10 @@ interface Props {
   date: string;
   category: string;
   author?: string;
+  image?: string;
 }
 
-const { title, description, date, category, author = 'PRUVIQ Research' } = Astro.props;
+const { title, description, date, category, author = 'PRUVIQ Research', image } = Astro.props;
 
 const categoryLabels: Record<string, string> = {
   market: 'MARKET ANALYSIS',
@@ -20,7 +21,7 @@ const categoryLabels: Record<string, string> = {
 };
 ---
 
-<Layout title={`${title} - PRUVIQ`} description={description} type="article" date={date} category={category}>
+<Layout title={`${title} - PRUVIQ`} description={description} type="article" date={date} category={category} ogImage={image}>
   <article class="py-12">
     <div class="max-w-[45rem] mx-auto px-4">
       <a href="/learn" class="text-[--color-text-muted] text-sm hover:text-[--color-accent] transition-colors mb-8 inline-block">

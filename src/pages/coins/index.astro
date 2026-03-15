@@ -3,6 +3,15 @@ import Layout from '../../layouts/Layout.astro';
 import { useTranslations } from '../../i18n/index';
 
 const t = useTranslations('en');
+
+// Static top-30 coins for noscript/Googlebot crawlability
+const TOP_COINS = [
+  'BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT','DOGEUSDT','ADAUSDT',
+  'AVAXUSDT','LINKUSDT','DOTUSDT','MATICUSDT','LTCUSDT','UNIUSDT','ATOMUSDT',
+  'NEARUSDT','OPUSDT','ARBUSDT','APTUSDT','INJUSDT','SUIUSDT','TIAUSDT',
+  'SEIUSDT','WLDUSDT','ORDIUSDT','STXUSDT','JUPUSDT','FETUSDT','RNDRUSDT',
+  'IMXUSDT','SANDUSDT',
+];
 ---
 
 <Layout title={t('meta.coins_title')} description={t('meta.coins_desc')}>
@@ -25,6 +34,19 @@ const t = useTranslations('en');
             <div class="h-12 bg-[--color-bg-hover] rounded"></div>
           </div>
         </div>
+        <noscript>
+          <p class="font-bold text-sm mb-1">{t('coins.noscript_title')}</p>
+          <p class="text-[--color-text-muted] text-sm mb-4">{t('coins.noscript_desc')}</p>
+          <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+            {TOP_COINS.map(symbol => (
+              <li>
+                <a href={`/coins/${symbol.toLowerCase()}/`} class="text-[--color-accent] hover:underline text-sm font-mono">
+                  {symbol.replace('USDT', '')}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </noscript>
       </div>
       <div class="mt-10 pt-8 border-t border-[--color-border] text-center">
         <p class="text-[--color-text-muted] text-sm mb-4">{t('coins.explore_next')}</p>

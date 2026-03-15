@@ -45,6 +45,27 @@ export default defineConfig({
           { url: enUrl, lang: 'x-default' },
         ];
 
+        // Priority + crawl frequency by page type
+        // @ts-ignore — EnumChangefreq accepts these string values at runtime
+        const p = basePath;
+        if (p === '/') {
+          item.priority = 1.0; item.changefreq = /** @type {any} */ ('daily');
+        } else if (['/simulate', '/strategies', '/market', '/leaderboard'].includes(p)) {
+          item.priority = 0.9; item.changefreq = /** @type {any} */ ('daily');
+        } else if (p === '/strategies/ranking') {
+          item.priority = 0.9; item.changefreq = /** @type {any} */ ('daily');
+        } else if (p.startsWith('/strategies/') || p.startsWith('/coins/')) {
+          item.priority = 0.8; item.changefreq = /** @type {any} */ ('weekly');
+        } else if (p.startsWith('/compare/') || p.startsWith('/vs/') || p.startsWith('/vs-')) {
+          item.priority = 0.7; item.changefreq = /** @type {any} */ ('monthly');
+        } else if (p.startsWith('/blog/')) {
+          item.priority = 0.6; item.changefreq = /** @type {any} */ ('monthly');
+        } else if (['/fees', '/learn', '/about', '/api'].includes(p)) {
+          item.priority = 0.6; item.changefreq = /** @type {any} */ ('monthly');
+        } else {
+          item.priority = 0.5; item.changefreq = /** @type {any} */ ('monthly');
+        }
+
         return item;
       }
     }),
