@@ -586,6 +586,11 @@ export const ko: Record<TranslationKey, string> = {
     "마음에 드는 전략을 시뮬레이터에서 직접 파라미터 조정해보세요.",
   "ranking.try_sim": "시뮬레이터에서 직접 확인",
   "ranking.live_perf": "실거래 성과",
+  "ranking.noscript_title": "랭킹을 표시하려면 JavaScript가 필요합니다.",
+  "ranking.noscript_desc":
+    "랭킹은 매일 업데이트되며 JavaScript가 필요합니다. 브라우저에서 JavaScript를 활성화하세요.",
+  "compare.noscript_text":
+    "전략 비교 도구를 사용하려면 JavaScript가 필요합니다.",
 
   // Blog article CTA
   "blog.cta_title": "직접 전략을 테스트해 보시겠습니까?",

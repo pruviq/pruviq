@@ -585,6 +585,11 @@ export const en = {
     "Adjust parameters for any strategy directly in the simulator.",
   "ranking.try_sim": "Try in Simulator",
   "ranking.live_perf": "Live Performance",
+  "ranking.noscript_title": "JavaScript required to display rankings.",
+  "ranking.noscript_desc":
+    "Rankings are updated daily and require JavaScript to load. Please enable JavaScript in your browser.",
+  "compare.noscript_text":
+    "JavaScript is required to use the strategy comparison tool.",
 
   // Blog article CTA
   "blog.cta_title": "Ready to test strategies yourself?",
