@@ -147,16 +147,6 @@ test.describe("Mobile menu: aria-current reflects current route", () => {
       expectedActive: "/leaderboard",
       label: "leaderboard (mobile-only extra item)",
     },
-    {
-      path: "/methodology",
-      expectedActive: "/methodology",
-      label: "methodology (mobile-only extra item)",
-    },
-    {
-      path: "/performance",
-      expectedActive: "/performance",
-      label: "performance (mobile-only extra item)",
-    },
     { path: "/fees", expectedActive: "/fees", label: "fees" },
   ];
 

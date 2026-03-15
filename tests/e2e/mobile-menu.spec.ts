@@ -12,7 +12,7 @@ test.use({ viewport: { width: 375, height: 812 } });
  * - All expected nav items are present and visible
  * - Touch target sizes (min 44px height)
  * - Ranking item has the live pulse dot
- * - Alignment: ranking uses gap-2 + dot; leaderboard/methodology/performance use pl-[14px]
+ * - Alignment: ranking uses gap-2 + dot; leaderboard uses pl-[22px]
  * - Escape key closes menu
  * - Menu closes when navigating
  * - KO language mobile menu has Korean labels
@@ -199,29 +199,24 @@ test.describe("Mobile menu: ranking item pulse dot", () => {
   });
 });
 
-// ─── Alignment: pl-[14px] on extra items ─────────────────────
+// ─── Alignment: sub-nav items ─────────────────────────────────
 
 test.describe("Mobile menu: alignment consistency", () => {
-  test("Leaderboard, Methodology, Performance have pl-[14px] class", async ({
-    page,
-  }) => {
+  test("Leaderboard has pl-[22px] class", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.locator("#mobile-menu-btn").click({ force: true });
     await page.waitForSelector("#mobile-menu[aria-hidden='false']");
 
-    const alignedHrefs = ["/leaderboard", "/methodology", "/performance"];
-    for (const href of alignedHrefs) {
-      const el = page.locator(`#mobile-menu a[href="${href}"]`).first();
-      await expect(el).toBeVisible();
-      const classes = await el.getAttribute("class");
-      expect(
-        classes,
-        `"${href}" should have pl-[14px] alignment class`,
-      ).toContain("pl-[14px]");
-    }
+    const el = page.locator(`#mobile-menu a[href="/leaderboard"]`).first();
+    await expect(el).toBeVisible();
+    const classes = await el.getAttribute("class");
+    expect(
+      classes,
+      `"/leaderboard" should have pl-[22px] alignment class`,
+    ).toContain("pl-[22px]");
   });
 
-  test("Ranking item has gap-2 class (not pl-[14px]) — uses dot indent", async ({
+  test("Ranking item has gap-2 class (not pl-[22px]) — uses dot indent", async ({
     page,
   }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -235,8 +230,8 @@ test.describe("Mobile menu: alignment consistency", () => {
     expect(classes, "Ranking link should use gap-2").toContain("gap-2");
     expect(
       classes,
-      "Ranking link should NOT use pl-[14px] (uses dot gap instead)",
-    ).not.toContain("pl-[14px]");
+      "Ranking link should NOT use pl-[22px] (uses dot gap instead)",
+    ).not.toContain("pl-[22px]");
   });
 });
 
@@ -265,6 +260,8 @@ test.describe("Mobile menu: language toggle", () => {
     await expect(langLink.first()).toBeVisible();
     // Verify it links to the EN version (no /ko/ prefix)
     const href = await langLink.first().getAttribute("href");
-    expect(href, "Language toggle should point to EN version").not.toMatch(/\/ko\//);
+    expect(href, "Language toggle should point to EN version").not.toMatch(
+      /\/ko\//,
+    );
   });
 });
