@@ -1,8 +1,8 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { useTranslations } from '../../i18n/index';
+import Layout from '../../../layouts/Layout.astro';
+import { useTranslations } from '../../../i18n/index';
 
-const t = useTranslations('en');
+const t = useTranslations('ko');
 
 const comparisons = [
   { slug: 'tradingview', name: 'TradingView', desc: t('compare_index.tradingview_desc'), badge: t('compare_index.most_popular') },
@@ -27,7 +27,7 @@ const comparisons = [
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
         {comparisons.map((c) => (
           <a
-            href={`/compare/${c.slug}`}
+            href={`/ko/compare/${c.slug}`}
             class="group relative border border-[--color-border] rounded-lg p-6 hover:border-[--color-accent] transition-colors"
           >
             {c.badge && (
@@ -43,7 +43,7 @@ const comparisons = [
         ))}
       </div>
       <p class="mt-10 text-sm text-[--color-text-muted] font-mono">
-        {t('compare_index.footer')} <a href="/simulate" class="text-[--color-accent] hover:underline">{t('compare_index.try_cta')}</a>
+        {t('compare_index.footer')} <a href="/ko/simulate" class="text-[--color-accent] hover:underline">{t('compare_index.try_cta')}</a>
       </p>
     </div>
   </section>
