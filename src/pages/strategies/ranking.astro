@@ -13,10 +13,7 @@ const today = new Date().toLocaleDateString('en-US', {
 });
 ---
 
-<Layout
-  title="Daily Strategy Ranking | PRUVIQ"
-  description="Today's top and worst crypto trading strategies based on PRUVIQ backtests. Ranked by Profit Factor and Win Rate. Updated daily."
->
+<Layout title={t('meta.ranking_title')} description={t('meta.ranking_desc')}>
   <section class="py-12">
     <div class="max-w-5xl mx-auto px-4">
 
@@ -34,14 +31,13 @@ const today = new Date().toLocaleDateString('en-US', {
       </nav>
 
       <!-- Page header -->
-      <p class="font-mono text-[--color-accent] text-sm mb-2 tracking-wider">{t('ranking.tag')}</p>
       <h1 class="text-3xl md:text-4xl font-bold mb-3">
         {t('ranking.title')}
       </h1>
       <p class="text-[--color-text-muted] text-sm mb-1">
         {t('ranking.date_label').replace('{date}', today)}
       </p>
-      <p class="text-[--color-text-muted] text-sm mb-8 max-w-2xl">
+      <p class="text-[--color-text-muted] text-sm mb-6 max-w-2xl">
         {t('ranking.desc')}
       </p>
 
@@ -59,12 +55,6 @@ const today = new Date().toLocaleDateString('en-US', {
         >
           {t('ranking.strategy_lib')}
         </a>
-        <a
-          href="/leaderboard"
-          class="inline-flex items-center gap-2 border border-[--color-border] text-[--color-text-muted] px-5 py-2.5 rounded-lg font-semibold text-sm hover:border-[--color-accent] hover:text-[--color-accent] transition-colors"
-        >
-          {t('ranking.leaderboard')}
-        </a>
       </div>
 
       <!-- Disclaimer notice -->
@@ -78,9 +68,9 @@ const today = new Date().toLocaleDateString('en-US', {
       <!-- Ranking component (client-side fetch) -->
       <noscript>
         <div class="border border-[--color-border] rounded-lg p-6 text-center text-[--color-text-muted] text-sm font-mono">
-          <p class="mb-2 font-bold">JavaScript required to display rankings.</p>
-          <p>Rankings are updated daily and require JavaScript to load. Please enable JavaScript in your browser.</p>
-          <p class="mt-3"><a href="/simulate" class="text-[--color-accent] underline">Open Simulator →</a></p>
+          <p class="mb-2 font-bold">{t('ranking.noscript_title')}</p>
+          <p>{t('ranking.noscript_desc')}</p>
+          <p class="mt-3"><a href="/simulate" class="text-[--color-accent] underline">{t('ranking.open_sim')} →</a></p>
         </div>
       </noscript>
       <ErrorBoundary name="Strategy Ranking" client:load>
@@ -108,12 +98,6 @@ const today = new Date().toLocaleDateString('en-US', {
           class="inline-block border border-[--color-border] px-5 py-2 rounded font-semibold text-sm hover:border-[--color-accent] transition-colors no-underline"
         >
           {t('ranking.strategy_lib')} &rarr;
-        </a>
-        <a
-          href="/performance"
-          class="inline-block border border-[--color-border] px-5 py-2 rounded font-semibold text-sm hover:border-[--color-accent] transition-colors no-underline"
-        >
-          {t('ranking.live_perf')} &rarr;
         </a>
       </div>
     </div>

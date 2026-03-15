@@ -1,8 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { useTranslations } from '../../i18n/index';
+import presetsJson from '../../../public/data/builder-presets.json';
 
 const t = useTranslations('en');
+const presetCount = (presetsJson as Array<unknown>).length;
 ---
 
 <Layout title={t('meta.simulate_title')} description={t('meta.simulate_desc')}>
@@ -43,8 +45,8 @@ const t = useTranslations('en');
         </span>
         <span class="text-[--color-border]">·</span>
         <span class="flex items-center gap-1.5 text-[--color-text-muted]">
-          <span class="text-[--color-accent] font-bold">16</span>
-          strategies tested
+          <span class="text-[--color-accent] font-bold">{presetCount}</span>
+          strategies available
         </span>
       </div>
 
@@ -82,9 +84,14 @@ const t = useTranslations('en');
     <p class="text-xs text-gray-500 leading-relaxed">
       {t('simulate.risk_disclaimer')}
     </p>
-    <a href="/fees" class="inline-block border border-[--color-border] px-4 py-1.5 rounded text-xs hover:border-[--color-accent] transition-colors no-underline ml-2">
-      {t('simulate.fees_cta')} &rarr;
-    </a>
+    <div class="flex flex-wrap gap-2 mt-2">
+      <a href="/fees" class="inline-block border border-[--color-border] px-4 py-1.5 rounded text-xs hover:border-[--color-accent] transition-colors no-underline">
+        {t('simulate.fees_cta')} &rarr;
+      </a>
+      <a href="/methodology" class="inline-block border border-[--color-border] px-4 py-1.5 rounded text-xs hover:border-[--color-accent] transition-colors no-underline text-[--color-text-muted]">
+        How we calculate &rarr;
+      </a>
+    </div>
   </div>
 
   <section class="pb-4 md:pb-6">

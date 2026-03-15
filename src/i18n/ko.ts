@@ -240,6 +240,10 @@ export const ko: Record<TranslationKey, string> = {
   "strategy.leverage_warning_title": "레버리지 위험",
   "strategy.leverage_warning":
     "모든 결과는 5배 레버리지로 시뮬레이션되었습니다. 최대 드로다운 26.7%는 5배 기준으로 실제 자본 손실은 포지션당 ~5.3%입니다. 높은 레버리지는 수익과 손실 모두를 증폭시킵니다. 감당할 수 없는 레버리지를 사용하지 마세요.",
+  "strategy.research_warning":
+    "연구 단계 — OOS 검증 미완료. 실거래 사용 비권장.",
+  "strategy.verified_badge": "검증된 전략",
+  "strategy.oos_label": "OOS 검증 완료",
   "strategy.wr_desc": "수익이 난 거래의 비율",
   "strategy.pf_desc": "총 수익 / 총 손실 비율",
   "strategy.pnl_desc": "모든 수수료와 손실 차감 후 순수익",
@@ -407,6 +411,10 @@ export const ko: Record<TranslationKey, string> = {
   "market.top_gainers": "상승 TOP 10",
   "market.top_losers": "하락 TOP 10",
   "market.latest_news": "최신 뉴스",
+  "market.noscript_title":
+    "실시간 시장 데이터를 표시하려면 JavaScript가 필요합니다.",
+  "market.noscript_desc":
+    "시장 가격은 JavaScript가 필요합니다. 라이브 암호화폐 데이터를 보려면 JavaScript를 활성화하세요.",
   "market.loading": "시장 데이터 로딩 중...",
   "market.error": "시장 데이터 로딩 실패.",
   "market.news_loading": "뉴스 로딩 중...",
@@ -578,6 +586,11 @@ export const ko: Record<TranslationKey, string> = {
     "마음에 드는 전략을 시뮬레이터에서 직접 파라미터 조정해보세요.",
   "ranking.try_sim": "시뮬레이터에서 직접 확인",
   "ranking.live_perf": "실거래 성과",
+  "ranking.noscript_title": "랭킹을 표시하려면 JavaScript가 필요합니다.",
+  "ranking.noscript_desc":
+    "랭킹은 매일 업데이트되며 JavaScript가 필요합니다. 브라우저에서 JavaScript를 활성화하세요.",
+  "compare.noscript_text":
+    "전략 비교 도구를 사용하려면 JavaScript가 필요합니다.",
 
   // Blog article CTA
   "blog.cta_title": "직접 전략을 테스트해 보시겠습니까?",
@@ -951,6 +964,27 @@ export const ko: Record<TranslationKey, string> = {
   "compare_index.streak_desc": "크립토 네이티브 549개 코인 vs 주식 중심 플랫폼",
   "compare_index.footer": "모든 비교는 실제 백테스트 데이터를 사용합니다.",
   "compare_index.try_cta": "직접 체험하기 →",
+  "compare_index.strength1_tag": "완전 무료",
+  "compare_index.strength1_title": "$0 — 신용카드 불필요",
+  "compare_index.strength1_desc":
+    "경쟁사는 월 $19–$60를 청구합니다. PRUVIQ는 영원히 무료. 계정 없이 시뮬레이션 실행 가능.",
+  "compare_index.strength2_tag": "549개 코인 동시 테스트",
+  "compare_index.strength2_title": "전체 시장을 한 번에",
+  "compare_index.strength2_desc":
+    "다른 플랫폼은 코인 하나씩 테스트합니다. PRUVIQ는 549개 코인을 한 번에 스캔 — 진짜 작동하는 전략을 찾으세요.",
+  "compare_index.strength3_tag": "실패도 공개합니다",
+  "compare_index.strength3_title": "급진적 투명성",
+  "compare_index.strength3_desc":
+    "경쟁사는 실패를 0건 공개합니다. 저희는 중단한 모든 전략과 이유를 기록합니다. 마케팅보다 정직.",
+  "compare_index.primary_cta": "무료 체험 — 계정 불필요",
+  "compare_index.cta_note": "회원가입 없음. 신용카드 없음. 즉시 결과 확인.",
+  "compare_index.detailed_label": "상세 비교",
+  "compare_index.tbl_feature": "기능",
+  "compare_index.tbl_price": "가격",
+  "compare_index.tbl_no_account": "계정 불필요",
+  "compare_index.tbl_multicoin": "멀티코인 백테스트",
+  "compare_index.tbl_transparency": "실패 투명성",
+  "compare_index.tbl_no_code": "코딩 불필요",
 
   // Comparison table (index page)
   "compare_table.tag": "WHY PRUVIQ",
@@ -1125,6 +1159,11 @@ export const ko: Record<TranslationKey, string> = {
   "meta.leaderboard_title": "주간 전략 순위 - PRUVIQ",
   "meta.leaderboard_desc":
     "이번 주 최고 및 최악의 암호화폐 전략을 확인하세요. 실제 백테스트 데이터로 매주 업데이트.",
+  "meta.ranking_title": "일별 전략 랭킹 | PRUVIQ",
+  "meta.ranking_desc":
+    "PRUVIQ 백테스트 기반 오늘의 최고·최악 암호화폐 전략. 수익 팩터와 승률로 순위를 매겨 매일 업데이트.",
+  "fees.savings_callout":
+    "월 $10,000 거래 시? PRUVIQ 바이낸스 VIP 할인으로 연간 약 $144 절약.",
   "nav.leaderboard": "리더보드",
 
   // Metric explanation tooltips

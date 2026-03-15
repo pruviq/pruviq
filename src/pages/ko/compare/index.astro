@@ -24,7 +24,103 @@ const comparisons = [
           {t('compare_index.subtitle')}
         </span>
       </h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
+
+      <!-- Why PRUVIQ: 3 strengths -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mb-10">
+        <div class="border border-[--color-up]/30 rounded-lg p-6 bg-[--color-bg-card]">
+          <p class="font-mono text-[--color-up] text-xs font-bold mb-2 tracking-wider">{t('compare_index.strength1_tag')}</p>
+          <p class="font-bold text-lg mb-2">{t('compare_index.strength1_title')}</p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">{t('compare_index.strength1_desc')}</p>
+        </div>
+        <div class="border border-[--color-accent]/30 rounded-lg p-6 bg-[--color-bg-card]">
+          <p class="font-mono text-[--color-accent] text-xs font-bold mb-2 tracking-wider">{t('compare_index.strength2_tag')}</p>
+          <p class="font-bold text-lg mb-2">{t('compare_index.strength2_title')}</p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">{t('compare_index.strength2_desc')}</p>
+        </div>
+        <div class="border border-[--color-accent]/30 rounded-lg p-6 bg-[--color-bg-card]">
+          <p class="font-mono text-[--color-accent] text-xs font-bold mb-2 tracking-wider">{t('compare_index.strength3_tag')}</p>
+          <p class="font-bold text-lg mb-2">{t('compare_index.strength3_title')}</p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">{t('compare_index.strength3_desc')}</p>
+        </div>
+      </div>
+
+      <!-- Summary comparison table -->
+      <div class="overflow-x-auto mb-10" role="region" aria-label="플랫폼 기능 비교" tabindex="0">
+        <table class="w-full text-sm border-collapse" role="table">
+          <caption class="sr-only">기능 비교: PRUVIQ vs TradingView, 3Commas, Cryptohopper, Coinrule, Gainium</caption>
+          <thead>
+            <tr class="border-b border-[--color-border]">
+              <th scope="col" class="text-left py-3 px-3 font-mono text-[--color-text-muted] text-xs">{t('compare_index.tbl_feature')}</th>
+              <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-accent] text-xs bg-[--color-accent]/5">PRUVIQ</th>
+              <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">TradingView</th>
+              <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">3Commas</th>
+              <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">Cryptohopper</th>
+              <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">Coinrule</th>
+              <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">Gainium</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-[--color-border]/50">
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_price')}</td>
+              <td class="py-3 px-3 text-center text-[--color-up] font-semibold bg-[--color-accent]/5">$0</td>
+              <td class="py-3 px-3 text-center text-[--color-text-muted]">Free / $15+/mo</td>
+              <td class="py-3 px-3 text-center text-[--color-text-muted]">$22+/mo</td>
+              <td class="py-3 px-3 text-center text-[--color-text-muted]">$19+/mo</td>
+              <td class="py-3 px-3 text-center text-[--color-text-muted]">$29+/mo</td>
+              <td class="py-3 px-3 text-center text-[--color-text-muted]">$29+/mo</td>
+            </tr>
+            <tr class="border-b border-[--color-border]/50">
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_no_account')}</td>
+              <td class="py-3 px-3 text-center text-[--color-up] bg-[--color-accent]/5">&#10003;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+            </tr>
+            <tr class="border-b border-[--color-border]/50">
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_multicoin')}</td>
+              <td class="py-3 px-3 text-center text-[--color-up] font-semibold bg-[--color-accent]/5">549 coins</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">1 at a time</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">Limited</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">Limited</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">Limited</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">Limited</td>
+            </tr>
+            <tr class="border-b border-[--color-border]/50">
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_transparency')}</td>
+              <td class="py-3 px-3 text-center text-[--color-up] bg-[--color-accent]/5">&#10003;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_no_code')}</td>
+              <td class="py-3 px-3 text-center text-[--color-up] bg-[--color-accent]/5">&#10003;</td>
+              <td class="py-3 px-3 text-center text-[--color-down]">Pine Script</td>
+              <td class="py-3 px-3 text-center text-[--color-up]">&#10003;</td>
+              <td class="py-3 px-3 text-center text-[--color-up]">&#10003;</td>
+              <td class="py-3 px-3 text-center text-[--color-up]">&#10003;</td>
+              <td class="py-3 px-3 text-center text-[--color-up]">&#10003;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Primary CTA -->
+      <div class="text-center mb-12">
+        <a href="/ko/simulate" class="inline-block bg-[--color-accent] text-white px-8 py-3 rounded font-semibold text-lg hover:bg-[--color-accent-dim] transition-colors">
+          {t('compare_index.primary_cta')} &rarr;
+        </a>
+        <p class="text-xs text-[--color-text-muted] mt-3 font-mono">{t('compare_index.cta_note')}</p>
+      </div>
+
+      <hr class="border-[--color-border] mb-10" />
+
+      <p class="font-mono text-[--color-accent] text-sm mb-6 tracking-wider">{t('compare_index.detailed_label')}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {comparisons.map((c) => (
           <a
             href={`/ko/compare/${c.slug}`}

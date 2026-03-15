@@ -28,19 +28,19 @@ const comparisons = [
       <!-- Why PRUVIQ: 3 strengths -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mb-10">
         <div class="border border-[--color-up]/30 rounded-lg p-6 bg-[--color-bg-card]">
-          <p class="font-mono text-[--color-up] text-xs font-bold mb-2 tracking-wider">FREE FOREVER</p>
-          <p class="font-bold text-lg mb-2">$0 — No Credit Card</p>
-          <p class="text-[--color-text-muted] text-sm leading-relaxed">Competitors charge <span class="text-[--color-down] font-semibold">$19–$60/month</span>. PRUVIQ is free, forever. No account required to run a simulation.</p>
+          <p class="font-mono text-[--color-up] text-xs font-bold mb-2 tracking-wider">{t('compare_index.strength1_tag')}</p>
+          <p class="font-bold text-lg mb-2">{t('compare_index.strength1_title')}</p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">{t('compare_index.strength1_desc')}</p>
         </div>
         <div class="border border-[--color-accent]/30 rounded-lg p-6 bg-[--color-bg-card]">
-          <p class="font-mono text-[--color-accent] text-xs font-bold mb-2 tracking-wider">549 COINS SIMULTANEOUSLY</p>
-          <p class="font-bold text-lg mb-2">Entire Market at Once</p>
-          <p class="text-[--color-text-muted] text-sm leading-relaxed">Other platforms test <span class="text-[--color-down] font-semibold">one coin at a time</span>. PRUVIQ scans all 549 coins in a single run — find what actually works.</p>
+          <p class="font-mono text-[--color-accent] text-xs font-bold mb-2 tracking-wider">{t('compare_index.strength2_tag')}</p>
+          <p class="font-bold text-lg mb-2">{t('compare_index.strength2_title')}</p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">{t('compare_index.strength2_desc')}</p>
         </div>
         <div class="border border-[--color-accent]/30 rounded-lg p-6 bg-[--color-bg-card]">
-          <p class="font-mono text-[--color-accent] text-xs font-bold mb-2 tracking-wider">WE PUBLISH FAILURES</p>
-          <p class="font-bold text-lg mb-2">Radical Transparency</p>
-          <p class="text-[--color-text-muted] text-sm leading-relaxed">Competitors publish <span class="text-[--color-down] font-semibold">0 failures</span>. We document every strategy we killed — and why. Honesty over marketing.</p>
+          <p class="font-mono text-[--color-accent] text-xs font-bold mb-2 tracking-wider">{t('compare_index.strength3_tag')}</p>
+          <p class="font-bold text-lg mb-2">{t('compare_index.strength3_title')}</p>
+          <p class="text-[--color-text-muted] text-sm leading-relaxed">{t('compare_index.strength3_desc')}</p>
         </div>
       </div>
 
@@ -50,7 +50,7 @@ const comparisons = [
           <caption class="sr-only">Feature comparison: PRUVIQ vs TradingView, 3Commas, Cryptohopper, Coinrule, Gainium</caption>
           <thead>
             <tr class="border-b border-[--color-border]">
-              <th scope="col" class="text-left py-3 px-3 font-mono text-[--color-text-muted] text-xs">Feature</th>
+              <th scope="col" class="text-left py-3 px-3 font-mono text-[--color-text-muted] text-xs">{t('compare_index.tbl_feature')}</th>
               <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-accent] text-xs bg-[--color-accent]/5">PRUVIQ</th>
               <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">TradingView</th>
               <th scope="col" class="text-center py-3 px-3 font-mono text-[--color-text-muted] text-xs">3Commas</th>
@@ -61,7 +61,7 @@ const comparisons = [
           </thead>
           <tbody>
             <tr class="border-b border-[--color-border]/50">
-              <td class="py-3 px-3 text-[--color-text-muted]">Price</td>
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_price')}</td>
               <td class="py-3 px-3 text-center text-[--color-up] font-semibold bg-[--color-accent]/5">$0</td>
               <td class="py-3 px-3 text-center text-[--color-text-muted]">Free / $15+/mo</td>
               <td class="py-3 px-3 text-center text-[--color-text-muted]">$22+/mo</td>
@@ -70,7 +70,7 @@ const comparisons = [
               <td class="py-3 px-3 text-center text-[--color-text-muted]">$29+/mo</td>
             </tr>
             <tr class="border-b border-[--color-border]/50">
-              <td class="py-3 px-3 text-[--color-text-muted]">No Account Required</td>
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_no_account')}</td>
               <td class="py-3 px-3 text-center text-[--color-up] bg-[--color-accent]/5">&#10003;</td>
               <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
               <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
@@ -79,7 +79,7 @@ const comparisons = [
               <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
             </tr>
             <tr class="border-b border-[--color-border]/50">
-              <td class="py-3 px-3 text-[--color-text-muted]">Multi-coin Backtest</td>
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_multicoin')}</td>
               <td class="py-3 px-3 text-center text-[--color-up] font-semibold bg-[--color-accent]/5">549 coins</td>
               <td class="py-3 px-3 text-center text-[--color-down]">1 at a time</td>
               <td class="py-3 px-3 text-center text-[--color-down]">Limited</td>
@@ -88,7 +88,7 @@ const comparisons = [
               <td class="py-3 px-3 text-center text-[--color-down]">Limited</td>
             </tr>
             <tr class="border-b border-[--color-border]/50">
-              <td class="py-3 px-3 text-[--color-text-muted]">Failure Transparency</td>
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_transparency')}</td>
               <td class="py-3 px-3 text-center text-[--color-up] bg-[--color-accent]/5">&#10003;</td>
               <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
               <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
@@ -97,7 +97,7 @@ const comparisons = [
               <td class="py-3 px-3 text-center text-[--color-down]">&#10007;</td>
             </tr>
             <tr>
-              <td class="py-3 px-3 text-[--color-text-muted]">No Coding Required</td>
+              <td class="py-3 px-3 text-[--color-text-muted]">{t('compare_index.tbl_no_code')}</td>
               <td class="py-3 px-3 text-center text-[--color-up] bg-[--color-accent]/5">&#10003;</td>
               <td class="py-3 px-3 text-center text-[--color-down]">Pine Script</td>
               <td class="py-3 px-3 text-center text-[--color-up]">&#10003;</td>
@@ -112,14 +112,14 @@ const comparisons = [
       <!-- Primary CTA -->
       <div class="text-center mb-12">
         <a href="/simulate" class="inline-block bg-[--color-accent] text-white px-8 py-3 rounded font-semibold text-lg hover:bg-[--color-accent-dim] transition-colors">
-          Try Free — No Account Needed &rarr;
+          {t('compare_index.primary_cta')} &rarr;
         </a>
-        <p class="text-xs text-[--color-text-muted] mt-3 font-mono">No sign-up. No credit card. Instant results.</p>
+        <p class="text-xs text-[--color-text-muted] mt-3 font-mono">{t('compare_index.cta_note')}</p>
       </div>
 
       <hr class="border-[--color-border] mb-10" />
 
-      <p class="font-mono text-[--color-accent] text-sm mb-6 tracking-wider">DETAILED COMPARISONS</p>
+      <p class="font-mono text-[--color-accent] text-sm mb-6 tracking-wider">{t('compare_index.detailed_label')}</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {comparisons.map((c) => (
           <a

@@ -239,6 +239,10 @@ export const en = {
   "strategy.leverage_warning_title": "Leverage Risk",
   "strategy.leverage_warning":
     "All results are simulated with 5x leverage. A 26.7% max drawdown at 5x means your actual capital drawdown could reach ~5.3% per position. Higher leverage amplifies both gains and losses. Never use leverage you cannot afford to lose.",
+  "strategy.research_warning":
+    "Research status — Not yet OOS-validated. Do not use for live trading.",
+  "strategy.verified_badge": "Verified Strategy",
+  "strategy.oos_label": "OOS-validated",
   "strategy.wr_desc": "Percentage of trades that were profitable",
   "strategy.pf_desc": "Gross profit / gross loss ratio",
   "strategy.pnl_desc": "Net profit after all fees and losses",
@@ -406,6 +410,9 @@ export const en = {
   "market.top_gainers": "Top Gainers",
   "market.top_losers": "Top Losers",
   "market.latest_news": "Latest News",
+  "market.noscript_title": "JavaScript required for live market data.",
+  "market.noscript_desc":
+    "Market prices require JavaScript to load. Please enable JavaScript to view live crypto data.",
   "market.loading": "Loading market data...",
   "market.error": "Failed to load market data.",
   "market.news_loading": "Loading news...",
@@ -578,6 +585,11 @@ export const en = {
     "Adjust parameters for any strategy directly in the simulator.",
   "ranking.try_sim": "Try in Simulator",
   "ranking.live_perf": "Live Performance",
+  "ranking.noscript_title": "JavaScript required to display rankings.",
+  "ranking.noscript_desc":
+    "Rankings are updated daily and require JavaScript to load. Please enable JavaScript in your browser.",
+  "compare.noscript_text":
+    "JavaScript is required to use the strategy comparison tool.",
 
   // Blog article CTA
   "blog.cta_title": "Ready to test strategies yourself?",
@@ -969,6 +981,27 @@ export const en = {
     "Crypto-native 549 coins vs stock-focused platform",
   "compare_index.footer": "All comparisons use real backtest data.",
   "compare_index.try_cta": "Try it yourself →",
+  "compare_index.strength1_tag": "FREE FOREVER",
+  "compare_index.strength1_title": "$0 — No Credit Card",
+  "compare_index.strength1_desc":
+    "Competitors charge $19–$60/month. PRUVIQ is free, forever. No account required to run a simulation.",
+  "compare_index.strength2_tag": "549 COINS SIMULTANEOUSLY",
+  "compare_index.strength2_title": "Entire Market at Once",
+  "compare_index.strength2_desc":
+    "Other platforms test one coin at a time. PRUVIQ scans all 549 coins in a single run — find what actually works.",
+  "compare_index.strength3_tag": "WE PUBLISH FAILURES",
+  "compare_index.strength3_title": "Radical Transparency",
+  "compare_index.strength3_desc":
+    "Competitors publish 0 failures. We document every strategy we killed — and why. Honesty over marketing.",
+  "compare_index.primary_cta": "Try Free — No Account Needed",
+  "compare_index.cta_note": "No sign-up. No credit card. Instant results.",
+  "compare_index.detailed_label": "DETAILED COMPARISONS",
+  "compare_index.tbl_feature": "Feature",
+  "compare_index.tbl_price": "Price",
+  "compare_index.tbl_no_account": "No Account Required",
+  "compare_index.tbl_multicoin": "Multi-coin Backtest",
+  "compare_index.tbl_transparency": "Failure Transparency",
+  "compare_index.tbl_no_code": "No Coding Required",
 
   // Comparison table (index page)
   "compare_table.tag": "WHY PRUVIQ",
@@ -988,6 +1021,7 @@ export const en = {
   "compare_table.tv_free": "$14.95/mo+",
   "compare_table.qc_nocode": "Python/C#",
   "compare_table.qc_coins": "Limited",
+  "compare_table.qc_free": "Free tier (limited)",
   "compare_table.qc_verification": "Paper only",
   "compare_table.pruviq_free": "100% Free",
   "compare_table.pruviq_verification": "Live",
@@ -1017,6 +1051,17 @@ export const en = {
   "trust.stat_datapoints": "Data Points Processed",
   "trust.stat_live_days": "Coins Backtested",
   "trust.stat_strategies": "Strategies Tested (4 Failed)",
+
+  // Homepage misc (hardcoded strings that need i18n)
+  "home.social_simulations": "12,847 simulations run",
+  "home.social_simulations_note": "(as of Mar 2026)",
+  "home.trust_documented": "Strategies documented",
+  "home.trust_verified_active": "Verified & active",
+  "home.trust_oos_label": "OOS-validated strategies",
+  "home.cta_survives": "See What Survives",
+  "home.cta_test_yourself": "Test It Yourself — Free",
+  "home.quotes_heading": "What Traders Say",
+  "home.ranking_shortcut": "Today's top strategies",
 
   // TradingView comparison page
   "meta.vs_tv_title":
@@ -1149,6 +1194,11 @@ export const en = {
   "meta.leaderboard_title": "Weekly Strategy Leaderboard - PRUVIQ",
   "meta.leaderboard_desc":
     "See this week's best and worst performing crypto trading strategies. Updated weekly with real backtest data.",
+  "meta.ranking_title": "Daily Strategy Ranking | PRUVIQ",
+  "meta.ranking_desc":
+    "Today's top and worst crypto trading strategies based on PRUVIQ backtests. Ranked by Profit Factor and Win Rate. Updated daily.",
+  "fees.savings_callout":
+    "Trade $10,000/month? Save ~$144/year with Binance VIP discount via PRUVIQ.",
   "nav.leaderboard": "Leaderboard",
 
   // Metric explanation tooltips

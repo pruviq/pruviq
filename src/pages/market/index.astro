@@ -29,8 +29,8 @@ const t = useTranslations('en');
         </div>
         <noscript>
           <div class="border border-[--color-border] rounded-lg p-6 text-center text-[--color-text-muted] text-sm font-mono mt-4">
-            <p class="mb-2 font-bold">JavaScript required for live market data.</p>
-            <p>Market prices require JavaScript to load. Please enable JavaScript to view live crypto data.</p>
+            <p class="mb-2 font-bold">{t('market.noscript_title')}</p>
+            <p>{t('market.noscript_desc')}</p>
           </div>
         </noscript>
       </div>
