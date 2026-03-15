@@ -951,6 +951,27 @@ export const ko: Record<TranslationKey, string> = {
   "compare_index.streak_desc": "크립토 네이티브 549개 코인 vs 주식 중심 플랫폼",
   "compare_index.footer": "모든 비교는 실제 백테스트 데이터를 사용합니다.",
   "compare_index.try_cta": "직접 체험하기 →",
+  "compare_index.strength1_tag": "완전 무료",
+  "compare_index.strength1_title": "$0 — 신용카드 불필요",
+  "compare_index.strength1_desc":
+    "경쟁사는 월 $19–$60를 청구합니다. PRUVIQ는 영원히 무료. 계정 없이 시뮬레이션 실행 가능.",
+  "compare_index.strength2_tag": "549개 코인 동시 테스트",
+  "compare_index.strength2_title": "전체 시장을 한 번에",
+  "compare_index.strength2_desc":
+    "다른 플랫폼은 코인 하나씩 테스트합니다. PRUVIQ는 549개 코인을 한 번에 스캔 — 진짜 작동하는 전략을 찾으세요.",
+  "compare_index.strength3_tag": "실패도 공개합니다",
+  "compare_index.strength3_title": "급진적 투명성",
+  "compare_index.strength3_desc":
+    "경쟁사는 실패를 0건 공개합니다. 저희는 중단한 모든 전략과 이유를 기록합니다. 마케팅보다 정직.",
+  "compare_index.primary_cta": "무료 체험 — 계정 불필요",
+  "compare_index.cta_note": "회원가입 없음. 신용카드 없음. 즉시 결과 확인.",
+  "compare_index.detailed_label": "상세 비교",
+  "compare_index.tbl_feature": "기능",
+  "compare_index.tbl_price": "가격",
+  "compare_index.tbl_no_account": "계정 불필요",
+  "compare_index.tbl_multicoin": "멀티코인 백테스트",
+  "compare_index.tbl_transparency": "실패 투명성",
+  "compare_index.tbl_no_code": "코딩 불필요",
 
   // Comparison table (index page)
   "compare_table.tag": "WHY PRUVIQ",

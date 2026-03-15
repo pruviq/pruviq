@@ -969,6 +969,27 @@ export const en = {
     "Crypto-native 549 coins vs stock-focused platform",
   "compare_index.footer": "All comparisons use real backtest data.",
   "compare_index.try_cta": "Try it yourself →",
+  "compare_index.strength1_tag": "FREE FOREVER",
+  "compare_index.strength1_title": "$0 — No Credit Card",
+  "compare_index.strength1_desc":
+    "Competitors charge $19–$60/month. PRUVIQ is free, forever. No account required to run a simulation.",
+  "compare_index.strength2_tag": "549 COINS SIMULTANEOUSLY",
+  "compare_index.strength2_title": "Entire Market at Once",
+  "compare_index.strength2_desc":
+    "Other platforms test one coin at a time. PRUVIQ scans all 549 coins in a single run — find what actually works.",
+  "compare_index.strength3_tag": "WE PUBLISH FAILURES",
+  "compare_index.strength3_title": "Radical Transparency",
+  "compare_index.strength3_desc":
+    "Competitors publish 0 failures. We document every strategy we killed — and why. Honesty over marketing.",
+  "compare_index.primary_cta": "Try Free — No Account Needed",
+  "compare_index.cta_note": "No sign-up. No credit card. Instant results.",
+  "compare_index.detailed_label": "DETAILED COMPARISONS",
+  "compare_index.tbl_feature": "Feature",
+  "compare_index.tbl_price": "Price",
+  "compare_index.tbl_no_account": "No Account Required",
+  "compare_index.tbl_multicoin": "Multi-coin Backtest",
+  "compare_index.tbl_transparency": "Failure Transparency",
+  "compare_index.tbl_no_code": "No Coding Required",
 
   // Comparison table (index page)
   "compare_table.tag": "WHY PRUVIQ",
